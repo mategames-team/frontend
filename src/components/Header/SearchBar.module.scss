@@ -1,0 +1,25 @@
+.search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  width: 100%;
+  max-width: 500px;
+
+  background: #cfcfcf;
+  padding: 10px 16px;
+  border-radius: 30px;
+}
+
+.icon {
+  font-size: 18px;
+  opacity: 0.6;
+}
+
+.input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 14px;
+}
