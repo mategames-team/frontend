@@ -1,18 +1,15 @@
-import { useState } from 'react';
-import { HomePage } from './modules/HomePage/HomePage';
+import { Outlet } from 'react-router-dom';
+import { Header } from './components/Header/Header';
 
 export const App = () => {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <h1>Hello team project</h1>
-      <div className='card'>
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-      </div>
-      <HomePage />
-    </>
+    <div className=''>
+      <Header />
+
+      <main className=''>
+        <Outlet />
+      </main>
+      {/* 🟣 TODO: Footer */}
+    </div>
   );
 };
