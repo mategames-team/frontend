@@ -37,11 +37,14 @@ export const GameCard: React.FC<Props> = ({ game }) => {
 
       {/* Card Content */}
       <div className={styles.info}>
-        <div className={styles.year}>Year</div>
+        <div className={styles.meta}>
+          <span className={`${styles.year} text-secondary-semibold`}>Year</span>
+          <span className={`${styles.rating} text-secondary-semibold`}>
+            {game.rating}
+          </span>
+        </div>
 
-        <h3 className={styles.title}>{game.name}</h3>
-
-        <span className={styles.rating}>{game.rating.toFixed(1)}</span>
+        <h4 className={styles.title}>{game.name}</h4>
       </div>
     </article>
   );

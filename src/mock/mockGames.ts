@@ -1,5 +1,5 @@
 export const mockGames = [
-  { id: 1, name: 'Elden Ring', rating: 9.7 },
+  { id: 1, name: 'Elden Ring', rating: 10 },
   { id: 2, name: 'Hollow Knight', rating: 9.3 },
   { id: 3, name: 'Celeste', rating: 9.5 },
   { id: 4, name: 'The Witcher 3', rating: 9.8 },
