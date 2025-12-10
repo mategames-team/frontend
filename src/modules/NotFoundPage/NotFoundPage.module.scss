@@ -11,32 +11,17 @@
       transparent 100%
     ),
     linear-gradient(180deg, #fff 0%, #fafbfc 100%);
-  color: $accent-color;
+  color: $accent-purple;
 }
 
 .card {
   width: min(720px, 100%);
-  background: #fff;
+  background: $elements-bg;
   border: 1px solid #e2e6e9;
   border-radius: 16px;
   padding: 32px 24px;
   text-align: center;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
-}
-
-.fadeIn {
-  animation: fade-in 340ms ease-out both;
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .title {
@@ -45,7 +30,7 @@
   font-weight: 800;
   letter-spacing: -0.02em;
   margin: 8px 0;
-  color: $accent-color;
+  color: $accent-purple;
 }
 
 .subtitle {
@@ -76,9 +61,7 @@
   border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
-  transition:
-    transform 0.08s ease,
-    background-color 0.2s ease,
+  transition: transform 0.08s ease, background-color 0.2s ease,
     border-color 0.2s ease;
   border: 1px solid transparent;
   user-select: none;
@@ -111,9 +94,9 @@
 }
 
 .btnPrimary {
-  background: $accent-color;
+  background: $accent-purple;
   color: #fff;
-  border-color: $accent-color;
+  border-color: $accent-purple;
 
   &:hover {
     box-shadow: 0 3px 13px rgba(23, 32, 49, 0.25);

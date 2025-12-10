@@ -1,86 +1,99 @@
 @import './mixins';
 
-@font-face {
-  font-family: Mont;
-  src: url('/fonts/Mont-Regular.otf') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: Mont;
-  src: url('/fonts/Mont-SemiBold.otf') format('woff2');
+/* --- H1: Teko SemiBold | 64px --- */
+h1 {
+  font-family: 'Teko', sans-serif;
   font-weight: 600;
-  font-style: normal;
-  font-display: swap;
+  font-size: 64px;
+  line-height: 96px;
+  letter-spacing: 0.02em;
 }
 
-@font-face {
-  font-family: Mont;
-  src: url('/fonts/Mont-Bold.otf') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-h1,
+/* --- H2: Teko Medium | 40px --- */
 h2 {
-  font-weight: 700;
+  font-family: 'Teko', sans-serif;
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 60px;
+  letter-spacing: 0.02em;
 }
 
-h2,
-h3,
-h4 {
+/* --- H3: Hind SemiBold | 28px --- */
+h3 {
+  font-family: 'Hind', sans-serif;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 36px;
   letter-spacing: 0;
 }
 
-h1 {
-  font-size: 2rem;
-  line-height: 41px;
-  letter-spacing: -0.01em;
-
-  @include on-tablet {
-    font-size: 3rem;
-    line-height: 56px;
-  }
-}
-
-h2 {
-  font-size: 1.38rem; /* 22px */
-  line-height: 31px;
-
-  @include on-tablet {
-    font-size: 2rem; /* 32px */
-    line-height: 41px;
-    letter-spacing: -0.01em;
-  }
-}
-
-h3 {
-  font-size: 1.25rem; /* 20px */
-  font-weight: 600;
-  line-height: 26px;
-
-  @include on-tablet {
-    font-size: 1.38rem; /* 22px */
-    font-weight: 700;
-    line-height: 31px;
-  }
-}
-
+/* --- H4: Hind Medium | 24px --- */
 h4 {
-  font-size: 1rem;
-  font-weight: 600;
-  line-height: 20px;
-
-  @include on-tablet {
-    font-size: 1.25rem; /* 20px */
-    line-height: 26px;
-  }
+  font-family: 'Hind', sans-serif;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 30px;
+  letter-spacing: 0;
 }
 
-.body-text {
-  font-size: 0.88rem; /* 14px */
-  line-height: 21px;
+/* --- H5: Hind Regular | 20px --- */
+h5 {
+  font-family: 'Hind', sans-serif;
+  font-weight: 400; /* Regular */
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0;
+}
+
+/* --- Main text: Hind Regular | 20px --- */
+.text-main {
+  font-family: 'Hind', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0;
+}
+
+/* --- Secondary text: Hind Regular | 16px --- */
+.text-secondary {
+  font-family: 'Hind', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0;
+}
+
+/* --- Secondary text: Hind Semibold | 16px --- */
+.text-secondary-semibold {
+  font-family: 'Hind', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0;
+}
+
+/* --- Small Text: Hind Regular | 14px --- */
+.text-small {
+  font-family: 'Hind', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0;
+}
+
+/* --- Buttons --- */
+.btn-text-large {
+  font-family: 'Hind', sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0;
+}
+
+.btn-text-small {
+  font-family: 'Hind', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0;
 }
