@@ -7,15 +7,19 @@ import { Link } from 'react-router-dom';
 export const Header = () => {
   return (
     <header className={styles.header}>
-      <Link to='/' className={styles.logo}>
-        Gamer’s Diary
-      </Link>
+      <div className='container'>
+        <div className={styles.header__content}>
+          <Link to='/' className={styles.logo}>
+            Gamer’s Diary
+          </Link>
 
-      <SearchBar />
+          <SearchBar />
 
-      <NavLinks />
+          <NavLinks />
 
-      <AuthActions />
+          <AuthActions />
+        </div>
+      </div>
     </header>
   );
 };

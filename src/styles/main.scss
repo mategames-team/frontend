@@ -26,3 +26,12 @@ body {
     padding: 56px 0 80px;
   }
 }
+
+.container {
+  @include content-padding-inline;
+
+  @include on-desktop {
+    max-width: 1320px;
+    margin-inline: auto;
+  }
+}

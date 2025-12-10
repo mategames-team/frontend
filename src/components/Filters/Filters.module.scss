@@ -1,0 +1,22 @@
+@import '@/styles/main.scss';
+
+.filters {
+  min-width: 314px;
+  padding: 32px;
+  background-color: #1e1f2b;
+  color: #dfe0ee;
+  border: 1px solid #222;
+  border-radius: 12px;
+
+  &__title {
+    font-size: 1rem;
+    margin-bottom: 24px;
+    line-height: 24px;
+    text-align: center;
+  }
+
+  &__section {
+    margin-bottom: 24px;
+    border-bottom: 1px solid #a5a6b3;
+  }
+}
