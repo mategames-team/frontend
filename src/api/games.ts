@@ -11,7 +11,7 @@ export interface GetGamesRequest {
 }
 
 export interface GetGamesResponse {
-  data: Game[];
+  content: Game[];
   total: number;
   page: number;
   totalPages: number;
@@ -27,5 +27,10 @@ export const getGames = (params: GetGamesRequest = {}) => {
   if (params.platform) query.set('platform', params.platform);
   if (params.sort) query.set('sort', params.sort);
 
-  return request<GetGamesResponse>(`/api/games?${query.toString()}`);
+  const queryString = query.toString();
+  const endpoint = queryString
+    ? `/api/games?${queryString}`
+    : '/api/games/local';
+
+  return request<GetGamesResponse>(endpoint);
 };

@@ -15,7 +15,6 @@ export const CatalogPage = () => {
   const [, setTotalPages] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
 
-  // const [helloMessage, setHelloMessage] = useState<string>('');
   const search = searchParams.get('search')?.toLowerCase().trim() || '';
   const page = Number(searchParams.get('page')) || 1;
 
@@ -23,29 +22,14 @@ export const CatalogPage = () => {
     game.name.toLowerCase().includes(search)
   );
 
-  // const fetchHello = async () => {
-  //   try {
-  //     const response = await fetch('http://localhost:8080/api/hello');
-
-  //     setHelloMessage(await response.text());
-  //     console.log(response);
-  //   } catch (error) {
-  //     console.error('Error fetching /hello endpoint:', error);
-  //   }
-  // };
-
   useEffect(() => {
     const fetchGames = async () => {
       setLoading(true);
 
       try {
-        const res = await getGames({
-          search,
-          page,
-          limit: 10,
-        });
+        const res = await getGames({ search });
 
-        setGames(res.data);
+        setGames(res.content);
         setTotalPages(res.totalPages);
       } catch {
         setGames(mockGames);
@@ -64,18 +48,11 @@ export const CatalogPage = () => {
   return (
     <section className={styles.catalog}>
       <div className='container'>
-        {/* <p>{helloMessage}</p>
-        <button
-          onClick={fetchHello}
-          style={{ border: '1px solid black', padding: '12px' }}
-        >
-          Say hello from backend
-        </button> */}
         <div className={styles.catalog__content}>
           {filteredGames.length > 0 ? (
             <ul className={styles.gameList}>
               {filteredGames.map((game) => (
-                <li key={game.id} className={styles.gameList_item}>
+                <li key={game.apiId} className={styles.gameList_item}>
                   <GameCard game={game} />
                 </li>
               ))}

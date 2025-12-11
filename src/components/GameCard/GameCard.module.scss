@@ -4,7 +4,7 @@
   background: $elements-bg;
   border-radius: 16px;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
-  width: 100%;
+  min-width: 231px;
   min-height: 412px;
   cursor: pointer;
 
@@ -19,7 +19,7 @@
 .imageWrapper {
   position: relative;
   width: 100%;
-  min-height: 274px;
+  height: 274px;
   overflow: hidden;
   border-radius: 16px 16px 0 0;
 }
@@ -115,7 +115,7 @@
   min-width: 38px;
   background: $light-purple;
   color: $color-gray-100;
-  padding: 4px 8px;
+  padding: 6px 8px 4px;
   border-radius: 6px;
   text-align: center;
 }
