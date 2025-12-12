@@ -1,10 +1,37 @@
-$accent-color: #4219d0;
-$secondary-accent: #f4ba47;
-$primary-color: #0f0f11;
-$secondary-color: #89939a;
-$bg-color: #fafbfc;
-$hover-color: #fafbfc;
-$white: #fff;
-$tablet-width: 640px;
-$desktop-width: 1200px;
-$main-font: Mont, sans-serif;
+/* --- COLORS --- */
+$accent-purple: #5431aa;
+$light-purple: #9758ff;
+$dark-purple: #22146a;
+
+$color-gray-100: #0b0c18;
+// Dark gray
+$color-gray-90: #1e1f2b;
+$color-gray-80: #32333f;
+$color-gray-60: #585966;
+$color-gray-40: #7f808d;
+$color-gray-30: #9293a0;
+// Light gray
+$color-gray-20: #a5a6b3;
+$color-gray-10: #b8b9c7;
+$color-gray-5: #e4e4e4;
+$white: #ffffff;
+
+/* --- ALIASES --- */
+$primary-color: $color-gray-30;
+$secondary-color: $color-gray-5;
+$bg-color: $color-gray-100;
+$elements-bg: $color-gray-90;
+
+/* --- STATUS COLORS --- */
+$color-status-error: #d1000b;
+$color-status-info: #000ad1;
+$color-status-warning: #e7c51b;
+$color-status-success: #61d100;
+
+/* --- FONTS --- */
+$main-font: 'Teko', sans-serif;
+$secondary-font: 'Hind', sans-serif;
+
+/* --- BREAKPOINTS --- */
+$desktop-width: 1320px;
+$tablet-width: 768px;

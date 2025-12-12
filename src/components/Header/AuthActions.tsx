@@ -4,7 +4,7 @@ export const AuthActions = () => {
   return (
     <div className={styles.auth}>
       <button className={styles.link}>Log in</button>
-      <button className={styles.primary}>Sign up</button>
+      <button className={styles.primary}>Create account</button>
     </div>
   );
 };

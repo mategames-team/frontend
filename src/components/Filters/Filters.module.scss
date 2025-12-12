@@ -1,0 +1,49 @@
+@import '@/styles/main.scss';
+
+.filters {
+  min-width: 314px;
+  padding: 32px;
+  background-color: #1e1f2b;
+  color: #dfe0ee;
+  border: 1px solid #222;
+  border-radius: 12px;
+
+  &__title {
+    font-family: 'Hind', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0;
+
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  &__section {
+    margin-bottom: 24px;
+    border-bottom: 1px solid #a5a6b3;
+  }
+  &__sectionTitle {
+    margin-bottom: 16px;
+    cursor: pointer;
+  }
+
+  &__list {
+    padding-bottom: 8px;
+  }
+
+  &__listItem {
+    margin-bottom: 8px;
+    color: $primary-color;
+    cursor: pointer;
+  }
+
+  &__btn {
+    color: $color-gray-100;
+    background-color: $light-purple;
+    padding: 12px 16px;
+    border-radius: 12px;
+    width: 100%;
+    cursor: not-allowed; // temporary disabled state
+  }
+}

@@ -1,9 +1,12 @@
 import { useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { GameCard } from '@/components/GameCard/GameCard';
+import { Filters } from '@/components/Filters/Filters';
 import { mockGames } from '@/mock/mockGames';
 import { getGames } from '@/api/games';
 import type { Game } from '@/types/Game';
+
+import styles from './CatalogPage.module.scss';
 
 export const CatalogPage = () => {
   const [searchParams] = useSearchParams();
@@ -12,45 +15,53 @@ export const CatalogPage = () => {
   const [, setTotalPages] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [helloMessage, setHelloMessage] = useState<string>('');
   const search = searchParams.get('search')?.toLowerCase().trim() || '';
   const page = Number(searchParams.get('page')) || 1;
 
-  const filteredGames = games.filter((game) =>
-    game.name.toLowerCase().includes(search)
-  );
+  // const filteredGames = games.filter((game) =>
+  //   game.name.toLowerCase().includes(search)
+  // ); // search filter
 
-  const fetchGames = async () => {
-    setLoading(true);
+  const handleFilterChange = async (category: string, value: string) => {
+    searchParams.set(category, value); // for trigger useEffect
 
     try {
-      const res = await getGames({
-        search,
-        page,
-        limit: 10,
-      });
+      const response = await fetch(
+        `http://localhost:8080/api/games/local/${category}/${value}`
+      );
+      const data = await response.json();
+      setGames(data.content);
+      console.log(games);
 
-      setGames(res.data);
-      setTotalPages(res.totalPages);
-    } catch (err) {
-      console.warn('Backend not ready, using mock data.', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchHello = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/api/hello');
-
-      setHelloMessage(await response.text());
-      console.log(response);
+      return response;
     } catch (error) {
-      console.error('Error fetching /hello endpoint:', error);
+      console.error('Error fetching filters:', error);
     }
   };
 
   useEffect(() => {
+    const fetchGames = async () => {
+      setLoading(true);
+
+      // const params = {
+      //   search: searchParams.get('search')?.toLowerCase().trim() || '',
+      //   page: Number(searchParams.get('page')) || '',
+      //   platform: searchParams.get('platform') || '',
+      //   genre: searchParams.get('genre') || '',
+      // };
+
+      try {
+        const res = await getGames({ search });
+
+        setGames(res.content);
+        setTotalPages(res.totalPages);
+      } catch {
+        setGames(mockGames);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchGames();
   }, [search, page]);
 
@@ -59,25 +70,24 @@ export const CatalogPage = () => {
   }
 
   return (
-    <div>
-      <p>{helloMessage}</p>
-      <button
-        onClick={fetchHello}
-        style={{ border: '1px solid black', padding: '12px' }}
-      >
-        Say hello from backend
-      </button>
-      {filteredGames.length > 0 ? (
-        <ul>
-          {filteredGames.map((game) => (
-            <li key={game.id}>
-              <GameCard game={game} />
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No games found</p>
-      )}
-    </div>
+    <section className={styles.catalog}>
+      <div className='container'>
+        <div className={styles.catalog__content}>
+          {games.length > 0 ? (
+            <ul className={styles.gameList}>
+              {games.map((game) => (
+                <li key={game.apiId} className={styles.gameList_item}>
+                  <GameCard game={game} />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No games found</p>
+          )}
+
+          <Filters handleFilterChange={handleFilterChange} />
+        </div>
+      </div>
+    </section>
   );
 };

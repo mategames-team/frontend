@@ -1,6 +1,11 @@
 export interface Game {
-  id: number;
+  apiId: number;
   name: string;
-  rating: number;
-  cover?: string;
+  apiRating: number;
+  backgroundImage: string;
+  year: number;
+  description?: string;
+  platforms?: string[];
+  creator?: string;
+  genres?: string[];
 }
