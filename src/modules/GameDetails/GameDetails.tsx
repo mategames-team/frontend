@@ -8,7 +8,7 @@ const mockGameData: Game = {
   name: 'S.T.A.L.K.E.R. 2: Heart of Chornobyl',
   year: 2024,
   apiRating: 7.9,
-  backgroundImage: 'path/to/stalker_image.png',
+  backgroundImage: '../../assets/react.svg',
   description:
     'The Chernobyl Exclusion Zone changed significantly after the second explosion in 2006. Violent mutants, deadly anomalies, and warring factions made the Zone a place where survival was extremely difficult. Nevertheless, artefacts of incredible value attracted many people, known as stalkers. They ventured into the Zone at their own risk, seeking to get rich or even find the Truth hidden somewhere in the Heart of Chernobyl.',
   platforms: ['PS5', 'PC', 'Xbox XS'],
@@ -18,15 +18,20 @@ const mockGameData: Game = {
 
 export const GameDetails = () => {
   const { gameId } = useParams();
-  const [game, setGame] = useState(mockGameData);
+  const [game] = useState(mockGameData);
 
   useEffect(() => {
     const fetchGameDetails = async () => {
-      const response = await fetch(
-        `http://localhost:8080/api/games/local/id/${gameId}`
-      );
-      const data = await response.json();
-      setGame(data.content);
+      try {
+        const response = await fetch(
+          `http://localhost:8080/api/games/local/id/${2}`
+        );
+        const data = await response.json();
+        console.log(data.content);
+        // setGame(data.content);
+      } catch (error) {
+        console.error('Error fetching game details:', error);
+      }
     };
 
     fetchGameDetails();
@@ -38,15 +43,13 @@ export const GameDetails = () => {
         <div className={styles['game-details__content']}>
           <div className={styles['game-details__image-block']}>
             <img
-              src={game.backgroundImage}
+              src={`${game.backgroundImage}`}
               alt={game.name}
               className={styles['game-details__image']}
             />
           </div>
 
-          {/* 3. Інформаційна панель */}
           <div className={styles['game-details__info']}>
-            {/* Заголовок та Рейтинг */}
             <header className={styles['game-details__header']}>
               <div className={styles['game-details__title-wrapper']}>
                 <h2 className={styles['game-details__title']}>{game.name}</h2>
@@ -85,7 +88,6 @@ export const GameDetails = () => {
               </div>
             </div>
 
-            {/* Details */}
             <div className={styles['game-details__details-grid']}>
               {/* Platforms */}
               <div className={styles['game-details__detail-group']}>
