@@ -1,84 +1,106 @@
 @import '../../styles/main';
 
-.game-details {
+.gameDetails {
   color: $secondary-color;
-}
 
-.game-details__content {
-  display: flex;
-  gap: 24px;
-}
+  &__сontent {
+    display: flex;
+    gap: 24px;
+  }
 
-/* Image */
-.game-details__image-block {
-  position: relative;
-  flex-shrink: 0;
-  width: 420px;
-  border: 1px solid $color-gray-80;
-  border-radius: 16px;
-
-  .game-details__image {
+  /* Image */
+  &__imageBlock {
+    position: relative;
+    flex-shrink: 0;
+    width: 420px;
+    border: 1px solid $color-gray-80;
+    border-radius: 16px;
+  }
+  &__image {
     height: auto;
     display: block;
+    object-fit: cover;
+  }
+
+  &__info {
+    background-color: $elements-bg;
+    border-radius: 16px;
+    padding: 24px;
+    flex-grow: 1;
+  }
+
+  /* Header */
+  &__header {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    margin-bottom: 40px;
+  }
+
+  &__titleWrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__title {
+  }
+
+  &__year {
+    color: $primary-color;
+  }
+
+  &__rating {
+    background-color: $light-purple;
+    color: $color-gray-100;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 24px;
+    font-weight: 600;
+    margin-left: 20px;
+  }
+
+  &__descriptionWrapper {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__descriptionTitle {
+    font-size: 18px;
+    color: $secondary-color;
+    margin-bottom: 16px;
+  }
+
+  &__descriptionText {
+    color: $primary-color;
+    margin-bottom: 20px;
+  }
+
+  &__detailsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px 0;
+  }
+
+  &__detailGroup {
+  }
+
+  &__detailTitle {
+    color: $secondary-color;
+    margin-bottom: 16px;
+  }
+
+  &__detailValue {
+    color: $primary-color;
   }
 }
 
-.game-details__info {
-  background-color: $elements-bg;
-  border-radius: 16px;
-  padding: 24px;
-}
-
-/* Header */
-.game-details__header {
-  display: flex;
-  align-items: start;
-  justify-content: space-between;
-  margin-bottom: 40px;
-}
-
-.game-details__title {
-}
-
-.game-details__year {
-  color: $primary-color;
-}
-
-.game-details__rating {
-  background-color: $light-purple;
-  color: $color-gray-100;
-  padding: 8px 12px;
-  border-radius: 4px;
-  font-size: 24px;
-  font-weight: 600;
-  margin-left: auto;
-}
-
-/* Опис та Іконки статусу */
-.game-details__description-wrapper {
-  margin-bottom: 30px;
-  display: flex;
-}
-
-.game-details__description-title {
-  font-size: 18px;
-  color: $secondary-color;
-  margin-bottom: 16px;
-}
-
-.game-details__description-text {
-  color: $primary-color;
-  margin-bottom: 20px;
-}
-
-/* Іконки статусу */
-
+/* Status icons */
 .hoverContent {
   transition: opacity 0.25s ease;
-  top: 16px;
-  right: 16px;
   display: flex;
   gap: 38px;
+  align-self: flex-start;
 }
 
 .iconButton {
@@ -86,52 +108,33 @@
   background-position: center;
   width: 24px;
   height: 24px;
-  gap: 8px;
   color: $white;
   cursor: pointer;
   transition: all 0.2s ease;
-
-  &:hover {
-    background: rgba(151, 88, 255, 0.8);
-  }
+  border: none;
+  background-color: transparent;
 }
 
 .backlogIcon {
-  background: url('../../assets/icons/save.svg');
+  background-image: url('../../assets/icons/save.svg');
 
   &:hover {
-    background: url('../../assets/icons/save-filled.svg');
+    background-image: url('../../assets/icons/save-filled.svg');
   }
 }
 
 .playIcon {
-  background: url('../../assets/icons/in-progress.svg');
+  background-image: url('../../assets/icons/in-progress.svg');
 
   &:hover {
-    background: url('../../assets/icons/in-progress-filled.svg');
+    background-image: url('../../assets/icons/in-progress-filled.svg');
   }
 }
 
 .completedIcon {
-  background: url('../../assets/icons/checkmark.svg');
+  background-image: url('../../assets/icons/checkmark.svg');
 
   &:hover {
-    background: url('../../assets/icons/checkmark-filled.svg');
+    background-image: url('../../assets/icons/checkmark-filled.svg');
   }
-}
-
-/* Деталі (Платформи, Жанри, Творець) */
-.game-details__details-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px 0;
-}
-
-.game-details__detail-title {
-  color: $secondary-color;
-  margin-bottom: 16px;
-}
-
-.game-details__detail-value {
-  color: $primary-color;
 }

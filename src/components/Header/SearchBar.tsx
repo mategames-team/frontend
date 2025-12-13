@@ -46,7 +46,7 @@ export const SearchBar = () => {
       <input
         className={styles.input}
         type='text'
-        placeholder='Search games...'
+        placeholder='Search game...'
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
