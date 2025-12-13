@@ -1,0 +1,55 @@
+@import '../../styles/main.scss';
+
+.hero {
+  background: $bg-color;
+  padding: 130px 0;
+  text-align: center;
+  margin-bottom: 55px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background: radial-gradient(
+    ellipse at center,
+    rgba(151, 88, 255, 0.2) 0%,
+    rgba(151, 88, 255, 0.15) 25%,
+    rgba(151, 88, 255, 0.08) 45%,
+    rgba(151, 88, 255, 0.03) 60%,
+    rgba(11, 12, 24, 0) 70%
+  );
+
+  &__title {
+    color: $secondary-color;
+    max-width: 874px;
+    margin-bottom: 40px;
+  }
+
+  &__button {
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0%;
+    color: $color-gray-90;
+    background-color: $light-purple;
+    border-radius: 12px;
+    padding: 18px 55px 16px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+
+    &:hover {
+      background-color: $accent-purple;
+      color: $secondary-color;
+      transform: translateY(-4px);
+    }
+    &:active,
+    &:focus {
+      transform: translateY(-2px);
+      background-color: $dark-purple;
+      color: $secondary-color;
+    }
+  }
+}
+
+.main__content {
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+}

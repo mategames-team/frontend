@@ -4,8 +4,8 @@
   background: $elements-bg;
   border-radius: 16px;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
-  min-width: 231px;
-  min-height: 412px;
+  width: 231px;
+  height: 412px;
   cursor: pointer;
 
   &:hover {
@@ -65,29 +65,29 @@
   &:hover {
     background: rgba(151, 88, 255, 0.8);
   }
-}
 
-.backlogIcon {
-  background: url('../../assets/icons/save.svg');
+  &_backlog {
+    background: url('../../assets/icons/save.svg');
 
-  &:hover {
-    background: url('../../assets/icons/save-filled.svg');
+    &:hover {
+      background: url('../../assets/icons/save-filled.svg');
+    }
   }
-}
 
-.playIcon {
-  background: url('../../assets/icons/in-progress.svg');
+  &_play {
+    background: url('../../assets/icons/in-progress.svg');
 
-  &:hover {
-    background: url('../../assets/icons/in-progress-filled.svg');
+    &:hover {
+      background: url('../../assets/icons/in-progress-filled.svg');
+    }
   }
-}
 
-.completedIcon {
-  background: url('../../assets/icons/checkmark.svg');
+  &_completed {
+    background: url('../../assets/icons/checkmark.svg');
 
-  &:hover {
-    background: url('../../assets/icons/checkmark-filled.svg');
+    &:hover {
+      background: url('../../assets/icons/checkmark-filled.svg');
+    }
   }
 }
 

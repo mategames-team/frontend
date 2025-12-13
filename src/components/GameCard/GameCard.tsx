@@ -23,15 +23,15 @@ export const GameCard: React.FC<Props> = ({ game }) => {
           {/* Hover overlay content */}
           <div className={styles.hoverContent}>
             <button
-              className={`${styles.iconButton} ${styles.backlogIcon}`}
+              className={`${styles.iconButton} ${styles.iconButton_backlog}`}
               aria-label='Add to wishlist'
             ></button>
             <button
-              className={`${styles.iconButton} ${styles.playIcon}`}
+              className={`${styles.iconButton} ${styles.iconButton_play}`}
               aria-label='Mark as played'
             ></button>
             <button
-              className={`${styles.iconButton} ${styles.completedIcon}`}
+              className={`${styles.iconButton} ${styles.iconButton_completed}`}
               aria-label='Add to profile'
             ></button>
           </div>
