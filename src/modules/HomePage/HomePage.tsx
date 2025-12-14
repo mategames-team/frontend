@@ -1,6 +1,7 @@
 import type { Game } from '@/types/Game';
 import styles from './HomePage.module.scss';
 import Carousel from './Carousel/Carousel';
+import { Button } from '@/components/common/Button/Button';
 
 const popularGames: Game[] = [
   {
@@ -71,7 +72,11 @@ export const HomePage = () => {
         <h1 className={styles.hero__title}>
           Your library awaits — what will you play next?
         </h1>
-        <button className={styles.hero__button}>Chose games</button>
+        <div className={styles.hero__btn}>
+          <Button variant='primary' fullWidth={true}>
+            Choose games
+          </Button>
+        </div>
       </section>
 
       <main className={styles.main__content}>
