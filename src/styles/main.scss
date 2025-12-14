@@ -23,12 +23,12 @@ body {
   }
 
   @include on-desktop {
-    padding: 56px 0 80px;
+    padding: 80px 0 80px;
   }
 }
 
 .container {
-  @include content-padding-inline;
+  // @include content-padding-inline;
 
   @include on-desktop {
     max-width: 1320px;

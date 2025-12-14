@@ -19,16 +19,4 @@
     color: $light-purple;
     border: 1px solid $light-purple;
   }
-
-  &__register {
-    padding: 9px 16px 8px;
-    border-radius: 12px;
-    border: 1px solid $light-purple;
-    cursor: pointer;
-    transition: 0.2s;
-
-    &:hover {
-      opacity: 0.9;
-    }
-  }
 }

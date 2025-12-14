@@ -59,6 +59,11 @@
   }
 }
 
+.secondary-white {
+  border: 1px solid $white;
+  color: $white;
+}
+
 .fullWidth {
   width: 100%;
 }
@@ -67,6 +72,8 @@
   font-size: 20px;
 }
 
-.sm {
+.small {
+  width: 92px;
   padding: 8px 0;
+  border-radius: 8px;
 }

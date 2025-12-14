@@ -1,0 +1,72 @@
+@import '@/styles/main.scss';
+
+.header {
+  padding: 24px;
+  border-radius: 16px;
+  background: url('@/assets/profile-header-bg.png') no-repeat center/cover;
+
+  &__top {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  &__avatar {
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+  }
+
+  &__username {
+    color: $secondary-color;
+  }
+
+  &__locationWrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__locationIcon {
+    stroke: none;
+  }
+
+  &__location {
+    transform: translateY(2px);
+  }
+
+  &__settings {
+    color: $primary-color;
+    margin-left: auto;
+  }
+  &__settingsIcon {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.bio {
+  margin: 32px 0;
+  color: $secondary-color;
+}
+
+.stats {
+  display: flex;
+  gap: 24px;
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__value {
+    color: $secondary-color;
+  }
+
+  &__label {
+    color: $primary-color;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+  }
+}

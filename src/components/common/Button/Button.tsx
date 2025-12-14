@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import styles from './Button.module.scss';
 
-type Variant = 'primary' | 'secondary' | 'danger';
-type Size = 'sm' | 'md' | 'lg';
+type Variant = 'primary' | 'secondary' | 'secondary-white';
+type Size = 'small' | 'medium' | 'large';
 
 type CommonProps = {
   children: ReactNode;
@@ -25,7 +25,7 @@ type ButtonProps = CommonProps &
 export const Button = ({
   children,
   variant = 'primary',
-  size = 'md',
+  size = 'medium',
   fullWidth,
   icon,
   iconPosition = 'left',

@@ -1,16 +1,22 @@
 import type { Game } from '@/types/Game';
 import styles from './GameCard.module.scss';
 import { Link } from 'react-router-dom';
+import clsx from 'clsx';
 
 interface Props {
   game: Game;
   onClick?: () => void;
+  size?: Size;
 }
 
-export const GameCard: React.FC<Props> = ({ game }) => {
+type Size = 'small' | 'large';
+
+export const GameCard: React.FC<Props> = ({ game, size = 'small' }) => {
+  const classes = clsx(styles.card, styles[size]);
+
   return (
     <Link to={`/games/${game.apiId}`} className={styles.gameCardLink}>
-      <article className={styles.card}>
+      <article className={classes}>
         {/* Image */}
         <div className={styles.imageWrapper}>
           <img
