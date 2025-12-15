@@ -13,6 +13,7 @@ type CommonProps = {
   fullWidth?: boolean;
   icon?: ReactNode;
   iconPosition?: 'left' | 'right';
+  isLoading?: boolean;
   className?: string;
 };
 
@@ -29,6 +30,7 @@ export const Button = ({
   fullWidth,
   icon,
   iconPosition = 'left',
+  isLoading,
   className,
   href,
   to,
@@ -39,6 +41,7 @@ export const Button = ({
     styles[variant],
     styles[size],
     { [styles.fullWidth]: fullWidth },
+    isLoading,
     className
   );
 

@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './GameDetails.module.scss';
 import { StatusButtons } from '@/components/common/StatusButtons/StatusButtons';
+import { GameRatingForm } from './GameRatingForm/GameRatingForm';
+import { GameReviews } from './GameReviews/GameReviews';
 
 const mockGameData: Game = {
   apiId: 1,
@@ -102,6 +104,10 @@ export const GameDetails = () => {
           </div>
         </div>
       </section>
+
+      <GameRatingForm gameId={game.apiId} onSubmissionSuccess={() => {}} />
+
+      <GameReviews />
     </div>
   );
 };

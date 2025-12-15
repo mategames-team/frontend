@@ -2,6 +2,9 @@
 
 .gameDetails {
   color: $secondary-color;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 130px;
 
   &__сontent {
     display: flex;
@@ -40,9 +43,6 @@
   &__titleWrapper {
     display: flex;
     flex-direction: column;
-  }
-
-  &__title {
   }
 
   &__year {
@@ -90,9 +90,6 @@
     gap: 40px 0;
   }
 
-  &__detailGroup {
-  }
-
   &__detailTitle {
     color: $secondary-color;
     margin-bottom: 16px;
@@ -100,49 +97,5 @@
 
   &__detailValue {
     color: $primary-color;
-  }
-}
-
-/* Status icons */
-.hoverContent {
-  transition: opacity 0.25s ease;
-  display: flex;
-  gap: 38px;
-  align-self: flex-start;
-}
-
-.iconButton {
-  background-repeat: no-repeat;
-  background-position: center;
-  width: 24px;
-  height: 24px;
-  color: $white;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: none;
-  background-color: transparent;
-}
-
-.backlogIcon {
-  background-image: url('../../assets/icons/save.svg');
-
-  &:hover {
-    background-image: url('../../assets/icons/save-filled.svg');
-  }
-}
-
-.playIcon {
-  background-image: url('../../assets/icons/in-progress.svg');
-
-  &:hover {
-    background-image: url('../../assets/icons/in-progress-filled.svg');
-  }
-}
-
-.completedIcon {
-  background-image: url('../../assets/icons/checkmark.svg');
-
-  &:hover {
-    background-image: url('../../assets/icons/checkmark-filled.svg');
   }
 }
