@@ -2,6 +2,7 @@ import type { Game } from '@/types/Game';
 import styles from './GameCard.module.scss';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
+import { StatusButtons } from '../common/StatusButtons/StatusButtons';
 
 interface Props {
   game: Game;
@@ -28,18 +29,7 @@ export const GameCard: React.FC<Props> = ({ game, size = 'small' }) => {
 
           {/* Hover overlay content */}
           <div className={styles.hoverContent}>
-            <button
-              className={`${styles.iconButton} ${styles.iconButton_backlog}`}
-              aria-label='Add to wishlist'
-            ></button>
-            <button
-              className={`${styles.iconButton} ${styles.iconButton_play}`}
-              aria-label='Mark as played'
-            ></button>
-            <button
-              className={`${styles.iconButton} ${styles.iconButton_completed}`}
-              aria-label='Add to profile'
-            ></button>
+            <StatusButtons />
           </div>
         </div>
 

@@ -66,14 +66,22 @@
   }
 
   &__descriptionTitle {
-    font-size: 18px;
     color: $secondary-color;
     margin-bottom: 16px;
+    font-weight: 500;
+    line-height: 30px;
+    letter-spacing: 0%;
   }
 
   &__descriptionText {
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: 0%;
+
     color: $primary-color;
     margin-bottom: 20px;
+    flex: 1;
   }
 
   &__detailsGrid {

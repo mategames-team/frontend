@@ -2,6 +2,7 @@ import type { Game } from '@/types/Game';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './GameDetails.module.scss';
+import { StatusButtons } from '@/components/common/StatusButtons/StatusButtons';
 
 const mockGameData: Game = {
   apiId: 1,
@@ -70,20 +71,7 @@ export const GameDetails = () => {
               </div>
 
               {/* Status (Save, In process, Passed) */}
-              <div className={styles.hoverContent}>
-                <button
-                  className={`${styles.iconButton} ${styles.backlogIcon}`}
-                  aria-label='Add to wishlist'
-                ></button>
-                <button
-                  className={`${styles.iconButton} ${styles.playIcon}`}
-                  aria-label='Mark as played'
-                ></button>
-                <button
-                  className={`${styles.iconButton} ${styles.completedIcon}`}
-                  aria-label='Add to profile'
-                ></button>
-              </div>
+              <StatusButtons variant='full' />
             </div>
 
             <div className={styles.gameDetails__detailsGrid}>
