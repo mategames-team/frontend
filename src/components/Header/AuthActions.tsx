@@ -3,21 +3,17 @@ import ArrowRight from '../../assets/icons/arrow-right.svg?react';
 import { Button } from '../common/Button/Button';
 
 type Props = {
-  onOpenRegistration: () => void;
-  onOpenLogin: () => void;
+  openModal: () => void;
 };
 
-export const AuthActions: React.FC<Props> = ({
-  onOpenRegistration,
-  onOpenLogin,
-}) => {
+export const AuthActions: React.FC<Props> = ({ openModal }) => {
   return (
     <div className={styles.auth}>
-      <button className={styles.auth__login} onClick={onOpenLogin}>
+      <button className={styles.auth__login}>
         <span className={styles.auth__loginText}>Log in</span>
         <ArrowRight className={styles.auth__icon} />
       </button>
-      <Button variant='secondary' onClick={onOpenRegistration}>
+      <Button variant='secondary' onClick={openModal}>
         Create account
       </Button>
     </div>
