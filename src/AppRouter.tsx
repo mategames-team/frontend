@@ -14,6 +14,8 @@ export const AppRouter = () => {
         <Route path='/catalog' element={<CatalogPage />} />
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/games/:gameId' element={<GameDetails />} />
+        <Route path='/registration' element={<></>} />
+        <Route path='/login' element={<></>} />
       </Route>
 
       <Route path='/home' element={<Navigate to='/' replace />} />
