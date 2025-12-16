@@ -1,7 +1,7 @@
 import { Button } from '@/components/common/Button/Button';
 import styles from './GameReviews.module.scss';
 import { useState } from 'react';
-import { Review } from '@/components/common/Review/Review';
+import { Review } from '@/components/Review/Review';
 
 const REVIEW_TABS = [
   { label: 'less than 4', value: 'low' },

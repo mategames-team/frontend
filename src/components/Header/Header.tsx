@@ -3,9 +3,15 @@ import { NavLinks } from './NavLinks';
 import { AuthActions } from './AuthActions';
 import { SearchBar } from './SearchBar';
 import { Link } from 'react-router-dom';
-import LogoBook from '../../assets/logo_book.svg';
+import LogoBook from '@/assets/logo_book.svg';
+import { RegistrationModal } from '@/components/RegistrationModal/RegistrationModal';
+import { useState } from 'react';
 
 export const Header = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   return (
     <header className={styles.header}>
       <div className='container'>
@@ -21,9 +27,11 @@ export const Header = () => {
           <SearchBar />
 
           <NavLinks />
-          <AuthActions />
+
+          <AuthActions openModal={openModal} />
         </div>
       </div>
+      <RegistrationModal isOpen={isModalOpen} onClose={closeModal} />
     </header>
   );
 };
