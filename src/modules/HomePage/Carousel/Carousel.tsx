@@ -27,7 +27,7 @@ const Carousel: React.FC<CarouselProps> = ({ title, games }) => {
       </div>
       <div className={styles.carousel__list}>
         {games.map((game, index) => (
-          <GameCard key={index} game={game} />
+          <GameCard size='large' key={index} game={game} />
         ))}
       </div>
     </section>

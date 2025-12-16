@@ -6,11 +6,27 @@ import { Link } from 'react-router-dom';
 import LogoBook from '@/assets/logo_book.svg';
 import { RegistrationModal } from '@/components/RegistrationModal/RegistrationModal';
 import { useState } from 'react';
+import { LoginModal } from '../LoginModal/LoginModal';
 
 export const Header = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
+  const openRegistrationModal = () => setIsRegistrationModalOpen(true);
+  const closeRegistrationModal = () => setIsRegistrationModalOpen(false);
+
+  const openLoginModal = () => setIsLoginModalOpen(true);
+  const closeLoginModal = () => setIsLoginModalOpen(false);
+
+  const switchToLogin = () => {
+    closeRegistrationModal();
+    openLoginModal();
+  };
+
+  const switchToRegistration = () => {
+    closeLoginModal();
+    openRegistrationModal();
+  };
 
   return (
     <header className={styles.header}>
@@ -28,10 +44,22 @@ export const Header = () => {
 
           <NavLinks />
 
-          <AuthActions openModal={openModal} />
+          <AuthActions
+            openRegistrationModal={openRegistrationModal}
+            openLoginModal={openLoginModal}
+          />
         </div>
       </div>
-      <RegistrationModal isOpen={isModalOpen} onClose={closeModal} />
+      <RegistrationModal
+        isOpen={isRegistrationModalOpen}
+        onClose={closeRegistrationModal}
+        onSwitchToLogin={switchToLogin}
+      />
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={closeLoginModal}
+        onSwitchToRegistration={switchToRegistration}
+      />
     </header>
   );
 };
