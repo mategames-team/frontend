@@ -1,0 +1,66 @@
+@import '@/styles/main.scss';
+
+.status {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  flex-shrink: 0;
+
+  &--compact {
+    .status__label {
+      display: none;
+    }
+  }
+
+  &--full {
+    .status__label {
+      display: block;
+    }
+  }
+  &__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+
+    &:hover {
+      transform: translateY(-1px);
+
+      .icon {
+        color: $secondary-color;
+        fill: $color-gray-100;
+      }
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  &__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: $secondary-color;
+    border: none;
+    cursor: pointer;
+  }
+
+  &__label {
+    font-size: 14px;
+    line-height: 20px;
+    color: $primary-color;
+  }
+}
+
+.icon {
+  color: $color-gray-100;
+  transition: color 0.2s ease;
+}

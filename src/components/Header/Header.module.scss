@@ -3,14 +3,19 @@
 .header {
   background-color: $bg-color;
 
-  &__content {
-    width: 100%;
-    padding: 40px 0 0 0;
-
+  &__wrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 24px;
+  }
+
+  &__content {
+    width: 100%;
+    padding: 40px 0 8px 0;
+
+    display: flex;
+    align-items: center;
+    gap: 20px;
 
     > :nth-child(2) {
       flex: 1;
@@ -19,7 +24,24 @@
 }
 
 .logo {
-  font-weight: 700;
-  font-size: 20px;
-  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 203px;
+
+  .logo__icon {
+    width: 52px;
+    height: 52px;
+  }
+
+  .logoText {
+    display: flex;
+    flex-direction: column;
+    color: $light-purple;
+    font-family: $main-font;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 120%;
+    letter-spacing: 0;
+  }
 }

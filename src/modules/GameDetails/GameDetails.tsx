@@ -2,6 +2,9 @@ import type { Game } from '@/types/Game';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './GameDetails.module.scss';
+import { StatusButtons } from '@/components/common/StatusButtons/StatusButtons';
+import { GameRatingForm } from './GameRatingForm/GameRatingForm';
+import { GameReviews } from './GameReviews/GameReviews';
 
 const mockGameData: Game = {
   apiId: 1,
@@ -39,93 +42,72 @@ export const GameDetails = () => {
 
   return (
     <div className='container'>
-      <section className={styles['game-details']}>
-        <div className={styles['game-details__content']}>
-          <div className={styles['game-details__image-block']}>
+      <section className={styles.gameDetails}>
+        <div className={styles.gameDetails__сontent}>
+          <div className={styles.gameDetails__imageBlock}>
             <img
               src={`${game.backgroundImage}`}
               alt={game.name}
-              className={styles['game-details__image']}
+              className={styles.gameDetails__image}
             />
           </div>
 
-          <div className={styles['game-details__info']}>
-            <header className={styles['game-details__header']}>
-              <div className={styles['game-details__title-wrapper']}>
-                <h2 className={styles['game-details__title']}>{game.name}</h2>
-                <p className={styles['game-details__year']}>{game.year}</p>
+          <div className={styles.gameDetails__info}>
+            <header className={styles.gameDetails__header}>
+              <div className={styles.gameDetails__titleWrapper}>
+                <h2 className={styles.gameDetails__title}>{game.name}</h2>
+                <p className={styles.gameDetails__year}>{game.year}</p>
               </div>
-              <div className={styles['game-details__rating']}>
-                {game.apiRating}
-              </div>
+              <div className={styles.gameDetails__rating}>{game.apiRating}</div>
             </header>
 
             {/* Description */}
-            <div className={styles['game-details__description-wrapper']}>
+            <div className={styles.gameDetails__descriptionWrapper}>
               <div>
-                <h4 className={styles['game-details__description-title']}>
+                <h4 className={styles.gameDetails__descriptionTitle}>
                   Description
                 </h4>
-                <p className={styles['game-details__description-text']}>
+                <p className={styles.gameDetails__descriptionText}>
                   {game.description}
                 </p>
               </div>
 
               {/* Status (Save, In process, Passed) */}
-              <div className={styles.hoverContent}>
-                <button
-                  className={`${styles.iconButton} ${styles.backlogIcon}`}
-                  aria-label='Add to wishlist'
-                ></button>
-                <button
-                  className={`${styles.iconButton} ${styles.playIcon}`}
-                  aria-label='Mark as played'
-                ></button>
-                <button
-                  className={`${styles.iconButton} ${styles.completedIcon}`}
-                  aria-label='Add to profile'
-                ></button>
-              </div>
+              <StatusButtons variant='full' />
             </div>
 
-            <div className={styles['game-details__details-grid']}>
+            <div className={styles.gameDetails__detailsGrid}>
               {/* Platforms */}
-              <div className={styles['game-details__detail-group']}>
-                <h4 className={styles['game-details__detail-title']}>
-                  Platforms
-                </h4>
-                <p
-                  className={`text-main ${styles['game-details__detail-value']}`}
-                >
-                  {game.platforms ? game.platforms.join(', ') : 'N/A'}
+              <div className={styles.gameDetails__detailGroup}>
+                <h4 className={styles.gameDetails__detailTitle}>Platforms</h4>
+                <p className={`text-main ${styles.gameDetails__detailValue}`}>
+                  {game.platforms?.join(', ') ?? 'N/A'}
                 </p>
               </div>
 
               {/* Creator */}
-              <div className={styles['game-details__detail-group']}>
-                <h4 className={styles['game-details__detail-title']}>
-                  Creator
-                </h4>
-                <p
-                  className={`text-main ${styles['game-details__detail-value']}`}
-                >
+              <div className={styles.gameDetails__detailGroup}>
+                <h4 className={styles.gameDetails__detailTitle}>Creator</h4>
+                <p className={`text-main ${styles.gameDetails__detailValue}`}>
                   {game.creator}
                 </p>
               </div>
 
               {/* Genres */}
-              <div className={styles['game-details__detail-group']}>
-                <h4 className={styles['game-details__detail-title']}>Genre</h4>
-                <p
-                  className={`text-main ${styles['game-details__detail-value']}`}
-                >
-                  {game.genres ? game.genres.join(', ') : 'N/A'}
+              <div className={styles.gameDetails__detailGroup}>
+                <h4 className={styles.gameDetails__detailTitle}>Genre</h4>
+                <p className={`text-main ${styles.gameDetails__detailValue}`}>
+                  {game.genres?.join(', ') ?? 'N/A'}
                 </p>
               </div>
             </div>
           </div>
         </div>
       </section>
+
+      <GameRatingForm gameId={game.apiId} onSubmissionSuccess={() => {}} />
+
+      <GameReviews />
     </div>
   );
 };

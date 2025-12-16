@@ -1,16 +1,23 @@
 import type { Game } from '@/types/Game';
 import styles from './GameCard.module.scss';
 import { Link } from 'react-router-dom';
+import clsx from 'clsx';
+import { StatusButtons } from '../common/StatusButtons/StatusButtons';
 
 interface Props {
   game: Game;
   onClick?: () => void;
+  size?: Size;
 }
 
-export const GameCard: React.FC<Props> = ({ game }) => {
+type Size = 'small' | 'large';
+
+export const GameCard: React.FC<Props> = ({ game, size = 'small' }) => {
+  const classes = clsx(styles.card, styles[size]);
+
   return (
     <Link to={`/games/${game.apiId}`} className={styles.gameCardLink}>
-      <article className={styles.card}>
+      <article className={classes}>
         {/* Image */}
         <div className={styles.imageWrapper}>
           <img
@@ -22,18 +29,7 @@ export const GameCard: React.FC<Props> = ({ game }) => {
 
           {/* Hover overlay content */}
           <div className={styles.hoverContent}>
-            <button
-              className={`${styles.iconButton} ${styles.backlogIcon}`}
-              aria-label='Add to wishlist'
-            ></button>
-            <button
-              className={`${styles.iconButton} ${styles.playIcon}`}
-              aria-label='Mark as played'
-            ></button>
-            <button
-              className={`${styles.iconButton} ${styles.completedIcon}`}
-              aria-label='Add to profile'
-            ></button>
+            <StatusButtons />
           </div>
         </div>
 

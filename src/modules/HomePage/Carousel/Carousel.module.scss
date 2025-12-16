@@ -1,0 +1,59 @@
+@import '@/styles/main.scss';
+
+.carousel {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  &__title {
+    color: $secondary-color;
+  }
+
+  &__navigation {
+    display: flex;
+    gap: 12px;
+  }
+
+  &__navBtn {
+    display: flex;
+    padding: 12px;
+    border-radius: 12px;
+    color: $color-gray-90;
+    background-color: $secondary-color;
+    transition: background-color 0.2s;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $light-purple;
+    }
+
+    &:active,
+    &:focus {
+      background-color: $accent-purple;
+    }
+
+    &_disabled {
+      cursor: default;
+      background-color: $color-gray-80;
+    }
+  }
+
+  &__navIcon {
+    width: 24px;
+    height: 24px;
+  }
+
+  &__list {
+    display: flex;
+    gap: 20px;
+
+    // &::-webkit-scrollbar {
+    //   display: none;
+    // }
+    // -ms-overflow-style: none; /* IE and Edge */
+    // scrollbar-width: none; /* Firefox */
+  }
+}

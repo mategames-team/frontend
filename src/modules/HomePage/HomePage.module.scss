@@ -1,0 +1,36 @@
+@import '../../styles/main.scss';
+
+.hero {
+  background: $bg-color;
+  padding: 130px 0;
+  text-align: center;
+  margin-bottom: 55px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background: radial-gradient(
+    ellipse at center,
+    rgba(151, 88, 255, 0.2) 0%,
+    rgba(151, 88, 255, 0.15) 25%,
+    rgba(151, 88, 255, 0.08) 45%,
+    rgba(151, 88, 255, 0.03) 60%,
+    rgba(11, 12, 24, 0) 70%
+  );
+
+  &__title {
+    color: $secondary-color;
+    max-width: 874px;
+    margin-bottom: 40px;
+  }
+
+  &__btn {
+    width: 204px;
+  }
+}
+
+.main__content {
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+}

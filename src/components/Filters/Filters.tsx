@@ -1,5 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
 import styles from './Filters.module.scss';
+import { Button } from '../common/Button/Button';
 
 interface Props {
   handleFilterChange: (category: string, value: string) => void;
@@ -70,9 +71,12 @@ export const Filters: React.FC<Props> = ({ handleFilterChange }) => {
         </ul>
       </div>
 
-      <button className={styles.filters__btn} disabled>
+      {/* <button className={styles.filters__btn} disabled>
         <span className='btn-text-small'>Apply filters</span>
-      </button>
+      </button> */}
+      <Button variant='primary' fullWidth={true}>
+        Apply filters
+      </Button>
     </aside>
   );
 };
