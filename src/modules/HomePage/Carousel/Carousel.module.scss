@@ -26,15 +26,6 @@
     transition: background-color 0.2s;
     cursor: pointer;
 
-    &:hover {
-      background-color: $light-purple;
-    }
-
-    &:active,
-    &:focus {
-      background-color: $accent-purple;
-    }
-
     &_disabled {
       cursor: default;
       background-color: $color-gray-80;
@@ -45,15 +36,19 @@
     width: 24px;
     height: 24px;
   }
+}
 
-  &__list {
-    display: flex;
-    gap: 20px;
+.carousel__navBtn:disabled {
+  background-color: $color-gray-80;
+  cursor: default;
+}
 
-    // &::-webkit-scrollbar {
-    //   display: none;
-    // }
-    // -ms-overflow-style: none; /* IE and Edge */
-    // scrollbar-width: none; /* Firefox */
+.carousel__navBtn {
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+    background-color: $accent-purple;
   }
 }

@@ -1,7 +1,7 @@
 import styles from './HomePage.module.scss';
-import Carousel from './Carousel/Carousel';
+import { Carousel } from './Carousel/Carousel';
 import { Button } from '@/components/common/Button/Button';
-import { newGames, popularGames } from '@/mock/mockGames';
+import { mockGames } from '@/mock/mockGames';
 import { useEffect, useState } from 'react';
 import type { Game } from '@/types/Game';
 import { getGames } from '@/api/games';
@@ -15,7 +15,7 @@ export const HomePage = () => {
 
         setGames(res.content);
       } catch {
-        setGames(newGames);
+        setGames(mockGames);
       }
     };
     fetchGames();
@@ -38,8 +38,8 @@ export const HomePage = () => {
         </section>
 
         <main className={styles.main__content}>
-          <Carousel title='Popular games' games={popularGames} />
-          <Carousel title='New' games={newGames} />
+          <Carousel title='Popular games' games={mockGames} />
+          <Carousel title='New' games={mockGames} />
         </main>
       </div>
     </div>
