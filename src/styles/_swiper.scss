@@ -1,0 +1,30 @@
+.swiper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+}
+
+.swiper-wrapper {
+  display: flex;
+  position: relative;
+}
+
+.swiper-slide {
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: $secondary-color;
+  width: 40px;
+  height: 40px;
+
+  &::after {
+    font-size: 20px;
+    font-weight: bold;
+  }
+}
+
+.swiper-button-disabled {
+  opacity: 0.3;
+}
