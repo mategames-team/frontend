@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './GameRatingForm.module.scss';
 import { Button } from '@/components/common/Button/Button';
+import { RatingBars } from '@/components/RatingBars/RatingBars';
 
 interface GameRatingFormProps {
   gameId: number;
@@ -13,6 +14,10 @@ export const GameRatingForm: React.FC<GameRatingFormProps> = ({
 }) => {
   const [reviewText, setReviewText] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [rating, setRating] = useState<number>(0);
+
+  console.log(rating);
 
   const handleRatingSubmit = async () => {
     setIsLoading(true);
@@ -32,6 +37,7 @@ export const GameRatingForm: React.FC<GameRatingFormProps> = ({
   return (
     <section className={styles.diary}>
       <h4 className={styles.title}>Your rate</h4>
+      <RatingBars onChange={setRating} value={rating} />
 
       <div className={styles.reviewSection}>
         <textarea

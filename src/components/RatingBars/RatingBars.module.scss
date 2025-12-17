@@ -1,0 +1,64 @@
+@import '@/styles/main.scss';
+
+.rating {
+  display: flex;
+  gap: 4px;
+
+  &__item {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    &.active {
+      .rating__bar {
+        background-color: $accent-purple;
+        box-shadow: 0 4px 10px rgba(34, 20, 106, 0.25);
+      }
+    }
+  }
+
+  &__bar {
+    width: 100%;
+    height: 24px;
+    background-color: $secondary-color;
+    transition: background-color 0.2s ease, box-shadow 0.15s ease;
+  }
+
+  &__label {
+    color: $secondary-color;
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  &__item:first-child .rating__bar {
+    border-radius: 16px 0 0 16px;
+  }
+
+  &__item:last-child .rating__bar {
+    border-radius: 0 16px 16px 0;
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(1.15);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+.rating__item.isSelected .rating__bar {
+  animation: pop 0.25s ease-out;
+}

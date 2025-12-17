@@ -30,7 +30,7 @@ export const GameDetails = () => {
           `http://localhost:8080/api/games/local/id/${2}`
         );
         const data = await response.json();
-        console.log(data.content);
+        console.log(data);
         // setGame(data.content);
       } catch (error) {
         console.error('Error fetching game details:', error);
@@ -46,7 +46,7 @@ export const GameDetails = () => {
         <div className={styles.gameDetails__сontent}>
           <div className={styles.gameDetails__imageBlock}>
             <img
-              src={`${game.backgroundImage}`}
+              src='{`${game.backgroundImage}`}'
               alt={game.name}
               className={styles.gameDetails__image}
             />
