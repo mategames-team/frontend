@@ -19,7 +19,6 @@ type CommonProps = {
 
 type ButtonProps = CommonProps &
   ButtonHTMLAttributes<HTMLButtonElement> & {
-    href?: string;
     to?: string;
   };
 
@@ -32,7 +31,6 @@ export const Button = ({
   iconPosition = 'left',
   isLoading,
   className,
-  href,
   to,
   ...props
 }: ButtonProps) => {
@@ -62,14 +60,6 @@ export const Button = ({
       <Link to={to} className={classes}>
         {content}
       </Link>
-    );
-  }
-
-  if (href) {
-    return (
-      <a href={href} className={classes}>
-        {content}
-      </a>
     );
   }
 

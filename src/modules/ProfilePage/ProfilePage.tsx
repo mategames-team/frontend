@@ -4,9 +4,15 @@ import { ProfileTabs } from './ProfileTabs/ProfileTabs';
 import { GamesSection } from './GamesSection/GamesSection';
 import { useSearchParams } from 'react-router-dom';
 import type { ProfileTab } from '@/types/profileTabs';
+import { useAppSelector } from '@/store/hooks';
 
 export const ProfilePage = () => {
   const [seatchParams, setSearchParams] = useSearchParams();
+  const { data, isAuthenticated } = useAppSelector((state) => state.user);
+
+  if (!isAuthenticated) {
+    console.log('Not authenticated');
+  }
 
   const activeTab = (seatchParams.get('tab') as ProfileTab) ?? 'backlog';
 
@@ -14,7 +20,7 @@ export const ProfilePage = () => {
     <div className={styles.profile}>
       <div className='container'>
         <div className={styles.profile__content}>
-          <ProfileHeader />
+          <ProfileHeader userData={data} />
 
           <ProfileTabs
             activeTab={activeTab}

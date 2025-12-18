@@ -12,7 +12,6 @@ type GameSliderProps = {
 };
 
 export const GameSlider = ({ games, onSwiperInit }: GameSliderProps) => {
-  console.log(games);
   return (
     <div className={styles.slider}>
       <Swiper

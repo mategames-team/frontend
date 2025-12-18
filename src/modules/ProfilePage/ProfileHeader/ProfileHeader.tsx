@@ -3,6 +3,11 @@ import userAvatar from '@/assets/user-avatar-1.png';
 import Location from '@/assets/icons/location.svg?react';
 import Settings from '@/assets/icons/settings.svg?react';
 import { Link } from 'react-router-dom';
+import type { User } from '@/types/User';
+
+type Props = {
+  userData: User | null;
+};
 
 const stats = [
   { label: 'Wishlist', value: 24 },
@@ -10,7 +15,8 @@ const stats = [
   { label: 'Passed', value: 10 },
 ];
 
-export const ProfileHeader: React.FC = () => {
+export const ProfileHeader: React.FC<Props> = ({ userData }) => {
+  console.log(userData);
   return (
     <section className={styles.header}>
       <div className={styles.header__top}>
@@ -20,7 +26,7 @@ export const ProfileHeader: React.FC = () => {
           className={styles.header__avatar}
         />
         <div className={styles.header__info}>
-          <h2 className={styles.header__username}>ShadowHunter</h2>
+          <h2 className={styles.header__username}>{userData?.username}</h2>
           <div className={styles.header__locationWrapper}>
             <Location className={styles.header__locationIcon} />
             <span className={styles.header__location}>Ukraine</span>

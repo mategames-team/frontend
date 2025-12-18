@@ -4,6 +4,8 @@ import { Button } from '../common/Button/Button';
 import CloseIcon from '../../assets/icons/close.svg?react';
 import EyeVisible from '../../assets/icons/eye-outline.svg?react';
 import EyeInvisible from '../../assets/icons/eye-off.svg?react';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { registerUser } from '@/store/slices/user.thunks';
 
 interface RegistrationModalProps {
   isOpen: boolean;
@@ -28,7 +30,6 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [username, setUsername] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState<boolean>(false);
@@ -38,6 +39,9 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
     password: '',
     confirmPassword: '',
   });
+
+  const dispatch = useAppDispatch();
+  const { isLoading } = useAppSelector((state) => state.user);
 
   // Close the modal
   useEffect(() => {
@@ -57,7 +61,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
       document.body.style.overflow = 'unset';
     };
   }, [isOpen, onClose]);
-
+  // Close the modal
   const handleOverlayMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -124,30 +128,33 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
     }
   };
 
+  // Submit form
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
-    setIsLoading(true);
+    const result = await dispatch(
+      registerUser({
+        email,
+        username,
+        password,
+        confirmPassword,
+      })
+    );
 
-    console.log('Form submitted:', { username, email, password });
+    if (registerUser.fulfilled.match(result)) {
+      console.log('Registration successful');
 
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      onClose();
-    } catch (error) {
-      console.log('Error: ' + error);
-    } finally {
-      setIsLoading(false);
+      setTimeout(() => {
+        onClose();
+      }, 1000);
+    } else {
+      console.log('Registration failed');
     }
   };
 
-  if (!isOpen) {
-    return null;
-  }
+  if (!isOpen) return null;
 
   return (
     <div
