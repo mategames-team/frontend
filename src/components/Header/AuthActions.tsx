@@ -1,6 +1,8 @@
 import styles from './AuthActions.module.scss';
 import ArrowRight from '../../assets/icons/arrow-right.svg?react';
 import { Button } from '../common/Button/Button';
+import { useAppSelector } from '@/store/hooks';
+import { Link } from 'react-router-dom';
 
 type Props = {
   openRegistrationModal: () => void;
@@ -11,15 +13,26 @@ export const AuthActions: React.FC<Props> = ({
   openRegistrationModal,
   openLoginModal,
 }) => {
+  const { data, isAuthenticated } = useAppSelector((state) => state.user);
+  console.log(data);
+
   return (
     <div className={styles.auth}>
-      <button className={styles.auth__login} onClick={openLoginModal}>
-        <span className={styles.auth__loginText}>Log in</span>
-        <ArrowRight className={styles.auth__icon} />
-      </button>
-      <Button variant='secondary' onClick={openRegistrationModal}>
-        Create account
-      </Button>
+      {isAuthenticated ? (
+        <Link to='/profile'>
+          <span className={styles.auth__username}>{data?.username}</span>
+        </Link>
+      ) : (
+        <>
+          <button className={styles.auth__login} onClick={openLoginModal}>
+            <span className={styles.auth__loginText}>Log in</span>
+            <ArrowRight className={styles.auth__icon} />
+          </button>
+          <Button variant='secondary' onClick={openRegistrationModal}>
+            Create account
+          </Button>
+        </>
+      )}
     </div>
   );
 };

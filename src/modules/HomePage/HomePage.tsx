@@ -7,7 +7,8 @@ import type { Game } from '@/types/Game';
 import { getGames } from '@/api/games';
 
 export const HomePage = () => {
-  const [games, setGames] = useState<Game[]>([]);
+  const [, setGames] = useState<Game[]>([]);
+
   useEffect(() => {
     const fetchGames = async () => {
       try {
@@ -21,8 +22,6 @@ export const HomePage = () => {
     fetchGames();
   }, []);
 
-  console.log(games);
-
   return (
     <div className={styles.home}>
       <div className='container'>
@@ -31,8 +30,8 @@ export const HomePage = () => {
             Your library awaits — what will you play next?
           </h1>
           <div className={styles.hero__btn}>
-            <Button variant='primary' fullWidth={true}>
-              Choose games
+            <Button variant='primary' fullWidth={true} to='/catalog'>
+              Choose your game
             </Button>
           </div>
         </section>
