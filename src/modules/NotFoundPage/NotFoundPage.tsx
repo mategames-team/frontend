@@ -1,21 +1,20 @@
+import { Button } from '@/components/common/Button/Button';
 import styles from './NotFoundPage.module.scss';
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const JOKES = [
-  'Вибачте, але здається, ця сторінка втекла на каву ☕️',
-  'Мережа каже "ні". Браузер каже "ні". Ми кажемо "ой" 🙈',
-  'Ця сторінка – як шкарпетка з пральної машини: загадково зникла 🧦',
-  'Хм… URL виглядає добре, але сторінка – як кіт: гуляє сама по собі 🐈',
+  "The boss beat the page, but we're already working on revenge!",
+  "The boss beat the page, but we're already working on revenge!",
+  "The boss beat the page, but we're already working on revenge!",
+  "The boss beat the page, but we're already working on revenge!",
 ];
 
 export const NotFoundPage = () => {
-  const navigate = useNavigate();
   const [joke, setJoke] = useState('');
 
   const getRandomJoke = useMemo(
     () => () => JOKES[Math.floor(Math.random() * JOKES.length)],
-    [],
+    []
   );
 
   useEffect(() => {
@@ -23,22 +22,17 @@ export const NotFoundPage = () => {
   }, [getRandomJoke]);
 
   return (
-    <div className={styles.notFound} aria-labelledby="nf-title">
-      <div className={`${styles.card} ${styles.fadeIn}`}>
-        <h1 className={styles.title}>404</h1>
-        <p className={styles.subtitle}>Сторінку не знайдено</p>
+    <div className={styles.notFound}>
+      <div className='container'>
+        <div className={styles.notFound__content}>
+          <p className={styles.notFound__subtitle}>Page not found.</p>
+          <h1 className={styles.notFound__title}>404</h1>
 
-        <p className={styles.text}>{joke}</p>
-
-        <div className={styles.actions}>
-          <button className={styles.btnGhost} onClick={() => navigate(-1)}>
-            ← Назад
-          </button>
-
-          <button className={styles.btnPrimary} onClick={() => navigate('/')}>
-            На головну
-          </button>
+          <h4 className={styles.notFound__text}>{joke}</h4>
         </div>
+        <Button variant='primary' to='/' className={styles.notFound__returnBtn}>
+          Return home
+        </Button>
       </div>
     </div>
   );
