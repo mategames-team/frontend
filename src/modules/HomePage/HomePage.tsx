@@ -30,7 +30,7 @@ export const HomePage = () => {
             Your library awaits — what will you play next?
           </h1>
           <div className={styles.hero__btn}>
-            <Button variant='primary' fullWidth={true} to='/catalog'>
+            <Button variant='primary' fullWidth={true} to='/catalogue'>
               Choose your game
             </Button>
           </div>

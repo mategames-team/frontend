@@ -1,0 +1,102 @@
+@import '../../styles/main.scss';
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: $bg-color;
+  color: $secondary-color;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.header {
+  position: absolute;
+  top: 24px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  @media (min-width: 768px) {
+    top: 40px;
+    left: 40px;
+    right: 40px;
+  }
+}
+
+.phrase,
+.progress {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  opacity: 0.9;
+
+  @media (min-width: 768px) {
+    font-size: 16px;
+  }
+}
+
+.phrase {
+  max-width: 160px;
+
+  @media (min-width: 768px) {
+    max-width: 250px;
+  }
+}
+
+.progress {
+  text-align: right;
+}
+
+.content {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-bottom: 40px;
+
+  @media (min-width: 768px) {
+    padding-bottom: 60px;
+  }
+}
+
+.title {
+  font-weight: 600;
+  margin: 0;
+  white-space: nowrap;
+  will-change: transform;
+
+  font-size: clamp(80px, 18vw, 274px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+
+  animation: marquee 4s linear infinite;
+
+  @media (min-width: 1200px) {
+    animation: marquee 8s linear infinite;
+  }
+
+  background: linear-gradient(90deg, #5431aa 0%, #9758ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(100vw);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
