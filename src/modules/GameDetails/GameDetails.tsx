@@ -5,40 +5,59 @@ import styles from './GameDetails.module.scss';
 import { StatusButtons } from '@/components/common/StatusButtons/StatusButtons';
 import { GameRatingForm } from './GameRatingForm/GameRatingForm';
 import { GameReviews } from './GameReviews/GameReviews';
+import { Loader } from '@/components/Loader/Loader';
+import { getGameById } from '@/api/gameById';
 
 const mockGameData: Game = {
   apiId: 1,
   name: 'S.T.A.L.K.E.R. 2: Heart of Chornobyl',
   year: 2024,
   apiRating: 7.9,
-  backgroundImage: '../../assets/react.svg',
+  backgroundImage:
+    'https://media.rawg.io/media/games/b45/b45575f34285f2c4479c9a5f719d972e.jpg',
   description:
     'The Chernobyl Exclusion Zone changed significantly after the second explosion in 2006. Violent mutants, deadly anomalies, and warring factions made the Zone a place where survival was extremely difficult. Nevertheless, artefacts of incredible value attracted many people, known as stalkers. They ventured into the Zone at their own risk, seeking to get rich or even find the Truth hidden somewhere in the Heart of Chernobyl.',
-  platforms: ['PS5', 'PC', 'Xbox XS'],
+  platforms: [{ generalName: 'PC' }, { generalName: 'Xbox Series X' }],
   creator: 'GSC Game World',
-  genres: ['Adventure', 'Shooter', 'RPG'],
+  genres: [{ name: 'Action' }, { name: 'Shooter' }, { name: 'Horror' }],
 };
 
 export const GameDetails = () => {
   const { gameId } = useParams();
-  const [game] = useState(mockGameData);
+  const [game, setGame] = useState<Game | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [isExpanded, setIsExpanded] = useState(false);
+  const params = useParams<{ gameId: string }>();
 
   useEffect(() => {
     const fetchGameDetails = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:8080/api/games/local/id/${2}`
-        );
-        const data = await response.json();
-        console.log(data);
-        // setGame(data.content);
+        setIsLoading(true);
+
+        const response = await getGameById(params.gameId!);
+
+        setGame(response);
       } catch (error) {
+        setGame(mockGameData);
         console.error('Error fetching game details:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchGameDetails();
   }, [gameId]);
+
+  const paragraphs = game?.description?.split('</p>') ?? [];
+  const shortDescription = paragraphs.slice(0, 1).join('</p>') + '</p>';
+
+  const isDescExpanded = () =>
+    isExpanded ? game?.description : shortDescription;
+
+  if (isLoading || !game) {
+    return <Loader progress={70} />;
+  }
 
   return (
     <div className='container'>
@@ -46,7 +65,7 @@ export const GameDetails = () => {
         <div className={styles.gameDetails__сontent}>
           <div className={styles.gameDetails__imageBlock}>
             <img
-              src='{`${game.backgroundImage}`}'
+              src={`${game.backgroundImage}`}
               alt={game.name}
               className={styles.gameDetails__image}
             />
@@ -67,9 +86,21 @@ export const GameDetails = () => {
                 <h4 className={styles.gameDetails__descriptionTitle}>
                   Description
                 </h4>
-                <p className={styles.gameDetails__descriptionText}>
-                  {game.description}
-                </p>
+                <div
+                  className={styles.gameDetails__descriptionText}
+                  dangerouslySetInnerHTML={{
+                    __html: isDescExpanded() || '',
+                  }}
+                />
+
+                {paragraphs.length > 2 && (
+                  <button
+                    onClick={() => setIsExpanded(!isExpanded)}
+                    className={styles.readMoreBtn}
+                  >
+                    {isExpanded ? 'Show less' : 'Read more'}
+                  </button>
+                )}
               </div>
 
               {/* Status (Save, In process, Passed) */}
@@ -81,23 +112,25 @@ export const GameDetails = () => {
               <div className={styles.gameDetails__detailGroup}>
                 <h4 className={styles.gameDetails__detailTitle}>Platforms</h4>
                 <p className={`text-main ${styles.gameDetails__detailValue}`}>
-                  {game.platforms?.join(', ') ?? 'N/A'}
+                  {game.platforms
+                    ?.map((platform) => platform.generalName)
+                    .join(', ') ?? 'N/A'}
                 </p>
               </div>
 
               {/* Creator */}
-              <div className={styles.gameDetails__detailGroup}>
+              {/* <div className={styles.gameDetails__detailGroup}>
                 <h4 className={styles.gameDetails__detailTitle}>Creator</h4>
                 <p className={`text-main ${styles.gameDetails__detailValue}`}>
                   {game.creator}
                 </p>
-              </div>
+              </div> */}
 
               {/* Genres */}
               <div className={styles.gameDetails__detailGroup}>
                 <h4 className={styles.gameDetails__detailTitle}>Genre</h4>
                 <p className={`text-main ${styles.gameDetails__detailValue}`}>
-                  {game.genres?.join(', ') ?? 'N/A'}
+                  {game.genres?.map((genre) => genre.name).join(', ') ?? 'N/A'}
                 </p>
               </div>
             </div>

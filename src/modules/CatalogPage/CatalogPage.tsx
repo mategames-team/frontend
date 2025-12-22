@@ -9,6 +9,7 @@ import type { Game } from '@/types/Game';
 import styles from './CatalogPage.module.scss';
 
 export const CatalogPage = () => {
+  // const RAWG_API_KEY = import.meta.env.RAWG_API_KEY;
   const [searchParams] = useSearchParams();
 
   const [games, setGames] = useState<Game[]>(mockGames);
@@ -35,7 +36,8 @@ export const CatalogPage = () => {
 
       return response;
     } catch (error) {
-      console.error('Error fetching filters:', error);
+      setGames(mockGames);
+      console.error('Error fetching game details:', error);
     }
   };
 
@@ -57,6 +59,18 @@ export const CatalogPage = () => {
         setTotalPages(res.totalPages);
       } catch {
         setGames(mockGames);
+        // try {
+        //   const rawgRes = await fetch(
+        //     `https://api.rawg.io/api/games?key=${RAWG_API_KEY}`
+        //   );
+        //   const rawgData = await rawgRes.json();
+
+        //   console.log(rawgData);
+        //   const mappedGame = mapRawgToMyFormat(rawgData);
+        //   setGames(mappedGame);
+        // } catch (rawgError) {
+        //   console.error('Both sources failed:', rawgError);
+        // }
       } finally {
         setLoading(false);
       }
