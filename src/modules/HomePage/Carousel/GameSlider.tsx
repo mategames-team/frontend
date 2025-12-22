@@ -17,7 +17,7 @@ export const GameSlider = ({ games, onSwiperInit }: GameSliderProps) => {
       <Swiper
         slidesPerView={4}
         spaceBetween={20}
-        onSlideChange={() => console.log('slide change')}
+        onSlideChange={() => {}}
         onSwiper={onSwiperInit}
       >
         {games.map((game) => (

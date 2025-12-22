@@ -23,19 +23,18 @@ const mockGameData: Game = {
 };
 
 export const GameDetails = () => {
-  const { gameId } = useParams();
   const [game, setGame] = useState<Game | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const [isExpanded, setIsExpanded] = useState(false);
-  const params = useParams<{ gameId: string }>();
+  const { gameId } = useParams<{ gameId: string }>();
 
   useEffect(() => {
     const fetchGameDetails = async () => {
       try {
         setIsLoading(true);
 
-        const response = await getGameById(params.gameId!);
+        const response = await getGameById(gameId!);
 
         setGame(response);
       } catch (error) {
