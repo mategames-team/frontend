@@ -27,11 +27,16 @@ export const getGames = (params: GetGamesRequest = {}) => {
   if (params.genres) query.set('genres', params.genres);
   if (params.platforms) query.set('platforms', params.platforms);
   if (params.year) query.set('year', String(params.year));
+  if (params.sort) query.set('sort', params.sort);
 
   const queryString = query.toString();
   const endpoint = queryString
-    ? `/api/games/local/search?${queryString}`
-    : '/api/games/local';
+    ? `/games/local/search?${queryString}`
+    : '/games/local';
 
   return request<GetGamesResponse>(endpoint);
+};
+
+export const getGameById = (apiId: string | number) => {
+  return request<Game>(`/games/${apiId}`);
 };
