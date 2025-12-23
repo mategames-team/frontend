@@ -13,38 +13,84 @@
     font-family: 'Hind', sans-serif;
     font-size: 1rem;
     font-weight: 500;
-    line-height: 24px;
-    letter-spacing: 0;
-
     margin-bottom: 24px;
     text-align: center;
   }
 
   &__section {
     margin-bottom: 24px;
-    border-bottom: 1px solid #a5a6b3;
+    border-bottom: 1px solid rgba(165, 166, 179, 0.3); // зробив трохи прозорішим
   }
+
   &__sectionTitle {
     margin-bottom: 16px;
-    cursor: pointer;
+    font-weight: 600;
+    color: #fff;
   }
 
   &__list {
-    padding-bottom: 8px;
+    padding-bottom: 16px;
+    list-style: none;
   }
 
   &__listItem {
-    margin-bottom: 8px;
-    color: $primary-color;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
     cursor: pointer;
-  }
+    transition: all 0.2s ease;
 
-  &__btn {
-    color: $color-gray-100;
-    background-color: $light-purple;
-    padding: 12px 16px;
-    border-radius: 12px;
-    width: 100%;
-    cursor: not-allowed; // temporary disabled state
+    &:hover {
+      .radio__circle {
+        border-color: $light-purple;
+      }
+    }
+
+    &--active {
+      .radio__circle {
+        border-color: $light-purple;
+        background-color: transparent;
+
+        &::after {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      span {
+        color: #fff;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+// Кастомна радіо-кнопка
+.radio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__circle {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #a5a6b3;
+    border-radius: 50%;
+    position: relative;
+    transition: all 0.2s ease;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 8px;
+      height: 8px;
+      background-color: $light-purple;
+      border-radius: 50%;
+      opacity: 0;
+      transform: scale(0);
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
   }
 }

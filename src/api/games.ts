@@ -5,9 +5,10 @@ export interface GetGamesRequest {
   search?: string;
   page?: number;
   limit?: number;
-  genre?: string;
-  platform?: string;
+  genres?: string;
+  platforms?: string;
   sort?: string;
+  year?: number;
 }
 
 export interface GetGamesResponse {
@@ -23,13 +24,13 @@ export const getGames = (params: GetGamesRequest = {}) => {
   if (params.search) query.set('search', params.search);
   if (params.page) query.set('page', String(params.page));
   if (params.limit) query.set('limit', String(params.limit));
-  if (params.genre) query.set('genre', params.genre);
-  if (params.platform) query.set('platform', params.platform);
-  if (params.sort) query.set('sort', params.sort);
+  if (params.genres) query.set('genres', params.genres);
+  if (params.platforms) query.set('platforms', params.platforms);
+  if (params.year) query.set('year', String(params.year));
 
   const queryString = query.toString();
   const endpoint = queryString
-    ? `/api/games?${queryString}`
+    ? `/api/games/local/search?${queryString}`
     : '/api/games/local';
 
   return request<GetGamesResponse>(endpoint);

@@ -7,66 +7,63 @@ import { getGames } from '@/api/games';
 import type { Game } from '@/types/Game';
 
 import styles from './CatalogPage.module.scss';
+import { Loader } from '@/components/Loader/Loader';
 
 export const CatalogPage = () => {
-  const [searchParams] = useSearchParams();
-
-  const [games, setGames] = useState<Game[]>(mockGames);
-  const [, setTotalPages] = useState<number>(1);
-  const [loading, setLoading] = useState<boolean>(false);
+  // const RAWG_API_KEY = import.meta.env.RAWG_API_KEY;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [games, setGames] = useState<Game[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const search = searchParams.get('search')?.toLowerCase().trim() || '';
-  const page = Number(searchParams.get('page')) || 1;
+  const platforms = searchParams.get('platforms') || '';
+  const genres = searchParams.get('genres') || '';
+  const year = searchParams.get('year') || '';
 
-  // const filteredGames = games.filter((game) =>
-  //   game.name.toLowerCase().includes(search)
-  // ); // search filter
+  const handleFilterChange = (filters: Record<string, string>) => {
+    setSearchParams((prev) => {
+      // Створюємо нову копію на основі поточних параметрів
+      const newParams = new URLSearchParams(prev);
 
-  const handleFilterChange = async (category: string, value: string) => {
-    searchParams.set(category, value); // for trigger useEffect
+      Object.entries(filters).forEach(([category, value]) => {
+        if (value) {
+          newParams.set(category, value);
+        } else {
+          newParams.delete(category);
+        }
+      });
 
-    try {
-      const response = await fetch(
-        `http://localhost:8080/api/games/local/${category}/${value}`
-      );
-      const data = await response.json();
-      setGames(data.content);
-      console.log(games);
-
-      return response;
-    } catch (error) {
-      console.error('Error fetching filters:', error);
-    }
+      newParams.set('page', '1'); // Завжди скидаємо на першу сторінку
+      return newParams;
+    });
   };
 
   useEffect(() => {
     const fetchGames = async () => {
-      setLoading(true);
-
-      // const params = {
-      //   search: searchParams.get('search')?.toLowerCase().trim() || '',
-      //   page: Number(searchParams.get('page')) || '',
-      //   platform: searchParams.get('platform') || '',
-      //   genre: searchParams.get('genre') || '',
-      // };
-
       try {
-        const res = await getGames({ search });
+        setIsLoading(true);
+
+        const res = await getGames({
+          search,
+          platforms,
+          genres,
+          year: year ? Number(year) : undefined,
+        });
 
         setGames(res.content);
-        setTotalPages(res.totalPages);
-      } catch {
+      } catch (error) {
+        console.error('Error fetching games from database:', error);
         setGames(mockGames);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
     fetchGames();
-  }, [search, page]);
+  }, [search, platforms, genres, year]);
 
-  if (loading) {
-    return <p>Loading...</p>;
+  if (isLoading) {
+    return <Loader progress={99} />;
   }
 
   return (

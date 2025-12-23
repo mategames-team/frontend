@@ -1,21 +1,56 @@
 import { useSearchParams } from 'react-router-dom';
 import styles from './Filters.module.scss';
 import { Button } from '../common/Button/Button';
+import { useState } from 'react';
 
 interface Props {
-  handleFilterChange: (category: string, value: string) => void;
+  handleFilterChange: (filters: Record<string, string>) => void;
 }
 
 export const Filters: React.FC<Props> = ({ handleFilterChange }) => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
-  const handleFilterClick = (category: string, value: string) => {
-    const newParams = new URLSearchParams(searchParams);
+  const [localFilters, setLocalFilters] = useState({
+    platforms: searchParams.get('platforms') || '',
+    genres: searchParams.get('genres') || '',
+    year: searchParams.get('year') || '',
+  });
 
-    newParams.set(category, value.toLowerCase());
-    setSearchParams(newParams);
+  const toggleLocalFilter = (category: string, value: string) => {
+    setLocalFilters((prev) => ({
+      ...prev,
+      [category]:
+        prev[category as keyof typeof prev] === value.toLowerCase()
+          ? ''
+          : value.toLowerCase(),
+    }));
+  };
 
-    handleFilterChange(category, value);
+  const onApply = () => {
+    handleFilterChange(localFilters);
+  };
+
+  const renderFilterItem = (category: string, value: string) => {
+    const val = value.toLowerCase();
+    const isActive =
+      localFilters[category as keyof typeof localFilters] === val;
+
+    return (
+      <li
+        key={value}
+        className={`${styles.filters__listItem} ${
+          isActive ? styles['filters__listItem--active'] : ''
+        }`}
+        onClick={() => toggleLocalFilter(category, value)}
+      >
+        <div className={styles.radio}>
+          <div className={styles.radio__circle}></div>
+        </div>
+        <span className='text-secondary'>
+          {value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()}
+        </span>
+      </li>
+    );
   };
 
   return (
@@ -25,32 +60,18 @@ export const Filters: React.FC<Props> = ({ handleFilterChange }) => {
       <div className={styles.filters__section}>
         <h4 className={styles.filters__sectionTitle}>Platforms</h4>
         <ul className={styles.filters__list}>
-          {['PC', 'PLAYSTATION', 'XBOX'].map((platform) => (
-            <li
-              key={platform}
-              className={styles.filters__listItem}
-              onClick={() => handleFilterClick('platform', platform)}
-            >
-              <span className='text-secondary'>
-                {platform[0] + platform.slice(1).toLowerCase()}
-              </span>
-            </li>
-          ))}
+          {['Pc', 'Playstation', 'Xbox'].map((platform) =>
+            renderFilterItem('platforms', platform)
+          )}
         </ul>
       </div>
 
       <div className={styles.filters__section}>
         <h4 className={styles.filters__sectionTitle}>Genre</h4>
         <ul className={styles.filters__list}>
-          {['Action', 'Adventure', 'RPG'].map((genre) => (
-            <li
-              key={genre}
-              className={styles.filters__listItem}
-              onClick={() => handleFilterClick('genre', genre)}
-            >
-              <span className='text-secondary'>{genre}</span>
-            </li>
-          ))}
+          {['Action', 'Adventure', 'RPG'].map((genre) =>
+            renderFilterItem('genres', genre)
+          )}
         </ul>
       </div>
 
@@ -58,23 +79,12 @@ export const Filters: React.FC<Props> = ({ handleFilterChange }) => {
         <h4 className={styles.filters__sectionTitle}>Year</h4>
         <ul className={styles.filters__list}>
           {['2023', '2022', '2021', '2020', '2019', '2018', '2017'].map(
-            (year) => (
-              <li
-                key={year}
-                className={styles.filters__listItem}
-                onClick={() => handleFilterClick('year', year)}
-              >
-                <span className='text-secondary'>{year}</span>
-              </li>
-            )
+            (year) => renderFilterItem('year', year)
           )}
         </ul>
       </div>
 
-      {/* <button className={styles.filters__btn} disabled>
-        <span className='btn-text-small'>Apply filters</span>
-      </button> */}
-      <Button variant='primary' fullWidth={true}>
+      <Button variant='primary' fullWidth={true} onClick={onApply}>
         Apply filters
       </Button>
     </aside>

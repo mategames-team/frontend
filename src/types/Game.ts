@@ -1,3 +1,11 @@
+export interface GamePlatform {
+  generalName: string;
+}
+
+export interface GameGenre {
+  name: string;
+}
+
 export interface Game {
   apiId: number;
   name: string;
@@ -5,7 +13,7 @@ export interface Game {
   backgroundImage: string;
   year: number;
   description?: string;
-  platforms?: string[];
+  platforms?: GamePlatform[];
   creator?: string;
-  genres?: string[];
+  genres?: GameGenre[];
 }
