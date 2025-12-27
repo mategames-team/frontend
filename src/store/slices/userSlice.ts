@@ -1,15 +1,26 @@
-import type { User } from '@/types/User';
 import { createSlice } from '@reduxjs/toolkit';
-import { loginUser, registerUser } from './user.thunks';
+import { fetchCurrentUser, loginUser, registerUser } from './user.thunks';
 
-export interface UserState {
-  data: User | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  error: string | null;
+export interface UserData {
+  token?: string;
+  id?: string;
+  email?: string;
+  profileName?: string;
+  about?: string;
+  location?: string;
 }
 
+export interface UserState {
+  data: UserData | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  error: string[] | null;
+}
+
+const token = localStorage.getItem('token');
+
 export const initialState: UserState = {
+  ...(token && { data: { token } }),
   data: null,
   isAuthenticated: false,
   isLoading: false,
@@ -23,6 +34,13 @@ const userSlice = createSlice({
     login: (state, action) => {
       state.data = action.payload;
       state.isAuthenticated = true;
+    },
+    logout: (state) => {
+      console.log('Logging out');
+      state.data = null;
+      state.isAuthenticated = false;
+      state.error = null;
+      localStorage.removeItem('token');
     },
   },
   extraReducers: (builder) => {
@@ -38,7 +56,13 @@ const userSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload as string | null;
+        state.isAuthenticated = false;
+        state.error = action.payload as string[];
+        localStorage.removeItem('token');
+      })
+      .addCase(fetchCurrentUser.fulfilled, (state, action) => {
+        state.data = { ...state.data, ...action.payload };
+        state.isLoading = false;
       })
 
       .addCase(registerUser.pending, (state) => {
@@ -47,15 +71,14 @@ const userSlice = createSlice({
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.data = action.payload;
-        state.isAuthenticated = true;
         state.isLoading = false;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload as string | null;
+        state.error = action.payload as string[];
       });
   },
 });
 
-export const { login } = userSlice.actions;
+export const { login, logout } = userSlice.actions;
 export default userSlice.reducer;

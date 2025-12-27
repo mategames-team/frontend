@@ -1,11 +1,9 @@
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+import axios from 'axios';
+
+export const BASE_URL = 'http://localhost:5173/api';
 
 export async function request<T>(endpoint: string): Promise<T> {
-  const response = await fetch(`${BASE_URL}${endpoint}`);
+  const response = await axios.get<T>(`${BASE_URL}${endpoint}`);
 
-  if (!response.ok) {
-    throw new Error(`Request failed: ${response.status}`);
-  }
-
-  return (await response.json()) as T;
+  return response.data;
 }

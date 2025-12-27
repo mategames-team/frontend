@@ -17,8 +17,6 @@ export const GameRatingForm: React.FC<GameRatingFormProps> = ({
 
   const [rating, setRating] = useState<number>(0);
 
-  console.log(rating);
-
   const handleRatingSubmit = async () => {
     setIsLoading(true);
 

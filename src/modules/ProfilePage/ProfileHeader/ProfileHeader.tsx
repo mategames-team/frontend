@@ -2,11 +2,14 @@ import styles from './ProfileHeader.module.scss';
 import userAvatar from '@/assets/user-avatar-1.png';
 import Location from '@/assets/icons/location.svg?react';
 import Settings from '@/assets/icons/settings.svg?react';
-import { Link } from 'react-router-dom';
-import type { User } from '@/types/User';
+import { Link, useNavigate } from 'react-router-dom';
+
+// import type { User } from '@/types/User';
+import { logout, type UserData } from '@/store/slices/userSlice';
+import { useAppDispatch } from '@/store/hooks';
 
 type Props = {
-  userData: User | null;
+  userData: UserData | null;
 };
 
 const stats = [
@@ -16,7 +19,14 @@ const stats = [
 ];
 
 export const ProfileHeader: React.FC<Props> = ({ userData }) => {
-  console.log(userData);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/');
+  };
+
   return (
     <section className={styles.header}>
       <div className={styles.header__top}>
@@ -26,7 +36,7 @@ export const ProfileHeader: React.FC<Props> = ({ userData }) => {
           className={styles.header__avatar}
         />
         <div className={styles.header__info}>
-          <h2 className={styles.header__username}>{userData?.username}</h2>
+          <h2 className={styles.header__username}>{userData?.profileName}</h2>
           <div className={styles.header__locationWrapper}>
             <Location className={styles.header__locationIcon} />
             <span className={styles.header__location}>Ukraine</span>
@@ -49,6 +59,12 @@ export const ProfileHeader: React.FC<Props> = ({ userData }) => {
             <span className={styles.stats__label}>{stat.label}</span>
           </div>
         ))}
+      </div>
+
+      <div className={styles.actions}>
+        <button className={styles.actions__btn} onClick={handleLogout}>
+          Logout
+        </button>
       </div>
     </section>
   );

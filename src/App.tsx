@@ -3,10 +3,22 @@ import { Outlet } from 'react-router-dom';
 import { Header } from './components/Header/Header';
 import { Footer } from './components/Footer/Footer';
 import { Loader } from './components/Loader/Loader';
-import { useAppSelector } from './store/hooks';
+import { useAppDispatch, useAppSelector } from './store/hooks';
+import { useEffect } from 'react';
+import { fetchCurrentUser } from './store/slices/user.thunks';
 
 export const App = () => {
   const { isLoading } = useAppSelector((state) => state.user);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      dispatch(fetchCurrentUser());
+    }
+  }, [dispatch]);
 
   return (
     <div className=''>
