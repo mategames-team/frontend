@@ -134,23 +134,26 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
 
     if (!validateForm()) return;
 
-    const result = await dispatch(
-      registerUser({
-        email,
-        username,
-        password,
-        confirmPassword,
-      })
-    );
+    try {
+      const result = await dispatch(
+        registerUser({
+          email,
+          profileName: username,
+          password,
+          repeatPassword: confirmPassword,
+        })
+      ).unwrap();
 
-    if (registerUser.fulfilled.match(result)) {
-      console.log('Registration successful');
-
-      setTimeout(() => {
-        onClose();
-      }, 1000);
-    } else {
-      console.log('Registration failed');
+      console.log(result);
+      onClose();
+      // Navigate to login or show success message
+    } catch (error) {
+      console.log('Registration failed', error);
+    } finally {
+      // Open login modal
+      if (onSwitchToLogin) {
+        onSwitchToLogin();
+      }
     }
   };
 

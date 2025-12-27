@@ -4,6 +4,8 @@ import styles from './LoginModal.module.scss';
 import CloseIcon from '../../assets/icons/close.svg?react';
 import EyeVisible from '../../assets/icons/eye-outline.svg?react';
 import EyeInvisible from '../../assets/icons/eye-off.svg?react';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { fetchCurrentUser, loginUser } from '@/store/slices/user.thunks';
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -24,13 +26,15 @@ export const LoginModal: React.FC<LoginModalProps> = ({
   const modalRef = useRef<HTMLDivElement>(null);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   useState<boolean>(false);
   const [errors, setErrors] = useState<FormErrors>({
     email: '',
     password: '',
   });
+
+  const dispatch = useAppDispatch();
+  const { isLoading } = useAppSelector((state) => state.user);
 
   // Close the modal
   useEffect(() => {
@@ -60,17 +64,16 @@ export const LoginModal: React.FC<LoginModalProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    setIsLoading(true);
-
     console.log('Form submitted:', { email, password });
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const result = await dispatch(loginUser({ email, password })).unwrap();
+
+      console.log(result);
+      dispatch(fetchCurrentUser());
       onClose();
     } catch (error) {
-      console.log('Error: ' + error);
-    } finally {
-      setIsLoading(false);
+      console.log('Registration failed', error);
     }
   };
 

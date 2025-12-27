@@ -30,8 +30,12 @@ export const getGames = (params: GetGamesRequest = {}) => {
 
   const queryString = query.toString();
   const endpoint = queryString
-    ? `/api/games/local/search?${queryString}`
-    : '/api/games/local';
+    ? `/games/local/search?${queryString}`
+    : '/games/local';
 
   return request<GetGamesResponse>(endpoint);
+};
+
+export const getGameById = (apiId: string | number) => {
+  return request<Game>(`/games/${apiId}`);
 };

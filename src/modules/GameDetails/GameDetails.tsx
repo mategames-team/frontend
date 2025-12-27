@@ -6,7 +6,7 @@ import { StatusButtons } from '@/components/common/StatusButtons/StatusButtons';
 import { GameRatingForm } from './GameRatingForm/GameRatingForm';
 import { GameReviews } from './GameReviews/GameReviews';
 import { Loader } from '@/components/Loader/Loader';
-import { getGameById } from '@/api/gameById';
+import { getGameById } from '@/api/games';
 
 const mockGameData: Game = {
   apiId: 1,

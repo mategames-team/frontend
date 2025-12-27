@@ -14,13 +14,12 @@ export const AuthActions: React.FC<Props> = ({
   openLoginModal,
 }) => {
   const { data, isAuthenticated } = useAppSelector((state) => state.user);
-  console.log(data);
 
   return (
     <div className={styles.auth}>
       {isAuthenticated ? (
         <Link to='/profile'>
-          <span className={styles.auth__username}>{data?.username}</span>
+          <span className={styles.auth__username}>{data?.profileName}</span>
         </Link>
       ) : (
         <>
