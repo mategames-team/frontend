@@ -4,7 +4,6 @@
   background: $bg-color;
   padding: 130px 0;
   text-align: center;
-  margin-bottom: 55px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,6 +16,11 @@
     rgba(151, 88, 255, 0.03) 60%,
     rgba(11, 12, 24, 0) 70%
   );
+  @include content-padding-inline();
+
+  @include on-tablet {
+    padding: 80px 0 125px;
+  }
 
   &__title {
     color: $secondary-color;
@@ -33,4 +37,8 @@
   display: flex;
   flex-direction: column;
   gap: 100px;
+
+  @include on-tablet {
+    gap: 48px;
+  }
 }

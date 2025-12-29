@@ -15,10 +15,20 @@ export const GameSlider = ({ games, onSwiperInit }: GameSliderProps) => {
   return (
     <div className={styles.slider}>
       <Swiper
-        slidesPerView={4}
+        slidesPerView={2}
         spaceBetween={20}
         onSlideChange={() => {}}
         onSwiper={onSwiperInit}
+        breakpoints={{
+          // коли ширина екрана >= 768px (планшет)
+          768: {
+            slidesPerView: 3,
+          },
+          // коли ширина екрана >= 1024px (десктоп)
+          1024: {
+            slidesPerView: 4,
+          },
+        }}
       >
         {games.map((game) => (
           <SwiperSlide key={game.apiId}>

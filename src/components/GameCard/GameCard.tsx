@@ -40,7 +40,7 @@ export const GameCard: React.FC<Props> = ({ game, size = 'small' }) => {
               {game.year}
             </span>
             <span className={`${styles.rating} text-secondary-semibold`}>
-              {game.apiRating}
+              {game.apiRating.toFixed(1)}
             </span>
           </div>
 
