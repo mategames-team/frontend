@@ -1,7 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
+import uiReducer from './slices/uiSlice';
 import userReducer, {
   initialState as userInitialState,
 } from './slices/userSlice';
+
 import { loadUserState, saveUserState } from './user.storage';
 
 const preloadedState = {
@@ -10,6 +12,7 @@ const preloadedState = {
 
 export const store = configureStore({
   reducer: {
+    ui: uiReducer,
     user: userReducer,
   },
   preloadedState,
