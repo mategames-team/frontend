@@ -1,5 +1,10 @@
+@mixin on-mobile {
+  @media (max-width: $mobile-width) {
+    @content;
+  }
+}
 @mixin on-tablet {
-  @media (min-width: $tablet-width) {
+  @media (max-width: $tablet-width) {
     @content;
   }
 }
@@ -10,14 +15,12 @@
   }
 }
 
-// @mixin content-padding-inline() {
-//   padding-inline: 16px;
+@mixin content-padding-inline() {
+  @include on-tablet {
+    padding-inline: 16px;
+  }
 
-//   @include on-tablet {
-//     padding-inline: 24px;
-//   }
-
-//   @include on-desktop {
-//     padding-inline: 32px;
-//   }
-// }
+  @include on-desktop {
+    padding-inline: 32px;
+  }
+}

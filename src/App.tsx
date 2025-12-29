@@ -23,6 +23,7 @@ export const App = () => {
   return (
     <div className=''>
       {isLoading && <Loader progress={99} />}
+
       <Header />
 
       <main className='main'>
