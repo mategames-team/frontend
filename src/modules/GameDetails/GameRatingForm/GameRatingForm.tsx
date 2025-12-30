@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from './GameRatingForm.module.scss';
 import { Button } from '@/components/common/Button/Button';
 import { RatingBars } from '@/components/RatingBars/RatingBars';
+import clsx from 'clsx';
 
 interface GameRatingFormProps {
   gameId: number;
@@ -33,29 +34,31 @@ export const GameRatingForm: React.FC<GameRatingFormProps> = ({
   };
 
   return (
-    <section className={styles.diary}>
+    <>
       <h4 className={styles.title}>Your rate</h4>
-      <RatingBars onChange={setRating} value={rating} />
+      <section className={styles.diary}>
+        <RatingBars onChange={setRating} value={rating} />
 
-      <div className={styles.reviewSection}>
-        <textarea
-          className={styles.textArea}
-          value={reviewText}
-          onChange={(e) => setReviewText(e.target.value)}
-          placeholder='Share your mind'
-        />
+        <div className={styles.reviewSection}>
+          <textarea
+            className={clsx(styles.textArea, 'text-main')}
+            value={reviewText}
+            onChange={(e) => setReviewText(e.target.value)}
+            placeholder='Share your mind'
+          />
 
-        <div className={styles.buttonWrapper}>
-          <Button
-            variant='primary'
-            size='small'
-            isLoading={isLoading}
-            onClick={handleRatingSubmit}
-          >
-            Post
-          </Button>
+          <div className={styles.buttonWrapper}>
+            <Button
+              variant='primary'
+              size='small'
+              isLoading={isLoading}
+              onClick={handleRatingSubmit}
+            >
+              Post
+            </Button>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };

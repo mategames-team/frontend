@@ -4,7 +4,10 @@
   background-color: $elements-bg;
   border-radius: 12px;
   padding: 24px;
-  margin-bottom: 130px;
+
+  @include on-tablet {
+    padding: 16px;
+  }
 }
 
 .title {

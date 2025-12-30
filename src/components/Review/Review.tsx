@@ -3,6 +3,7 @@ import userAvatar from '@/assets/user-avatar-1.png';
 import Like from '@/assets/icons/like.svg?react';
 import Dislike from '@/assets/icons/dislike.svg?react';
 import { useState } from 'react';
+import clsx from 'clsx';
 
 type Variant = 'default' | 'profile';
 
@@ -29,7 +30,7 @@ export const Review: React.FC<{ variant?: Variant }> = ({
         )}
         <span className={styles.review__rating}>7.5</span>
       </div>
-      <p className={styles.review__content}>
+      <p className={clsx(styles.review__content, 'text-main')}>
         This game is a masterpiece! I loved every minute of it. The storyline
         was captivating, the characters were well-developed, and the gameplay
         was smooth and enjoyable. Highly recommended!

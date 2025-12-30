@@ -4,6 +4,12 @@ import PlayingIcon from '@/assets/icons/games-status/game-controller.svg?react';
 import CompletedIcon from '@/assets/icons/games-status/checkmark.svg?react';
 import clsx from 'clsx';
 
+type Props = {
+  variant?: Variant;
+  onAction?: (type: StatusType) => void;
+  className?: string;
+};
+
 type Variant = 'compact' | 'full';
 
 type StatusType = 'saved' | 'playing' | 'completed';
@@ -29,12 +35,15 @@ const STATUS_BUTTONS = [
   },
 ];
 
-export const StatusButtons: React.FC<{
-  variant?: Variant;
-  onAction?: (type: StatusType) => void;
-}> = ({ variant = 'compact', onAction }) => {
+export const StatusButtons: React.FC<Props> = ({
+  variant = 'compact',
+  onAction,
+  className,
+}) => {
   return (
-    <div className={clsx(styles.status, styles[`status--${variant}`])}>
+    <div
+      className={clsx(styles.status, styles[`status--${variant}`], className)}
+    >
       {STATUS_BUTTONS.map(({ type, label, ariaLabel, Icon }) => (
         <div key={type} className={styles.status__item}>
           <button
