@@ -5,7 +5,7 @@
   border-radius: 16px;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   max-width: 231px;
-  height: auto;
+  height: 100%;
   cursor: pointer;
 
   &:hover {
@@ -54,6 +54,11 @@
   height: 274px;
   overflow: hidden;
   border-radius: 16px 16px 0 0;
+
+  @include on-tablet {
+    border-radius: 8px 8px 0 0;
+    height: 220px;
+  }
 
   &::after {
     content: '';

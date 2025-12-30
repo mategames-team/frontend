@@ -16,11 +16,12 @@
     rgba(151, 88, 255, 0.03) 60%,
     rgba(11, 12, 24, 0) 70%
   );
-  @include content-padding-inline();
 
   @include on-tablet {
     padding: 80px 0 125px;
   }
+
+  @include content-padding-inline();
 
   &__title {
     color: $secondary-color;

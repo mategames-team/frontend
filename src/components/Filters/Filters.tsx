@@ -1,13 +1,20 @@
-import { useSearchParams } from 'react-router-dom';
 import styles from './Filters.module.scss';
-import { Button } from '../common/Button/Button';
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { Button } from '../common/Button/Button';
+import CloseIcon from '@/assets/icons/close.svg?react';
 
 interface Props {
   handleFilterChange: (filters: Record<string, string>) => void;
+  isFiltersOpen?: boolean;
+  setIsFiltersOpen: (value: boolean) => void;
 }
 
-export const Filters: React.FC<Props> = ({ handleFilterChange }) => {
+export const Filters: React.FC<Props> = ({
+  handleFilterChange,
+  isFiltersOpen,
+  setIsFiltersOpen,
+}) => {
   const [searchParams] = useSearchParams();
 
   const [localFilters, setLocalFilters] = useState({
@@ -28,6 +35,10 @@ export const Filters: React.FC<Props> = ({ handleFilterChange }) => {
 
   const onApply = () => {
     handleFilterChange(localFilters);
+
+    if (isFiltersOpen) {
+      setIsFiltersOpen(false);
+    }
   };
 
   const renderFilterItem = (category: string, value: string) => {
@@ -54,8 +65,18 @@ export const Filters: React.FC<Props> = ({ handleFilterChange }) => {
   };
 
   return (
-    <aside className={styles.filters}>
-      <h2 className={styles.filters__title}>Resort filters</h2>
+    <aside
+      className={`${styles.filters} ${
+        isFiltersOpen ? styles.filters__open : ''
+      }`}
+    >
+      <div className={styles.filters__header}>
+        <h2 className={styles.filters__title}>Resort filters</h2>
+        <CloseIcon
+          className={styles.filters__close}
+          onClick={() => setIsFiltersOpen(false)}
+        />
+      </div>
 
       <div className={styles.filters__section}>
         <h4 className={styles.filters__sectionTitle}>Platforms</h4>

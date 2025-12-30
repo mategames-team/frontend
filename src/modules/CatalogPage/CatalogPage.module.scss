@@ -6,6 +6,26 @@
     gap: 20px;
     justify-content: space-between;
   }
+
+  @include content-padding-inline();
+
+  &__header {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    @include on-tablet {
+      display: flex;
+    }
+  }
+
+  &__filtersButton {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: $secondary-color;
+  }
 }
 
 .gameList {
@@ -14,12 +34,7 @@
   gap: 20px;
 
   @include on-tablet {
-    grid-template-columns: repeat(4, minmax(231px, 1fr));
-    gap: 20px;
-  }
-
-  @include on-desktop {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(2, minmax(167px, 1fr));
+    gap: 8px;
   }
 }

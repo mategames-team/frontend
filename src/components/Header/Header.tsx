@@ -45,11 +45,8 @@ export const Header = () => {
             </div>
           )}
 
-          <div className={styles.header__search}>
+          <div className={styles.header__nav}>
             <SearchBar />
-          </div>
-
-          <div className={styles.header__navlinks}>
             <NavLinks links={['catalogue']} />
           </div>
 
