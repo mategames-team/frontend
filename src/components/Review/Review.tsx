@@ -1,5 +1,5 @@
 import styles from './Review.module.scss';
-import userAvatar from '@/assets/user-avatar-1.png';
+import userAvatar from '@/assets/avatars-female/female-4.png';
 import Like from '@/assets/icons/like.svg?react';
 import Dislike from '@/assets/icons/dislike.svg?react';
 import { useState } from 'react';
