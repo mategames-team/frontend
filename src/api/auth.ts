@@ -60,7 +60,13 @@ export const login = async (data: LoginRequest) => {
 };
 
 export const fetchMe = async (): Promise<User> => {
-  const response = await api.patch('/api/users/me', {});
+  const response = await api.patch('http://localhost:5173/api/users/me', {
+    profileName: 'sterry',
+    email: 'mitlosh@gmail.com',
+    about: 'My name is Sterry Mitlosh. I am a software developer from Ukraine.',
+    location: 'Ukraine',
+  });
 
+  console.log('fetchMe response:', response);
   return response.data;
 };

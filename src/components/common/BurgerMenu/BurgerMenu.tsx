@@ -20,7 +20,6 @@ export const BurgerMenu: React.FC<Props> = ({
   openLoginModal,
 }) => {
   const { data, isAuthenticated } = useAppSelector((state) => state.user);
-  console.log(isAuthenticated, data);
 
   return (
     <div className={`${styles.menu} ${isMenuOpen ? styles.open : ''}`}>
