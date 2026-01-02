@@ -5,6 +5,10 @@
   border-radius: 16px;
   background: url('@/assets/profile-header-bg.png') no-repeat center/cover;
 
+  @include on-tablet {
+    padding: 16px;
+  }
+
   &__top {
     display: flex;
     align-items: center;
@@ -15,6 +19,11 @@
     width: 92px;
     height: 92px;
     border-radius: 50%;
+
+    @include on-tablet {
+      width: 56px;
+      height: 56px;
+    }
   }
 
   &__username {
@@ -42,12 +51,21 @@
   &__settingsIcon {
     width: 40px;
     height: 40px;
+
+    @include on-tablet {
+      width: 32px;
+      height: 32px;
+    }
   }
 }
 
 .bio {
   margin: 32px 0;
   color: $secondary-color;
+
+  @include on-tablet {
+    margin: 24px 0;
+  }
 }
 
 .stats {

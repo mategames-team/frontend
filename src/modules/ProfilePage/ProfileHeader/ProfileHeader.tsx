@@ -1,5 +1,5 @@
 import styles from './ProfileHeader.module.scss';
-import userAvatar from '@/assets/user-avatar-1.png';
+import userAvatar from '@/assets/avatars-female/female-2.png';
 import Location from '@/assets/icons/location.svg?react';
 import Settings from '@/assets/icons/settings.svg?react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -42,7 +42,7 @@ export const ProfileHeader: React.FC<Props> = ({ userData }) => {
             <span className={styles.header__location}>Ukraine</span>
           </div>
         </div>
-        <Link to='/' className={styles.header__settings}>
+        <Link to='/profile/settings' className={styles.header__settings}>
           <Settings className={styles.header__settingsIcon} />
         </Link>
       </div>

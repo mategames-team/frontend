@@ -15,10 +15,20 @@ export const GameSlider = ({ games, onSwiperInit }: GameSliderProps) => {
   return (
     <div className={styles.slider}>
       <Swiper
-        slidesPerView={4}
-        spaceBetween={20}
+        slidesPerView={2}
+        spaceBetween={8}
         onSlideChange={() => {}}
         onSwiper={onSwiperInit}
+        breakpoints={{
+          768: {
+            slidesPerView: 3,
+            spaceBetween: 20,
+          },
+          1024: {
+            slidesPerView: 4,
+            spaceBetween: 20,
+          },
+        }}
       >
         {games.map((game) => (
           <SwiperSlide key={game.apiId}>

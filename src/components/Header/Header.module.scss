@@ -27,10 +27,11 @@
     }
   }
 
-  &__search,
-  &__navlinks,
+  &__nav,
   &__auth {
     display: flex;
+    align-items: center;
+    gap: 20px;
 
     @include on-tablet {
       display: none;

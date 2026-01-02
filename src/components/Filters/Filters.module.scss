@@ -9,17 +9,48 @@
   border-radius: 12px;
   max-height: fit-content;
 
+  @include on-tablet {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background-color: $color-gray-90;
+    border-radius: 0;
+    flex-direction: column;
+    overflow-y: auto;
+    transition: all 0.3s ease;
+
+    transform: translateX(-100%);
+    opacity: 0;
+    pointer-events: none;
+
+    &__open {
+      display: flex;
+      transform: translateX(0);
+      opacity: 1;
+      pointer-events: auto;
+      transition: all 0.3s ease;
+      max-height: 100vh;
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
   &__title {
     font-family: 'Hind', sans-serif;
     font-size: 1rem;
     font-weight: 500;
-    margin-bottom: 24px;
     text-align: center;
   }
 
   &__section {
     margin-bottom: 24px;
-    border-bottom: 1px solid rgba(165, 166, 179, 0.3); // зробив трохи прозорішим
+    border-bottom: 1px solid rgba(165, 166, 179, 0.3);
   }
 
   &__sectionTitle {
@@ -65,7 +96,6 @@
   }
 }
 
-// Кастомна радіо-кнопка
 .radio {
   display: flex;
   align-items: center;

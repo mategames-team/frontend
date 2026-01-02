@@ -8,6 +8,8 @@
     margin-bottom: 24px;
   }
 
+  @include content-padding-inline();
+
   &__title {
     color: $secondary-color;
   }

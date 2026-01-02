@@ -70,6 +70,11 @@ export const GameDetails = () => {
             />
           </div>
 
+          <StatusButtons
+            variant='full'
+            className={styles.statusBtn__onMobile}
+          />
+
           <div className={styles.gameDetails__info}>
             <header className={styles.gameDetails__header}>
               <div className={styles.gameDetails__titleWrapper}>
@@ -86,7 +91,7 @@ export const GameDetails = () => {
                   Description
                 </h4>
                 <div
-                  className={styles.gameDetails__descriptionText}
+                  className={`${styles.gameDetails__descriptionText} text-main`}
                   dangerouslySetInnerHTML={{
                     __html: isDescExpanded() || '',
                   }}
@@ -102,8 +107,10 @@ export const GameDetails = () => {
                 )}
               </div>
 
-              {/* Status (Save, In process, Passed) */}
-              <StatusButtons variant='full' />
+              <StatusButtons
+                variant='full'
+                className={styles.statusBtn__onDesktop}
+              />
             </div>
 
             <div className={styles.gameDetails__detailsGrid}>
@@ -117,14 +124,6 @@ export const GameDetails = () => {
                 </p>
               </div>
 
-              {/* Creator */}
-              {/* <div className={styles.gameDetails__detailGroup}>
-                <h4 className={styles.gameDetails__detailTitle}>Creator</h4>
-                <p className={`text-main ${styles.gameDetails__detailValue}`}>
-                  {game.creator}
-                </p>
-              </div> */}
-
               {/* Genres */}
               <div className={styles.gameDetails__detailGroup}>
                 <h4 className={styles.gameDetails__detailTitle}>Genre</h4>
@@ -135,11 +134,13 @@ export const GameDetails = () => {
             </div>
           </div>
         </div>
+
+        <div className={styles.gameDetails__rateAction}>
+          <GameRatingForm gameId={game.apiId} onSubmissionSuccess={() => {}} />
+        </div>
+
+        <GameReviews />
       </section>
-
-      <GameRatingForm gameId={game.apiId} onSubmissionSuccess={() => {}} />
-
-      <GameReviews />
     </div>
   );
 };
