@@ -50,8 +50,7 @@ export const StatusButtons: React.FC<Props> = ({
             type='button'
             className={styles.status__button}
             aria-label={ariaLabel}
-            onClick={() => onClick?.(type as StatusType)}
-            onClick={() => onClick?.(type as StatusType)}
+            onClick={() => onAction?.(type as StatusType)}
           >
             <Icon className={styles.icon} />
           </button>
