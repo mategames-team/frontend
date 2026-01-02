@@ -1,3 +1,5 @@
+export type GameStatus = 'BACKLOG' | 'IN_PROGRESS' | 'COMPLETED';
+
 export interface GamePlatform {
   generalName: string;
 }
@@ -16,4 +18,11 @@ export interface Game {
   platforms?: GamePlatform[];
   creator?: string;
   genres?: GameGenre[];
+}
+
+export interface UserGameResponse {
+  id: number;
+  userId: number;
+  gameDto: Game;
+  status: GameStatus;
 }

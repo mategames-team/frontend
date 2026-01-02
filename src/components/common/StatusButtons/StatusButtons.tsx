@@ -12,23 +12,23 @@ type Props = {
 
 type Variant = 'compact' | 'full';
 
-type StatusType = 'saved' | 'playing' | 'completed';
+type StatusType = 'BACKLOG' | 'IN_PROGRESS' | 'COMPLETED';
 
 const STATUS_BUTTONS = [
   {
-    type: 'saved',
+    type: 'BACKLOG',
     label: 'Save',
     ariaLabel: 'Add to wishlist',
     Icon: SaveIcon,
   },
   {
-    type: 'playing',
+    type: 'IN_PROGRESS',
     label: 'Playing',
     ariaLabel: 'Mark as played',
     Icon: PlayingIcon,
   },
   {
-    type: 'completed',
+    type: 'COMPLETED',
     label: 'Completed',
     ariaLabel: 'Add to profile',
     Icon: CompletedIcon,
@@ -50,7 +50,8 @@ export const StatusButtons: React.FC<Props> = ({
             type='button'
             className={styles.status__button}
             aria-label={ariaLabel}
-            onClick={() => onAction?.(type as StatusType)}
+            onClick={() => onClick?.(type as StatusType)}
+            onClick={() => onClick?.(type as StatusType)}
           >
             <Icon className={styles.icon} />
           </button>

@@ -79,6 +79,7 @@
   height: 100%;
   object-fit: cover;
   transition: scale 0.25s ease;
+  cursor: pointer;
 }
 
 .card:hover .image {
@@ -142,6 +143,7 @@
 
 .title {
   color: $secondary-color;
+  cursor: pointer;
 
   @include on-tablet {
     font-weight: 400;
