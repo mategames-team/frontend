@@ -13,8 +13,19 @@ import userAvatarFemale5 from '@/assets/avatars-female/female-5.png';
 import ArrowRight from '@/assets/icons/arrow-right.svg?react';
 import ExitIcon from '@/assets/icons/exit.svg?react';
 import { Button } from '@/components/common/Button/Button';
+import { useAppDispatch } from '@/store/hooks';
+import { useNavigate } from 'react-router-dom';
+import { logout } from '@/store/slices/userSlice';
 
 export const SettingsPage = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/');
+  };
+
   return (
     <section className={styles.settings}>
       <div className='container'>
@@ -245,7 +256,7 @@ export const SettingsPage = () => {
 
           {/* Logout */}
           <div className={styles.settings__logoutWrapper}>
-            <button className={styles.logoutBtn}>
+            <button className={styles.logoutBtn} onClick={handleLogout}>
               <ExitIcon className={styles.logoutBtn__icon} />
               <span>Exit from account</span>
             </button>

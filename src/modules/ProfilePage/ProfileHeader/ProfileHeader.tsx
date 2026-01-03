@@ -39,7 +39,9 @@ export const ProfileHeader: React.FC<Props> = ({ userData }) => {
           <h2 className={styles.header__username}>{userData?.profileName}</h2>
           <div className={styles.header__locationWrapper}>
             <Location className={styles.header__locationIcon} />
-            <span className={styles.header__location}>Ukraine</span>
+            <span className={styles.header__location}>
+              {userData?.location || ''}
+            </span>
           </div>
         </div>
         <Link to='/profile/settings' className={styles.header__settings}>
@@ -47,10 +49,7 @@ export const ProfileHeader: React.FC<Props> = ({ userData }) => {
         </Link>
       </div>
 
-      <h4 className={styles.bio}>
-        Fan of RPGs and story-driven adventures. Always looking for hidden gems
-        and indie masterpieces.
-      </h4>
+      <h4 className={styles.bio}>{userData?.about || 'No bio yet...'}</h4>
 
       <div className={styles.stats}>
         {stats.map((stat) => (

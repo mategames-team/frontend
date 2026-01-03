@@ -7,6 +7,7 @@ import { GameRatingForm } from './GameRatingForm/GameRatingForm';
 import { GameReviews } from './GameReviews/GameReviews';
 import { Loader } from '@/components/Loader/Loader';
 import { getGameById } from '@/api/games';
+import { useUpdateGameStatus } from '@/hooks/useUpdateGameStatus';
 
 const mockGameData: Game = {
   apiId: 1,
@@ -29,6 +30,7 @@ export const GameDetails = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { gameId } = useParams<{ gameId: string }>();
 
+  // Fetch game details
   useEffect(() => {
     const fetchGameDetails = async () => {
       try {
@@ -48,11 +50,14 @@ export const GameDetails = () => {
     fetchGameDetails();
   }, [gameId]);
 
+  // Shorten description
   const paragraphs = game?.description?.split('</p>') ?? [];
   const shortDescription = paragraphs.slice(0, 1).join('</p>') + '</p>';
 
   const isDescExpanded = () =>
     isExpanded ? game?.description : shortDescription;
+
+  const { updateStatus } = useUpdateGameStatus(Number(gameId));
 
   if (isLoading || !game) {
     return <Loader progress={70} />;
@@ -69,10 +74,10 @@ export const GameDetails = () => {
               className={styles.gameDetails__image}
             />
           </div>
-
           <StatusButtons
             variant='full'
             className={styles.statusBtn__onMobile}
+            onAction={(status) => updateStatus(status)}
           />
 
           <div className={styles.gameDetails__info}>
@@ -110,6 +115,7 @@ export const GameDetails = () => {
               <StatusButtons
                 variant='full'
                 className={styles.statusBtn__onDesktop}
+                onAction={(status) => updateStatus(status)}
               />
             </div>
 

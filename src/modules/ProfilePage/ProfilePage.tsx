@@ -6,6 +6,12 @@ import { useSearchParams } from 'react-router-dom';
 import type { ProfileTab } from '@/types/profileTabs';
 import { useAppSelector } from '@/store/hooks';
 
+const STATUS_MAP: Record<string, string> = {
+  backlog: 'BACKLOG',
+  in_progress: 'IN_PROGRESS',
+  completed: 'COMPLETED',
+};
+
 export const ProfilePage = () => {
   const [seatchParams, setSearchParams] = useSearchParams();
   const { data, isAuthenticated } = useAppSelector((state) => state.user);
@@ -27,7 +33,7 @@ export const ProfilePage = () => {
             onChange={(tab: ProfileTab) => setSearchParams({ tab })}
           />
 
-          <GamesSection activeTab={activeTab} />
+          <GamesSection status={STATUS_MAP[activeTab]} />
         </div>
       </div>
     </div>

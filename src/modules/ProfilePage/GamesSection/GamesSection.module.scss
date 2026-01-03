@@ -3,11 +3,9 @@
 .games {
   display: flex;
   gap: 20px;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
 
   @include on-tablet {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
     gap: 8px;
   }
 }

@@ -60,7 +60,8 @@ export const login = async (data: LoginRequest) => {
 };
 
 export const fetchMe = async (): Promise<User> => {
-  const response = await api.patch('/api/users/me', {});
+  const response = await api.get('http://localhost:5173/api/users/info');
 
+  console.log('fetchMe response:', response);
   return response.data;
 };
