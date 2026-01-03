@@ -39,6 +39,7 @@ export interface LoginRequest {
 }
 export interface LoginResponse {
   token: string;
+  userId: number;
 }
 
 export const register = async (data: RegisterRequest) => {
@@ -60,7 +61,7 @@ export const login = async (data: LoginRequest) => {
 };
 
 export const fetchMe = async (): Promise<User> => {
-  const response = await api.get('http://localhost:5173/api/users/info');
+  const response = await api.get('/api/users/info');
 
   console.log('fetchMe response:', response);
   return response.data;

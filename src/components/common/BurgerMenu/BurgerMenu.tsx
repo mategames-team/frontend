@@ -31,7 +31,7 @@ export const BurgerMenu: React.FC<Props> = ({
       </div>
 
       {isAuthenticated ? (
-        <Link to='/profile'>
+        <Link to='/profile' onClick={closeMenu}>
           <span className={styles.auth__username}>{data?.profileName}</span>
         </Link>
       ) : (

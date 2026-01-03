@@ -1,17 +1,42 @@
 import {
-  fetchMe,
-  login,
   register,
-  type LoginRequest,
-  type LoginResponse,
+  login,
+  fetchMe,
   type RegisterRequest,
   type RegisterResponse,
+  type LoginRequest,
+  type LoginResponse,
 } from '@/api/auth';
 import type { User } from '@/types/User';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 export type BackendError = string[];
+
+export const registerUser = createAsyncThunk<
+  RegisterResponse,
+  RegisterRequest,
+  { rejectValue: BackendError }
+>('user/register', async (userData, { rejectWithValue }) => {
+  try {
+    const response = await register(userData);
+
+    if (!response) {
+      return rejectWithValue(['Server returned empty response']);
+    }
+
+    return response;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      const serverErrors = err.response?.data?.errors as BackendError;
+      return rejectWithValue(serverErrors || [err.message]);
+    }
+
+    return rejectWithValue([
+      err instanceof Error ? err.message : 'Unknown error',
+    ]);
+  }
+});
 
 export const loginUser = createAsyncThunk<
   LoginResponse,
@@ -56,30 +81,5 @@ export const fetchCurrentUser = createAsyncThunk<
     console.error(err);
 
     return rejectWithValue(['Failed to fetch profile']);
-  }
-});
-
-export const registerUser = createAsyncThunk<
-  RegisterResponse,
-  RegisterRequest,
-  { rejectValue: BackendError }
->('user/register', async (userData, { rejectWithValue }) => {
-  try {
-    const response = await register(userData);
-
-    if (!response) {
-      return rejectWithValue(['Server returned empty response']);
-    }
-
-    return response;
-  } catch (err) {
-    if (axios.isAxiosError(err)) {
-      const serverErrors = err.response?.data?.errors as BackendError;
-      return rejectWithValue(serverErrors || [err.message]);
-    }
-
-    return rejectWithValue([
-      err instanceof Error ? err.message : 'Unknown error',
-    ]);
   }
 });
