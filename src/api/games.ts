@@ -1,6 +1,5 @@
-import type { Game, UserGameResponse } from '@/types/Game';
+import type { Game } from '@/types/Game';
 import { request } from './http';
-import { api } from './auth';
 
 export interface GetGamesRequest {
   search?: string;
@@ -39,17 +38,4 @@ export const getGames = (params: GetGamesRequest = {}) => {
 
 export const getGameById = (apiId: string | number) => {
   return request<Game>(`/games/${apiId}`);
-};
-
-export const addUserGame = (
-  apiId: number,
-  status: string
-): Promise<UserGameResponse> => {
-  const response = api.post<UserGameResponse>('/api/user-games', {
-    apiId,
-    status,
-  });
-
-  console.log('addUserGame response:', response);
-  return response;
 };

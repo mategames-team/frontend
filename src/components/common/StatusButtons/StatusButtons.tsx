@@ -3,32 +3,31 @@ import SaveIcon from '@/assets/icons/games-status/save.svg?react';
 import PlayingIcon from '@/assets/icons/games-status/game-controller.svg?react';
 import CompletedIcon from '@/assets/icons/games-status/checkmark.svg?react';
 import clsx from 'clsx';
+import type { GameStatus } from '@/types/Game';
 
 type Props = {
   variant?: Variant;
-  onAction?: (type: StatusType) => void;
+  onAction?: (type: GameStatus) => void;
   className?: string;
 };
 
 type Variant = 'compact' | 'full';
 
-type StatusType = 'BACKLOG' | 'IN_PROGRESS' | 'COMPLETED';
-
 const STATUS_BUTTONS = [
   {
-    type: 'BACKLOG',
+    status: 'BACKLOG',
     label: 'Save',
     ariaLabel: 'Add to wishlist',
     Icon: SaveIcon,
   },
   {
-    type: 'IN_PROGRESS',
+    status: 'IN_PROGRESS',
     label: 'Playing',
     ariaLabel: 'Mark as played',
     Icon: PlayingIcon,
   },
   {
-    type: 'COMPLETED',
+    status: 'COMPLETED',
     label: 'Completed',
     ariaLabel: 'Add to profile',
     Icon: CompletedIcon,
@@ -44,13 +43,13 @@ export const StatusButtons: React.FC<Props> = ({
     <div
       className={clsx(styles.status, styles[`status--${variant}`], className)}
     >
-      {STATUS_BUTTONS.map(({ type, label, ariaLabel, Icon }) => (
-        <div key={type} className={styles.status__item}>
+      {STATUS_BUTTONS.map(({ status, label, ariaLabel, Icon }) => (
+        <div key={status} className={styles.status__item}>
           <button
             type='button'
             className={styles.status__button}
             aria-label={ariaLabel}
-            onClick={() => onAction?.(type as StatusType)}
+            onClick={() => onAction?.(status as GameStatus)}
           >
             <Icon className={styles.icon} />
           </button>

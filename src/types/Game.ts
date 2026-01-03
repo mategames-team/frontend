@@ -20,7 +20,7 @@ export interface Game {
   genres?: GameGenre[];
 }
 
-export interface UserGameResponse {
+export interface GameDto {
   id: number;
   userId: number;
   gameDto: Game;
