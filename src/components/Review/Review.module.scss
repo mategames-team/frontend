@@ -1,0 +1,80 @@
+@import '@/styles/main.scss';
+
+.review {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background-color: $elements-bg;
+  padding: 12px 16px;
+  border-radius: 16px;
+
+  &__userInfo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+  }
+
+  &__username {
+    color: $secondary-color;
+    transform: translateY(2px);
+  }
+
+  &__date {
+    color: $color-gray-60;
+    transform: translateY(2px);
+  }
+
+  &__game {
+    color: $color-gray-60;
+    transform: translateY(2px);
+
+    .gameName {
+      font-weight: 600;
+      color: $light-purple;
+    }
+  }
+
+  &__rating {
+    background-color: $light-purple;
+    color: $color-gray-100;
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-left: auto;
+
+    font-weight: 600;
+    line-height: 20px;
+  }
+
+  &__content {
+    color: $primary-color;
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  &__vote {
+    display: flex;
+    gap: 16px;
+  }
+
+  &__voteBtn {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    color: $primary-color;
+    cursor: pointer;
+  }
+
+  &__voteIcon {
+    fill: $primary-color;
+  }
+
+  &__voteCount {
+    transform: translateY(2px);
+  }
+}

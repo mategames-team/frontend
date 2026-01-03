@@ -1,0 +1,11 @@
+@import '@/styles/main.scss';
+
+.games {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+
+  @include on-tablet {
+    gap: 8px;
+  }
+}

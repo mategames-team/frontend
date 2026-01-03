@@ -1,0 +1,126 @@
+@import '@/styles/main.scss';
+
+.filters {
+  min-width: 314px;
+  padding: 32px;
+  background-color: #1e1f2b;
+  color: #dfe0ee;
+  border: 1px solid #222;
+  border-radius: 12px;
+  max-height: fit-content;
+
+  @include on-tablet {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background-color: $color-gray-90;
+    border-radius: 0;
+    flex-direction: column;
+    overflow-y: auto;
+    transition: all 0.3s ease;
+
+    transform: translateX(-100%);
+    opacity: 0;
+    pointer-events: none;
+
+    &__open {
+      display: flex;
+      transform: translateX(0);
+      opacity: 1;
+      pointer-events: auto;
+      transition: all 0.3s ease;
+      max-height: 100vh;
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  &__title {
+    font-family: 'Hind', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  &__section {
+    margin-bottom: 24px;
+    border-bottom: 1px solid rgba(165, 166, 179, 0.3);
+  }
+
+  &__sectionTitle {
+    margin-bottom: 16px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  &__list {
+    padding-bottom: 16px;
+    list-style: none;
+  }
+
+  &__listItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      .radio__circle {
+        border-color: $light-purple;
+      }
+    }
+
+    &--active {
+      .radio__circle {
+        border-color: $light-purple;
+        background-color: transparent;
+
+        &::after {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      span {
+        color: #fff;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.radio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__circle {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #a5a6b3;
+    border-radius: 50%;
+    position: relative;
+    transition: all 0.2s ease;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 8px;
+      height: 8px;
+      background-color: $light-purple;
+      border-radius: 50%;
+      opacity: 0;
+      transform: scale(0);
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+  }
+}

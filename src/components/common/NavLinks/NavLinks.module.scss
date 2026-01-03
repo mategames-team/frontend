@@ -1,0 +1,21 @@
+@import '../../../styles/main';
+
+.nav {
+  display: flex;
+  gap: 20px;
+}
+
+.link {
+  text-decoration: none;
+  color: $secondary-color;
+  transition: 0.2s;
+  line-height: 1;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.active {
+  opacity: 1;
+}

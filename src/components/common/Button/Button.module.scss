@@ -1,0 +1,79 @@
+@import '@/styles/main.scss';
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0%;
+  line-height: 24px;
+
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-4px);
+  }
+
+  &:active {
+    transform: translateY(-2px);
+  }
+}
+
+.icon {
+  display: inline-flex;
+}
+
+.primary {
+  background-color: $light-purple;
+  color: $color-gray-100;
+
+  &:hover {
+    background-color: $accent-purple;
+    color: $secondary-color;
+  }
+
+  &:active {
+    background-color: $dark-purple;
+    color: $secondary-color;
+  }
+}
+
+.secondary {
+  border: 1px solid $light-purple;
+  color: $light-purple;
+
+  &:hover {
+    border: 1px solid $accent-purple;
+    color: $accent-purple;
+  }
+
+  &:active {
+    border: 1px solid $dark-purple;
+    color: $dark-purple;
+  }
+}
+
+.secondary-white {
+  border: 1px solid $white;
+  color: $white;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.large {
+  font-size: 20px;
+}
+
+.small {
+  width: 92px;
+  padding: 10px 0 8px;
+  border-radius: 8px;
+}

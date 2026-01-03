@@ -1,18 +1,24 @@
-import { useState } from 'react';
-import { HomePage } from './modules/HomePage/HomePage';
+import './styles/main.scss';
+import { Outlet } from 'react-router-dom';
+import { Header } from './components/Header/Header';
+import { Footer } from './components/Footer/Footer';
+import { Loader } from './components/Loader/Loader';
+import { useAppSelector } from './store/hooks';
 
 export const App = () => {
-  const [count, setCount] = useState(0);
+  const { isLoading } = useAppSelector((state) => state.user);
 
   return (
-    <>
-      <h1>Hello team project</h1>
-      <div className='card'>
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-      </div>
-      <HomePage />
-    </>
+    <div className=''>
+      {isLoading && <Loader progress={99} />}
+
+      <Header />
+
+      <main className='main'>
+        <Outlet />
+      </main>
+
+      <Footer />
+    </div>
   );
 };

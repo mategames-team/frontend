@@ -1,0 +1,27 @@
+@import '@/styles/main.scss';
+
+.reviews {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &__title {
+    color: $secondary-color;
+  }
+
+  &__filter {
+    display: flex;
+    gap: 12px;
+  }
+
+  &__tab {
+    width: auto;
+    padding: 6px 16px 4px;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+}

@@ -1,0 +1,46 @@
+@import '@/styles/main.scss';
+
+.diary {
+  background-color: $elements-bg;
+  border-radius: 12px;
+  padding: 24px;
+
+  @include on-tablet {
+    padding: 16px;
+  }
+}
+
+.title {
+  color: $secondary-color;
+  margin-bottom: 24px;
+}
+
+/* --- Review Section Styles --- */
+
+.reviewSection {
+  margin-top: 20px;
+  position: relative;
+}
+
+.textArea {
+  width: 100%;
+  min-height: 160px;
+  margin-bottom: 12px;
+  padding: 16px;
+  border: 1px solid $color-gray-60;
+  border-radius: 12px;
+  color: $secondary-color;
+  background-color: $elements-bg;
+  resize: none;
+  font-size: 20px;
+  line-height: 24px;
+
+  &::placeholder {
+    color: $color-gray-60;
+  }
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: flex-end;
+}
