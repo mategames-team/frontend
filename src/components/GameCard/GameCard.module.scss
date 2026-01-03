@@ -143,6 +143,7 @@
 
 .title {
   color: $secondary-color;
+  cursor: pointer;
 
   @include on-tablet {
     font-weight: 400;
