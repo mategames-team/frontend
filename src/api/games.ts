@@ -1,6 +1,5 @@
-import type { Game, GameDto } from '@/types/Game';
+import type { Game } from '@/types/Game';
 import { request } from './http';
-import { api } from './auth';
 
 export interface GetGamesRequest {
   search?: string;
