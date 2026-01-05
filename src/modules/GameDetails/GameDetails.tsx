@@ -142,10 +142,13 @@ export const GameDetails = () => {
         </div>
 
         <div className={styles.gameDetails__rateAction}>
-          <GameRatingForm gameId={game.apiId} onSubmissionSuccess={() => {}} />
+          <GameRatingForm
+            gameApiId={game.apiId}
+            onSubmissionSuccess={() => {}}
+          />
         </div>
 
-        <GameReviews />
+        <GameReviews gameApiId={game.apiId} />
       </section>
     </div>
   );

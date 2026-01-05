@@ -9,9 +9,18 @@
   border-radius: 16px;
 
   &__userInfo {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, max-content) 1fr;
     align-items: center;
     gap: 12px;
+
+    @include on-tablet {
+      grid-template-columns: repeat(3, max-content) 1fr;
+
+      grid-template-areas:
+        'item1 item2 item4 item5'
+        'item3 item3 item3 item3';
+    }
   }
 
   &__avatar {
@@ -37,6 +46,9 @@
     .gameName {
       font-weight: 600;
       color: $light-purple;
+    }
+    @include on-tablet {
+      grid-area: item3;
     }
   }
 
