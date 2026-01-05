@@ -1,20 +1,6 @@
 import type { User } from '@/types/User';
 import axios from 'axios';
-import { BASE_URL } from './http';
-
-export const api = axios.create({
-  baseURL: '',
-});
-
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-
-  return config;
-});
+import { api, BASE_URL } from './http';
 
 export interface RegisterRequest {
   profileName: string;
@@ -61,7 +47,7 @@ export const login = async (data: LoginRequest) => {
 };
 
 export const fetchMe = async (): Promise<User> => {
-  const response = await api.get('/api/users/info');
+  const response = await api.get(`${BASE_URL}/users/info`);
 
   console.log('fetchMe response:', response);
   return response.data;

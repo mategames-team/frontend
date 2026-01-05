@@ -3,26 +3,26 @@ import styles from './GameRatingForm.module.scss';
 import { Button } from '@/components/common/Button/Button';
 import { RatingBars } from '@/components/RatingBars/RatingBars';
 import clsx from 'clsx';
+import { createComment } from '@/api/comments';
 
 interface GameRatingFormProps {
-  gameId: number;
+  gameApiId: number;
   onSubmissionSuccess: () => void;
 }
 
 export const GameRatingForm: React.FC<GameRatingFormProps> = ({
-  // gameId,
+  gameApiId,
   onSubmissionSuccess,
 }) => {
   const [reviewText, setReviewText] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const [rating, setRating] = useState<number>(0);
 
   const handleRatingSubmit = async () => {
     setIsLoading(true);
 
     try {
-      // await sendRatingToBackend(gameId, rating, reviewText);
+      await createComment(gameApiId, reviewText, rating);
 
       onSubmissionSuccess();
       setReviewText('');
