@@ -5,6 +5,7 @@ import { GamesSection } from './GamesSection/GamesSection';
 import { useSearchParams } from 'react-router-dom';
 import type { ProfileTab } from '@/types/profileTabs';
 import { useAppSelector } from '@/store/hooks';
+import type { GameStatus } from '@/types/Game';
 
 const STATUS_MAP: Record<string, string> = {
   backlog: 'BACKLOG',
@@ -33,7 +34,7 @@ export const ProfilePage = () => {
             onChange={(tab: ProfileTab) => setSearchParams({ tab })}
           />
 
-          <GamesSection status={STATUS_MAP[activeTab]} />
+          <GamesSection status={STATUS_MAP[activeTab] as GameStatus} />
         </div>
       </div>
     </div>
