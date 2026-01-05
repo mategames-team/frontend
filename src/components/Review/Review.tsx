@@ -4,14 +4,18 @@ import Like from '@/assets/icons/like.svg?react';
 import Dislike from '@/assets/icons/dislike.svg?react';
 import { useState } from 'react';
 import clsx from 'clsx';
+import type { UserComment } from '@/types/Comment';
 
 type Variant = 'default' | 'profile';
 
-export const Review: React.FC<{ variant?: Variant }> = ({
-  variant = 'default',
-}) => {
-  const [likeCount, setLikeCount] = useState(0);
-  const [dislikeCount, setDislikeCount] = useState(0);
+interface Props {
+  variant?: Variant;
+  review: UserComment;
+}
+
+export const Review: React.FC<Props> = ({ variant = 'default', review }) => {
+  const [likeCount, setLikeCount] = useState(4);
+  const [dislikeCount, setDislikeCount] = useState(2);
   return (
     <section className={styles.review}>
       <div className={styles.review__userInfo}>
@@ -28,12 +32,10 @@ export const Review: React.FC<{ variant?: Variant }> = ({
             <span className={styles.gameName}>S.T.A.L.K.E.R</span>
           </span>
         )}
-        <span className={styles.review__rating}>7.5</span>
+        <span className={styles.review__rating}>{review?.rating || 0}</span>
       </div>
       <p className={clsx(styles.review__content, 'text-main')}>
-        This game is a masterpiece! I loved every minute of it. The storyline
-        was captivating, the characters were well-developed, and the gameplay
-        was smooth and enjoyable. Highly recommended!
+        {review?.text || 'No text'}
       </p>
       <div className={styles.review__vote}>
         <button
