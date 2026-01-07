@@ -42,7 +42,7 @@ export const getUserComments = async () => {
   const response = await api.get<{ content: UserComment[] }>(
     `${BASE_URL}/comments`
   );
-  console.log(response);
+  console.log('api/getUserComments', response);
 
   return response.data.content;
 };

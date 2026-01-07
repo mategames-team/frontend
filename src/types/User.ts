@@ -1,3 +1,5 @@
+import type { GameStatus } from './Game';
+
 export interface User {
   id: string;
   email: string;
@@ -5,4 +7,19 @@ export interface User {
   avatarUrl?: string;
   about?: string;
   location?: string;
+}
+
+export interface UserData {
+  token?: string;
+  id?: string;
+  email?: string;
+  profileName?: string;
+  about?: string;
+  location?: string;
+  userGames?: UserGame[];
+}
+
+export interface UserGame {
+  apiId: number;
+  status: GameStatus;
 }

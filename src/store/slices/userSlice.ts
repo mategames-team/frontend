@@ -1,21 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchCurrentUser, loginUser, registerUser } from './user.thunks';
 import type { GameStatus } from '@/types/Game';
-
-export interface UserGame {
-  apiId: number;
-  status: GameStatus;
-}
-
-export interface UserData {
-  token?: string;
-  id?: string;
-  email?: string;
-  profileName?: string;
-  about?: string;
-  location?: string;
-  userGames?: UserGame[];
-}
+import type { UserData } from '@/types/User';
 
 export interface UserState {
   data: UserData | null;

@@ -71,11 +71,13 @@ export const Filters: React.FC<Props> = ({
       }`}
     >
       <div className={styles.filters__header}>
-        <h2 className={styles.filters__title}>Resort filters</h2>
-        <CloseIcon
-          className={styles.filters__close}
-          onClick={() => setIsFiltersOpen(false)}
-        />
+        <h2 className={styles.filters__title}>Filters</h2>
+        {isFiltersOpen && (
+          <CloseIcon
+            className={styles.filters__close}
+            onClick={() => setIsFiltersOpen(false)}
+          />
+        )}
       </div>
 
       <div className={styles.filters__section}>

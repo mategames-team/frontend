@@ -1,31 +1,45 @@
 import styles from './ProfileHeader.module.scss';
+import { Link } from 'react-router-dom';
+import type { UserData } from '@/types/User';
 import userAvatar from '@/assets/avatars-female/female-2.png';
 import Location from '@/assets/icons/location.svg?react';
 import Settings from '@/assets/icons/settings.svg?react';
-import { Link, useNavigate } from 'react-router-dom';
-
-// import type { User } from '@/types/User';
-import { logout, type UserData } from '@/store/slices/userSlice';
-import { useAppDispatch } from '@/store/hooks';
+import { getUserComments } from '@/api/comments';
+import { useEffect, useMemo, useState } from 'react';
 
 type Props = {
-  userData: UserData | null;
+  userData: UserData;
 };
 
-const stats = [
-  { label: 'Wishlist', value: 24 },
-  { label: 'Reviews', value: 6 },
-  { label: 'Passed', value: 10 },
-];
-
 export const ProfileHeader: React.FC<Props> = ({ userData }) => {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  const [commentsCount, setCommentsCount] = useState<number>(0);
 
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate('/');
-  };
+  const gamesStats = useMemo(() => {
+    const userGames = userData?.userGames || [];
+
+    return {
+      backlog: userGames.filter((g) => g.status === 'BACKLOG').length,
+      completed: userGames.filter((g) => g.status === 'COMPLETED').length,
+    };
+  }, [userData?.userGames]);
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const comments = await getUserComments();
+        setCommentsCount(comments.length);
+      } catch (error) {
+        console.error('Failed to fetch comments', error);
+      }
+    };
+    fetchComments();
+  }, []);
+
+  const stats = [
+    { label: 'In backlog', value: gamesStats.backlog },
+    { label: 'Reviews', value: commentsCount },
+    { label: 'Completed', value: gamesStats.completed },
+  ];
 
   return (
     <section className={styles.header}>
@@ -37,12 +51,14 @@ export const ProfileHeader: React.FC<Props> = ({ userData }) => {
         />
         <div className={styles.header__info}>
           <h2 className={styles.header__username}>{userData?.profileName}</h2>
-          <div className={styles.header__locationWrapper}>
-            <Location className={styles.header__locationIcon} />
-            <span className={styles.header__location}>
-              {userData?.location || ''}
-            </span>
-          </div>
+          {userData?.location && (
+            <div className={styles.header__locationWrapper}>
+              <Location className={styles.header__locationIcon} />
+              <span className={styles.header__location}>
+                {userData?.location || ''}
+              </span>
+            </div>
+          )}
         </div>
         <Link to='/profile/settings' className={styles.header__settings}>
           <Settings className={styles.header__settingsIcon} />
@@ -58,12 +74,6 @@ export const ProfileHeader: React.FC<Props> = ({ userData }) => {
             <span className={styles.stats__label}>{stat.label}</span>
           </div>
         ))}
-      </div>
-
-      <div className={styles.actions}>
-        <button className={styles.actions__btn} onClick={handleLogout}>
-          Logout
-        </button>
       </div>
     </section>
   );

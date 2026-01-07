@@ -1,0 +1,56 @@
+@import '@/styles/main.scss';
+
+.userMobileMenu {
+  // background-color: $elements-bg;
+  border-radius: 12px;
+  padding: 16px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+  align-items: center;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.username {
+  color: $secondary-color;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: $primary-color;
+  margin-bottom: 20px;
+}
+
+.item {
+  color: $secondary-color;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 27px;
+}
+
+.exit {
+  color: $color-status-error;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
