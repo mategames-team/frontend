@@ -10,14 +10,18 @@ export const useUpdateGameStatus = (
   const dispatch = useAppDispatch();
 
   const updateStatus = async (newStatus: string, currentStatus?: string) => {
-    if (newStatus === currentStatus) return;
-
     try {
-      await addUserGame(gameApiId, newStatus);
+      if (newStatus === currentStatus) {
+        // await deleteUserGame(gameApiId);
+        // dispatch(deleteGame(gameApiId));
 
-      dispatch(
-        updateGame({ apiId: gameApiId, status: newStatus as GameStatus })
-      );
+        return;
+      } else {
+        await addUserGame(gameApiId, newStatus);
+        dispatch(
+          updateGame({ apiId: gameApiId, status: newStatus as GameStatus })
+        );
+      }
 
       if (onStatusChange) {
         onStatusChange();

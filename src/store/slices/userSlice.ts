@@ -54,7 +54,6 @@ const userSlice = createSlice({
       action: { payload: { apiId: number; status: GameStatus } }
     ) => {
       if (state.data) {
-        // Переконаємося, що userGames існує (якщо раптом з бекенду прийшов null)
         if (!state.data.userGames) {
           state.data.userGames = [];
         }
@@ -65,12 +64,17 @@ const userSlice = createSlice({
         );
 
         if (existingGame) {
-          // Якщо гра вже є в списку — оновлюємо її статус
           existingGame.status = status;
         } else {
-          // Якщо гри немає — додаємо новий об'єкт
           state.data.userGames.push({ apiId, status });
         }
+      }
+    },
+    deleteGame: (state, action: { payload: number }) => {
+      if (state.data && state.data.userGames) {
+        state.data.userGames = state.data.userGames?.filter(
+          (g) => g.apiId !== action.payload
+        );
       }
     },
   },
@@ -111,5 +115,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { login, logout, updateGame } = userSlice.actions;
+export const { login, logout, updateGame, deleteGame } = userSlice.actions;
 export default userSlice.reducer;
