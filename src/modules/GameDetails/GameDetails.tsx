@@ -8,6 +8,7 @@ import { GameReviews } from './GameReviews/GameReviews';
 import { Loader } from '@/components/Loader/Loader';
 import { getGameById } from '@/api/games';
 import { useUpdateGameStatus } from '@/hooks/useUpdateGameStatus';
+import { useAppSelector } from '@/store/hooks';
 
 const mockGameData: Game = {
   apiId: 1,
@@ -24,11 +25,18 @@ const mockGameData: Game = {
 };
 
 export const GameDetails = () => {
+  const { gameId } = useParams<{ gameId: string }>();
   const [game, setGame] = useState<Game | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
   const [isExpanded, setIsExpanded] = useState(false);
-  const { gameId } = useParams<{ gameId: string }>();
+
+  const { data } = useAppSelector((state) => state.user);
+
+  const currentStatus = data?.userGames?.find(
+    (g) => g.apiId === Number(gameId)
+  )?.status;
+
+  const { updateStatus } = useUpdateGameStatus(Number(gameId));
 
   // Fetch game details
   useEffect(() => {
@@ -57,8 +65,6 @@ export const GameDetails = () => {
   const isDescExpanded = () =>
     isExpanded ? game?.description : shortDescription;
 
-  const { updateStatus } = useUpdateGameStatus(Number(gameId));
-
   if (isLoading || !game) {
     return <Loader progress={70} />;
   }
@@ -77,7 +83,8 @@ export const GameDetails = () => {
           <StatusButtons
             variant='full'
             className={styles.statusBtn__onMobile}
-            onAction={(status) => updateStatus(status)}
+            onAction={(status) => updateStatus(status, currentStatus)}
+            activeStatus={currentStatus}
           />
 
           <div className={styles.gameDetails__info}>
@@ -115,7 +122,8 @@ export const GameDetails = () => {
               <StatusButtons
                 variant='full'
                 className={styles.statusBtn__onDesktop}
-                onAction={(status) => updateStatus(status)}
+                onAction={(status) => updateStatus(status, currentStatus)}
+                activeStatus={currentStatus}
               />
             </div>
 

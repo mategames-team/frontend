@@ -1,5 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchCurrentUser, loginUser, registerUser } from './user.thunks';
+import type { GameStatus } from '@/types/Game';
+
+export interface UserGame {
+  apiId: number;
+  status: GameStatus;
+}
 
 export interface UserData {
   token?: string;
@@ -8,6 +14,7 @@ export interface UserData {
   profileName?: string;
   about?: string;
   location?: string;
+  userGames?: UserGame[];
 }
 
 export interface UserState {
@@ -41,6 +48,30 @@ const userSlice = createSlice({
       state.isAuthenticated = false;
       state.error = null;
       localStorage.removeItem('token');
+    },
+    updateGame: (
+      state,
+      action: { payload: { apiId: number; status: GameStatus } }
+    ) => {
+      if (state.data) {
+        // Переконаємося, що userGames існує (якщо раптом з бекенду прийшов null)
+        if (!state.data.userGames) {
+          state.data.userGames = [];
+        }
+
+        const { apiId, status } = action.payload;
+        const existingGame = state.data.userGames.find(
+          (g) => g.apiId === apiId
+        );
+
+        if (existingGame) {
+          // Якщо гра вже є в списку — оновлюємо її статус
+          existingGame.status = status;
+        } else {
+          // Якщо гри немає — додаємо новий об'єкт
+          state.data.userGames.push({ apiId, status });
+        }
+      }
     },
   },
   extraReducers: (builder) => {
@@ -80,5 +111,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, updateGame } = userSlice.actions;
 export default userSlice.reducer;

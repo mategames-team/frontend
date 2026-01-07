@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { StatusButtons } from '../common/StatusButtons/StatusButtons';
 import { useUpdateGameStatus } from '@/hooks/useUpdateGameStatus';
+import { useAppSelector } from '@/store/hooks';
 
 interface Props {
   game: Game;
@@ -18,22 +19,16 @@ export const GameCard: React.FC<Props> = ({
   game,
   size = 'small',
   onStatusUpdated,
-  currentTabStatus,
 }) => {
   const classes = clsx(styles.card, styles[size]);
+
   const { updateStatus } = useUpdateGameStatus(game.apiId, onStatusUpdated);
 
-  // const addGameToStatus = async (newStatus: string) => {
-  //   try {
-  //     await addUserGame(game.apiId, newStatus);
+  const { data } = useAppSelector((state) => state.user);
 
-  //     if (newStatus !== currentTabStatus) {
-  //       onStatusUpdated?.();
-  //     }
-  //   } catch (error) {
-  //     console.error('Error adding game to status:', error);
-  //   }
-  // };
+  const currentStatus = data?.userGames?.find(
+    (g) => g.apiId === Number(game.apiId)
+  )?.status;
 
   return (
     <article className={classes}>
@@ -51,7 +46,8 @@ export const GameCard: React.FC<Props> = ({
         {/* Hover overlay content */}
         <div className={styles.hoverContent}>
           <StatusButtons
-            onAction={(status) => updateStatus(status, currentTabStatus)}
+            onAction={(status) => updateStatus(status, currentStatus)}
+            activeStatus={currentStatus}
           />
         </div>
       </div>
