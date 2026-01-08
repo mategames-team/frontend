@@ -6,11 +6,12 @@ import EyeVisible from '../../assets/icons/eye-outline.svg?react';
 import EyeInvisible from '../../assets/icons/eye-off.svg?react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { registerUser } from '@/store/slices/user.thunks';
+import { SuccessModal } from '../SuccessModal/SuccessModal';
 
 interface RegistrationModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSwitchToLogin?: () => void;
+  onSwitchToLogin: () => void;
 }
 
 interface FormErrors {
@@ -39,6 +40,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
     password: '',
     confirmPassword: '',
   });
+  const [isRegistered, setIsRegistered] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
   const { isLoading } = useAppSelector((state) => state.user);
@@ -77,7 +79,6 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
       confirmPassword: '',
     };
     let isValid = true;
-    console.log(email, username, password, confirmPassword, '123');
 
     // Email
     if (!email) {
@@ -135,7 +136,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
     if (!validateForm()) return;
 
     try {
-      const result = await dispatch(
+      dispatch(
         registerUser({
           email,
           profileName: username,
@@ -144,20 +145,24 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
         })
       ).unwrap();
 
-      console.log(result);
-      onClose();
-      // Navigate to login or show success message
+      setIsRegistered(true);
     } catch (error) {
       console.log('Registration failed', error);
-    } finally {
-      // Open login modal
-      if (onSwitchToLogin) {
-        onSwitchToLogin();
-      }
     }
   };
 
   if (!isOpen) return null;
+
+  if (isRegistered) {
+    return (
+      <SuccessModal
+        message='You have successfully registered'
+        buttonText='Go to login'
+        onButtonClick={onSwitchToLogin}
+        onClose={onClose}
+      />
+    );
+  }
 
   return (
     <div

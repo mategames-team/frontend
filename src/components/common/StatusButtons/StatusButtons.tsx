@@ -9,6 +9,7 @@ type Props = {
   variant?: Variant;
   onAction?: (type: GameStatus) => void;
   className?: string;
+  activeStatus?: GameStatus;
 };
 
 type Variant = 'compact' | 'full';
@@ -38,6 +39,7 @@ export const StatusButtons: React.FC<Props> = ({
   variant = 'compact',
   onAction,
   className,
+  activeStatus,
 }) => {
   return (
     <div
@@ -47,7 +49,10 @@ export const StatusButtons: React.FC<Props> = ({
         <div key={status} className={styles.status__item}>
           <button
             type='button'
-            className={styles.status__button}
+            className={clsx(
+              styles.status__button,
+              activeStatus === status && styles['status__button--active']
+            )}
             aria-label={ariaLabel}
             onClick={() => onAction?.(status as GameStatus)}
           >

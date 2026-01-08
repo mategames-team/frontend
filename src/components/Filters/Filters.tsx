@@ -57,9 +57,7 @@ export const Filters: React.FC<Props> = ({
         <div className={styles.radio}>
           <div className={styles.radio__circle}></div>
         </div>
-        <span className='text-secondary'>
-          {value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()}
-        </span>
+        <span className='text-secondary'>{value}</span>
       </li>
     );
   };
@@ -71,17 +69,19 @@ export const Filters: React.FC<Props> = ({
       }`}
     >
       <div className={styles.filters__header}>
-        <h2 className={styles.filters__title}>Resort filters</h2>
-        <CloseIcon
-          className={styles.filters__close}
-          onClick={() => setIsFiltersOpen(false)}
-        />
+        <h2 className={styles.filters__title}>Filters</h2>
+        {isFiltersOpen && (
+          <CloseIcon
+            className={styles.filters__close}
+            onClick={() => setIsFiltersOpen(false)}
+          />
+        )}
       </div>
 
       <div className={styles.filters__section}>
         <h4 className={styles.filters__sectionTitle}>Platforms</h4>
         <ul className={styles.filters__list}>
-          {['Pc', 'Playstation', 'Xbox'].map((platform) =>
+          {['PC', 'PlayStation', 'Xbox'].map((platform) =>
             renderFilterItem('platforms', platform)
           )}
         </ul>

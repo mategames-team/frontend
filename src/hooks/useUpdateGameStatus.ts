@@ -1,28 +1,35 @@
 import { addUserGame } from '@/api/user-games';
-import { useState } from 'react';
+import type { GameStatus } from '@/types/Game';
+import { useAppDispatch } from '@/store/hooks';
+import { updateGame } from '@/store/slices/userSlice';
 
 export const useUpdateGameStatus = (
   gameApiId: number,
   onStatusChange?: () => void
 ) => {
-  const [isUpdating, setIsUpdating] = useState(false);
+  const dispatch = useAppDispatch();
 
   const updateStatus = async (newStatus: string, currentStatus?: string) => {
-    if (newStatus === currentStatus) return;
-
-    setIsUpdating(true);
     try {
-      await addUserGame(gameApiId, newStatus);
+      if (newStatus === currentStatus) {
+        // await deleteUserGame(gameApiId);
+        // dispatch(deleteGame(gameApiId));
+
+        return;
+      } else {
+        await addUserGame(gameApiId, newStatus);
+        dispatch(
+          updateGame({ apiId: gameApiId, status: newStatus as GameStatus })
+        );
+      }
 
       if (onStatusChange) {
         onStatusChange();
       }
     } catch (error) {
-      console.error('Failed to update status:', error);
-    } finally {
-      setIsUpdating(false);
+      console.error(error);
     }
   };
 
-  return { updateStatus, isUpdating };
+  return { updateStatus };
 };

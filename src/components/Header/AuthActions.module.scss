@@ -1,6 +1,7 @@
 @import '../../styles/main';
 
 .auth {
+  position: relative;
   display: flex;
   gap: 24px;
   margin-left: auto;
@@ -18,5 +19,8 @@
   &__loginIcon {
     color: $light-purple;
     border: 1px solid $light-purple;
+  }
+  &__username {
+    cursor: pointer;
   }
 }

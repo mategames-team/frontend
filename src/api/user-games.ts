@@ -27,3 +27,7 @@ export const getUserGames = async (status: GameStatus) => {
   console.log('/api/getUserGames.ts response:', response);
   return response.data.content;
 };
+
+export const deleteUserGame = async (gameId: number) => {
+  await api.delete(`${BASE_URL}/user-games/${gameId}`);
+};

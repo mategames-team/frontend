@@ -1,7 +1,8 @@
 import styles from './AuthActions.module.scss';
 import { Button } from '../common/Button/Button';
 import { useAppSelector } from '@/store/hooks';
-import { Link } from 'react-router-dom';
+import { UserDropdown } from '../common/UserDropdown/UserDropdown';
+import { useEffect, useRef, useState } from 'react';
 
 type Props = {
   openRegistrationModal: () => void;
@@ -12,14 +13,37 @@ export const AuthActions: React.FC<Props> = ({
   openRegistrationModal,
   openLoginModal,
 }) => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const { data, isAuthenticated } = useAppSelector((state) => state.user);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
-    <div className={styles.auth}>
+    <div className={styles.auth} ref={dropdownRef}>
       {isAuthenticated ? (
-        <Link to='/profile'>
-          <span className={styles.auth__username}>{data?.profileName}</span>
-        </Link>
+        <>
+          <span
+            className={styles.auth__username}
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          >
+            {data?.profileName}
+          </span>
+          {isDropdownOpen && (
+            <UserDropdown onClose={() => setIsDropdownOpen(false)} />
+          )}
+        </>
       ) : (
         <>
           <button className={styles.auth__login} onClick={openLoginModal}>

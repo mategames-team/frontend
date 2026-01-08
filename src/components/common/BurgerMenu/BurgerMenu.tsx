@@ -4,7 +4,7 @@ import { Logo } from '../Logo/Logo';
 import CloseIcon from '@/assets/icons/close.svg?react';
 import { Button } from '../Button/Button';
 import { useAppSelector } from '@/store/hooks';
-import { Link } from 'react-router-dom';
+import { UserMenuContent } from '../UserMenuDropdown/UserMenuDropdown';
 
 type Props = {
   isMenuOpen: boolean;
@@ -31,9 +31,7 @@ export const BurgerMenu: React.FC<Props> = ({
       </div>
 
       {isAuthenticated ? (
-        <Link to='/profile' onClick={closeMenu}>
-          <span className={styles.auth__username}>{data?.profileName}</span>
-        </Link>
+        <UserMenuContent userData={data} onItemClick={closeMenu} />
       ) : (
         <nav>
           <NavLinks

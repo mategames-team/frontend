@@ -1,5 +1,7 @@
 import styles from './SettingsPage.module.scss';
 import clsx from 'clsx';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import userAvatarMale1 from '@/assets/avatars-male/male-1.png';
 import userAvatarMale2 from '@/assets/avatars-male/male-2.png';
 import userAvatarMale3 from '@/assets/avatars-male/male-3.png';
@@ -13,18 +15,37 @@ import userAvatarFemale5 from '@/assets/avatars-female/female-5.png';
 import ArrowRight from '@/assets/icons/arrow-right.svg?react';
 import ExitIcon from '@/assets/icons/exit.svg?react';
 import { Button } from '@/components/common/Button/Button';
-import { useAppDispatch } from '@/store/hooks';
-import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { logout } from '@/store/slices/userSlice';
+import { updateProfile } from '@/store/slices/user.thunks';
+import { ChangePassword } from '@/components/ChangePassword/ChangePassword';
 
 export const SettingsPage = () => {
-  const dispatch = useAppDispatch();
+  const { data, isLoading } = useAppSelector((state) => state.user);
+  const [username, setUsername] = useState<string>(data?.profileName || '');
+  const [location, setLocation] = useState<string>(data?.location || '');
+  const [about, setAbout] = useState<string>(data?.about || '');
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const handleLogout = () => {
     dispatch(logout());
     navigate('/');
   };
+
+  const handleSubmit = async () => {
+    try {
+      dispatch(updateProfile({ profileName: username, about, location }));
+    } catch (error) {
+      console.log('updateUserData error:', error);
+    }
+  };
+
+  const isChanged =
+    username !== (data?.profileName || '') ||
+    location !== (data?.location || '') ||
+    about !== (data?.about || '');
 
   return (
     <section className={styles.settings}>
@@ -107,7 +128,7 @@ export const SettingsPage = () => {
 
               <form
                 className={styles.profileForm__form}
-                onSubmit={(e) => e.preventDefault()}
+                onSubmit={handleSubmit}
               >
                 <h4
                   className={clsx(
@@ -127,6 +148,8 @@ export const SettingsPage = () => {
                   <input
                     type='text'
                     placeholder='Username'
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     className={clsx(
                       styles.profileForm__input,
                       'text-secondary'
@@ -143,6 +166,8 @@ export const SettingsPage = () => {
                   <input
                     type='text'
                     placeholder='Location'
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
                     className={clsx(
                       styles.profileForm__input,
                       'text-secondary'
@@ -158,6 +183,8 @@ export const SettingsPage = () => {
                   </label>
                   <textarea
                     placeholder='Tell something about yourself'
+                    value={about}
+                    onChange={(e) => setAbout(e.target.value)}
                     className={clsx(
                       styles.profileForm__textarea,
                       'text-secondary'
@@ -165,7 +192,11 @@ export const SettingsPage = () => {
                   />
                 </div>
 
-                <Button type='submit' className={styles.profileForm__submit}>
+                <Button
+                  type='submit'
+                  className={styles.profileForm__submit}
+                  disabled={!isChanged || isLoading}
+                >
                   Save changes
                 </Button>
               </form>
@@ -242,11 +273,10 @@ export const SettingsPage = () => {
             <div className={styles.settingsSecurity}>
               <h2 className={styles.settings__title}>Password and security</h2>
               <div className={styles.settingsSecurity__content}>
-                <div className={styles.settingsSecurity__action}>
-                  <h4 className={styles.settings__subtitle}>Change e-mail</h4>
-                  <ArrowRight className={styles.settingsSecurity__arrow} />
-                </div>
-                <div className={styles.settingsSecurity__action}>
+                <div
+                  className={styles.settingsSecurity__action}
+                  onClick={() => setIsModalOpen(true)}
+                >
                   <h4 className={styles.settings__subtitle}>Change password</h4>
                   <ArrowRight className={styles.settingsSecurity__arrow} />
                 </div>
@@ -261,6 +291,11 @@ export const SettingsPage = () => {
               <span>Exit from account</span>
             </button>
           </div>
+
+          <ChangePassword
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+          />
         </div>
       </div>
     </section>

@@ -11,29 +11,18 @@ import SearchIcon from '@/assets/icons/search.svg?react';
 import CloseIcon from '@/assets/icons/close.svg?react';
 import { BurgerMenu } from '../common/BurgerMenu/BurgerMenu';
 
+type ModalType = 'login' | 'registration' | 'success' | null;
+
 export const Header = () => {
-  const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [activeModal, setActiveModal] = useState<ModalType>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchbarOpen, setIsSearchbarOpen] = useState(false);
 
+  const closeModals = () => setActiveModal(null);
+  const openLogin = () => setActiveModal('login');
+  const openRegister = () => setActiveModal('registration');
+
   const closeMenu = () => setIsMenuOpen(false);
-
-  const openRegistrationModal = () => setIsRegistrationModalOpen(true);
-  const closeRegistrationModal = () => setIsRegistrationModalOpen(false);
-
-  const openLoginModal = () => setIsLoginModalOpen(true);
-  const closeLoginModal = () => setIsLoginModalOpen(false);
-
-  const switchToLogin = () => {
-    closeRegistrationModal();
-    openLoginModal();
-  };
-
-  const switchToRegistration = () => {
-    closeLoginModal();
-    openRegistrationModal();
-  };
 
   return (
     <header className={styles.header}>
@@ -52,8 +41,8 @@ export const Header = () => {
 
           <div className={styles.header__auth}>
             <AuthActions
-              openRegistrationModal={openRegistrationModal}
-              openLoginModal={openLoginModal}
+              openRegistrationModal={openRegister}
+              openLoginModal={openLogin}
             />
           </div>
 
@@ -88,21 +77,26 @@ export const Header = () => {
         <BurgerMenu
           isMenuOpen={isMenuOpen}
           closeMenu={closeMenu}
-          openRegistrationModal={openRegistrationModal}
-          openLoginModal={openLoginModal}
+          openRegistrationModal={openRegister}
+          openLoginModal={openLogin}
         />
       </div>
 
-      <RegistrationModal
-        isOpen={isRegistrationModalOpen}
-        onClose={closeRegistrationModal}
-        onSwitchToLogin={switchToLogin}
-      />
-      <LoginModal
-        isOpen={isLoginModalOpen}
-        onClose={closeLoginModal}
-        onSwitchToRegistration={switchToRegistration}
-      />
+      {activeModal === 'registration' && (
+        <RegistrationModal
+          isOpen={true}
+          onClose={closeModals}
+          onSwitchToLogin={openLogin}
+        />
+      )}
+
+      {activeModal === 'login' && (
+        <LoginModal
+          isOpen={true}
+          onClose={closeModals}
+          onSwitchToRegistration={openRegister}
+        />
+      )}
     </header>
   );
 };

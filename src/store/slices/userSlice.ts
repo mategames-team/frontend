@@ -1,14 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { fetchCurrentUser, loginUser, registerUser } from './user.thunks';
-
-export interface UserData {
-  token?: string;
-  id?: string;
-  email?: string;
-  profileName?: string;
-  about?: string;
-  location?: string;
-}
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import {
+  fetchCurrentUser,
+  loginUser,
+  registerUser,
+  updateProfile,
+} from './user.thunks';
+import type { GameStatus } from '@/types/Game';
+import type { UserData } from '@/types/User';
 
 export interface UserState {
   data: UserData | null;
@@ -42,6 +40,39 @@ const userSlice = createSlice({
       state.error = null;
       localStorage.removeItem('token');
     },
+    updateGame: (
+      state,
+      action: { payload: { apiId: number; status: GameStatus } }
+    ) => {
+      if (state.data) {
+        if (!state.data.userGames) {
+          state.data.userGames = [];
+        }
+
+        const { apiId, status } = action.payload;
+        const existingGame = state.data.userGames.find(
+          (g) => g.apiId === apiId
+        );
+
+        if (existingGame) {
+          existingGame.status = status;
+        } else {
+          state.data.userGames.push({ apiId, status });
+        }
+      }
+    },
+    deleteGame: (state, action: { payload: number }) => {
+      if (state.data && state.data.userGames) {
+        state.data.userGames = state.data.userGames?.filter(
+          (g) => g.apiId !== action.payload
+        );
+      }
+    },
+    updateUserInfo: (state, action: PayloadAction<Partial<UserData>>) => {
+      if (state.data) {
+        state.data = { ...state.data, ...action.payload };
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -64,6 +95,12 @@ const userSlice = createSlice({
         state.data = { ...state.data, ...action.payload };
         state.isLoading = false;
       })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        if (state.data) {
+          state.data = { ...state.data, ...action.payload };
+        }
+        state.isLoading = false;
+      })
 
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
@@ -80,5 +117,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, updateGame, deleteGame, updateUserInfo } =
+  userSlice.actions;
 export default userSlice.reducer;
