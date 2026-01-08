@@ -61,19 +61,48 @@ export const LoginModal: React.FC<LoginModalProps> = ({
     }
   };
 
+  const validateForm = () => {
+    const newErrors: FormErrors = {
+      email: '',
+      password: '',
+    };
+    let isValid = true;
+
+    // Email
+    if (!email) {
+      newErrors.email = 'Please enter an email.';
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = 'E-mail is not valid.';
+      isValid = false;
+    }
+
+    // Password
+    if (!password) {
+      newErrors.password = 'Please enter a password.';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log('Form submitted:', { email, password });
+    if (!validateForm()) return;
 
     try {
-      const result = await dispatch(loginUser({ email, password })).unwrap();
+      await dispatch(loginUser({ email, password })).unwrap();
 
-      console.log(result);
-      dispatch(fetchCurrentUser());
+      await dispatch(fetchCurrentUser());
       onClose();
     } catch (error) {
-      console.log('Registration failed', error);
+      console.log('Login failed', error);
+      setErrors({
+        email: 'Invalid email or password.',
+        password: 'Invalid email or password.',
+      });
     }
   };
 

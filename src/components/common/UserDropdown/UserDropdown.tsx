@@ -1,5 +1,5 @@
 import styles from './UserDropdown.module.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '@/store/slices/userSlice';
 import ExitIcon from '@/assets/icons/exit.svg?react';
@@ -11,10 +11,12 @@ interface Props {
 
 export const UserDropdown: React.FC<Props> = ({ onClose }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     dispatch(logout());
     onClose();
+    navigate('/');
   };
 
   return (

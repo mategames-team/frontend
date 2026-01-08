@@ -1,6 +1,6 @@
 import styles from './UserMenuDropdown.module.scss';
 import clsx from 'clsx';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '@/store/slices/userSlice';
 import ExitIcon from '@/assets/icons/exit.svg?react';
@@ -14,10 +14,12 @@ type Props = {
 
 export const UserMenuContent: React.FC<Props> = ({ userData, onItemClick }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     dispatch(logout());
     onItemClick?.();
+    navigate('/');
   };
 
   return (

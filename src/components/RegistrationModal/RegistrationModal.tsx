@@ -79,7 +79,6 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
       confirmPassword: '',
     };
     let isValid = true;
-    console.log(email, username, password, confirmPassword, '123');
 
     // Email
     if (!email) {
