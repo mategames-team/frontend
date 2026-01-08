@@ -27,7 +27,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
-  useState<boolean>(false);
   const [errors, setErrors] = useState<FormErrors>({
     email: '',
     password: '',

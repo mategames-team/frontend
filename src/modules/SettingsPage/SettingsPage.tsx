@@ -18,12 +18,14 @@ import { Button } from '@/components/common/Button/Button';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { logout } from '@/store/slices/userSlice';
 import { updateProfile } from '@/store/slices/user.thunks';
+import { ChangePassword } from '@/components/ChangePassword/ChangePassword';
 
 export const SettingsPage = () => {
   const { data, isLoading } = useAppSelector((state) => state.user);
   const [username, setUsername] = useState<string>(data?.profileName || '');
   const [location, setLocation] = useState<string>(data?.location || '');
   const [about, setAbout] = useState<string>(data?.about || '');
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -271,11 +273,10 @@ export const SettingsPage = () => {
             <div className={styles.settingsSecurity}>
               <h2 className={styles.settings__title}>Password and security</h2>
               <div className={styles.settingsSecurity__content}>
-                <div className={styles.settingsSecurity__action}>
-                  <h4 className={styles.settings__subtitle}>Change e-mail</h4>
-                  <ArrowRight className={styles.settingsSecurity__arrow} />
-                </div>
-                <div className={styles.settingsSecurity__action}>
+                <div
+                  className={styles.settingsSecurity__action}
+                  onClick={() => setIsModalOpen(true)}
+                >
                   <h4 className={styles.settings__subtitle}>Change password</h4>
                   <ArrowRight className={styles.settingsSecurity__arrow} />
                 </div>
@@ -290,6 +291,11 @@ export const SettingsPage = () => {
               <span>Exit from account</span>
             </button>
           </div>
+
+          <ChangePassword
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+          />
         </div>
       </div>
     </section>

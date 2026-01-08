@@ -13,3 +13,15 @@ export const patchUserData = async (data: UserData) => {
 
   return response.data;
 };
+
+export const patchUserPassword = async (data: {
+  currentPassword: string;
+  newPassword: string;
+  repeatPassword: string;
+}) => {
+  const response = await api.patch(`${BASE_URL}/users/me/password`, data);
+
+  console.log('patchUserPassword response:', response);
+
+  return response.data;
+};
