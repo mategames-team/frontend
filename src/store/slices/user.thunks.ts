@@ -1,13 +1,13 @@
 import {
   register,
   login,
-  fetchMe,
   type RegisterRequest,
   type RegisterResponse,
   type LoginRequest,
   type LoginResponse,
 } from '@/api/auth';
-import type { User } from '@/types/User';
+import { getUserData, patchUserData } from '@/api/user-data';
+import type { UserData } from '@/types/User';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -69,12 +69,12 @@ export const loginUser = createAsyncThunk<
 });
 
 export const fetchCurrentUser = createAsyncThunk<
-  User,
+  UserData,
   void,
   { rejectValue: string[] }
 >('user/fetchMe', async (_, { rejectWithValue }) => {
   try {
-    const data = await fetchMe();
+    const data = await getUserData();
 
     return data;
   } catch (err) {
@@ -83,3 +83,18 @@ export const fetchCurrentUser = createAsyncThunk<
     return rejectWithValue(['Failed to fetch profile']);
   }
 });
+
+export const updateProfile = createAsyncThunk(
+  'user/updateProfile',
+  async (payload: Partial<UserData>, { rejectWithValue }) => {
+    try {
+      const response = await patchUserData(payload);
+
+      return response;
+    } catch (error) {
+      console.error('Error updating profile:', error);
+
+      return rejectWithValue(['Update failed']);
+    }
+  }
+);

@@ -16,6 +16,7 @@ export interface UserData {
   profileName?: string;
   about?: string;
   location?: string;
+  avatarUrl?: string;
   userGames?: UserGame[];
 }
 

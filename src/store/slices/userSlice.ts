@@ -1,5 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { fetchCurrentUser, loginUser, registerUser } from './user.thunks';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import {
+  fetchCurrentUser,
+  loginUser,
+  registerUser,
+  updateProfile,
+} from './user.thunks';
 import type { GameStatus } from '@/types/Game';
 import type { UserData } from '@/types/User';
 
@@ -63,6 +68,11 @@ const userSlice = createSlice({
         );
       }
     },
+    updateUserInfo: (state, action: PayloadAction<Partial<UserData>>) => {
+      if (state.data) {
+        state.data = { ...state.data, ...action.payload };
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -85,6 +95,12 @@ const userSlice = createSlice({
         state.data = { ...state.data, ...action.payload };
         state.isLoading = false;
       })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        if (state.data) {
+          state.data = { ...state.data, ...action.payload };
+        }
+        state.isLoading = false;
+      })
 
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
@@ -101,5 +117,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { login, logout, updateGame, deleteGame } = userSlice.actions;
+export const { login, logout, updateGame, deleteGame, updateUserInfo } =
+  userSlice.actions;
 export default userSlice.reducer;
