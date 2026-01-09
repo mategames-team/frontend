@@ -3,12 +3,30 @@ import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Button } from '../common/Button/Button';
 import CloseIcon from '@/assets/icons/close.svg?react';
+import Checkbox from '@/assets/icons/checkbox-default.svg?react';
+import clsx from 'clsx';
 
 interface Props {
-  handleFilterChange: (filters: Record<string, string>) => void;
+  handleFilterChange: (filters: Filters) => void;
   isFiltersOpen?: boolean;
   setIsFiltersOpen: (value: boolean) => void;
 }
+
+type Filters = {
+  platforms: string[];
+  genres: string[];
+  year: string[];
+};
+
+const genres = [
+  'Action',
+  'Adventure',
+  'RPG',
+  'Platformer',
+  'Shooter',
+  'Indie',
+  'Sports',
+];
 
 export const Filters: React.FC<Props> = ({
   handleFilterChange,
@@ -17,20 +35,28 @@ export const Filters: React.FC<Props> = ({
 }) => {
   const [searchParams] = useSearchParams();
 
-  const [localFilters, setLocalFilters] = useState({
-    platforms: searchParams.get('platforms') || '',
-    genres: searchParams.get('genres') || '',
-    year: searchParams.get('year') || '',
+  const [localFilters, setLocalFilters] = useState<Filters>({
+    platforms: searchParams.get('platforms')?.split(',').filter(Boolean) || [],
+    genres: searchParams.get('genres')?.split(',').filter(Boolean) || [],
+    year: searchParams.get('year')?.split(',').filter(Boolean) || [],
   });
 
-  const toggleLocalFilter = (category: string, value: string) => {
-    setLocalFilters((prev) => ({
-      ...prev,
-      [category]:
-        prev[category as keyof typeof prev] === value.toLowerCase()
-          ? ''
-          : value.toLowerCase(),
-    }));
+  const toggleLocalFilter = (
+    category: 'platforms' | 'genres' | 'year',
+    value: string
+  ) => {
+    const val = value.toLowerCase();
+    setLocalFilters((prev) => {
+      const currentValues = prev[category];
+      const isExist = currentValues.includes(val);
+
+      return {
+        ...prev,
+        [category]: isExist
+          ? currentValues.filter((v) => v !== val)
+          : [...currentValues, val],
+      };
+    });
   };
 
   const onApply = () => {
@@ -41,21 +67,38 @@ export const Filters: React.FC<Props> = ({
     }
   };
 
-  const renderFilterItem = (category: string, value: string) => {
+  const handleReset = () => {
+    const clearedFilters = {
+      platforms: [],
+      genres: [],
+      year: [],
+    };
+
+    setLocalFilters(clearedFilters);
+    handleFilterChange(clearedFilters);
+
+    if (isFiltersOpen) {
+      setIsFiltersOpen(false);
+    }
+  };
+
+  const renderFilterItem = (
+    category: 'platforms' | 'genres' | 'year',
+    value: string
+  ) => {
     const val = value.toLowerCase();
-    const isActive =
-      localFilters[category as keyof typeof localFilters] === val;
+    const isActive = localFilters[category].includes(val);
 
     return (
       <li
         key={value}
-        className={`${styles.filters__listItem} ${
-          isActive ? styles['filters__listItem--active'] : ''
-        }`}
+        className={styles.filters__listItem}
         onClick={() => toggleLocalFilter(category, value)}
       >
-        <div className={styles.radio}>
-          <div className={styles.radio__circle}></div>
+        <div
+          className={clsx(styles.checkbox, isActive && styles.checkbox__active)}
+        >
+          {isActive && <Checkbox />}
         </div>
         <span className='text-secondary'>{value}</span>
       </li>
@@ -70,6 +113,13 @@ export const Filters: React.FC<Props> = ({
     >
       <div className={styles.filters__header}>
         <h2 className={styles.filters__title}>Filters</h2>
+        <button
+          type='button'
+          className={styles.filters__resetBtn}
+          onClick={handleReset}
+        >
+          Reset all
+        </button>
         {isFiltersOpen && (
           <CloseIcon
             className={styles.filters__close}
@@ -90,9 +140,7 @@ export const Filters: React.FC<Props> = ({
       <div className={styles.filters__section}>
         <h4 className={styles.filters__sectionTitle}>Genre</h4>
         <ul className={styles.filters__list}>
-          {['Action', 'Adventure', 'RPG'].map((genre) =>
-            renderFilterItem('genres', genre)
-          )}
+          {genres.map((genre) => renderFilterItem('genres', genre))}
         </ul>
       </div>
 

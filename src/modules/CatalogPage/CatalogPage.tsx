@@ -20,15 +20,17 @@ export const CatalogPage = () => {
   const genres = searchParams.get('genres') || '';
   const year = searchParams.get('year') || '';
 
-  const handleFilterChange = (filters: Record<string, string>) => {
+  const handleFilterChange = (filters: Record<string, string[] | string>) => {
     setSearchParams((prev) => {
       const newParams = new URLSearchParams(prev);
 
       Object.entries(filters).forEach(([category, value]) => {
-        if (value) {
-          newParams.set(category, value);
-        } else {
-          newParams.delete(category);
+        if (Array.isArray(value)) {
+          if (value.length > 0) {
+            newParams.set(category, value.join(','));
+          } else {
+            newParams.delete(category);
+          }
         }
       });
 
@@ -41,12 +43,13 @@ export const CatalogPage = () => {
     const fetchGames = async () => {
       try {
         setIsLoading(true);
+        console.log(platforms, genres, year);
 
         const res = await getGames({
           search,
           platforms,
           genres,
-          year: year ? Number(year) : undefined,
+          year,
         });
 
         setGames(res.content);

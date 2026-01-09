@@ -29,12 +29,22 @@
 }
 
 .gameList {
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(4, minmax(231px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  align-items: start;
   gap: 20px;
+  list-style: none;
+  padding: 0;
 
   @include on-tablet {
-    grid-template-columns: repeat(2, minmax(167px, 1fr));
-    gap: 8px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+  }
+
+  &_item {
+    display: flex;
+    justify-content: center;
+    width: 100%;
   }
 }

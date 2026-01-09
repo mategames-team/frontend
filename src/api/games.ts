@@ -1,5 +1,6 @@
 import type { Game } from '@/types/Game';
-import { request } from './http';
+import { BASE_URL, request } from './http';
+import axios from 'axios';
 
 export interface GetGamesRequest {
   search?: string;
@@ -8,7 +9,7 @@ export interface GetGamesRequest {
   genres?: string;
   platforms?: string;
   sort?: string;
-  year?: number;
+  year?: string;
 }
 
 export interface GetGamesResponse {
@@ -18,22 +19,27 @@ export interface GetGamesResponse {
   totalPages: number;
 }
 
-export const getGames = (params: GetGamesRequest = {}) => {
+export const getGames = async (params: GetGamesRequest = {}) => {
   const query = new URLSearchParams();
+  console.log(params.year);
 
   if (params.search) query.set('search', params.search);
   if (params.page) query.set('page', String(params.page));
   if (params.limit) query.set('limit', String(params.limit));
   if (params.genres) query.set('genres', params.genres);
   if (params.platforms) query.set('platforms', params.platforms);
-  if (params.year) query.set('year', String(params.year));
+  if (params.year) query.set('year', String(params.year.split(',')[0])); // <-- fix this on backend
 
   const queryString = query.toString();
   const endpoint = queryString
     ? `/games/local/search?${queryString}`
     : '/games/local';
 
-  return request<GetGamesResponse>(endpoint);
+  console.log(endpoint);
+
+  const response = await axios.get<GetGamesResponse>(`${BASE_URL}${endpoint}`);
+
+  return response.data;
 };
 
 export const getGameById = (apiId: string | number) => {

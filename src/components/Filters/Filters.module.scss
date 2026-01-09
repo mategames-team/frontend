@@ -71,60 +71,37 @@
     margin-bottom: 12px;
     cursor: pointer;
     transition: all 0.2s ease;
-
-    &:hover {
-      .radio__circle {
-        border-color: $light-purple;
-      }
-    }
-
-    &--active {
-      .radio__circle {
-        border-color: $light-purple;
-        background-color: transparent;
-
-        &::after {
-          opacity: 1;
-          transform: scale(1);
-        }
-      }
-      span {
-        color: #fff;
-        font-weight: 500;
-      }
-    }
   }
 
   &__close {
     cursor: pointer;
   }
+
+  &__resetBtn {
+    background: none;
+    border: none;
+    color: $light-purple;
+    cursor: pointer;
+    transition: opacity 0.25s;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
 }
 
-.radio {
+.checkbox {
+  width: 20px;
+  height: 20px;
+  border: 1px solid $primary-color;
+  border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.2s;
+}
 
-  &__circle {
-    width: 18px;
-    height: 18px;
-    border: 2px solid #a5a6b3;
-    border-radius: 50%;
-    position: relative;
-    transition: all 0.2s ease;
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: 3px;
-      left: 3px;
-      width: 8px;
-      height: 8px;
-      background-color: $light-purple;
-      border-radius: 50%;
-      opacity: 0;
-      transform: scale(0);
-      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-  }
+.checkbox__active {
+  background-color: $light-purple;
+  border-color: $light-purple;
 }
