@@ -1,11 +1,12 @@
 @import '@/styles/main.scss';
 
 .games {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
   gap: 20px;
-  flex-wrap: wrap;
 
   @include on-tablet {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 8px;
   }
 }

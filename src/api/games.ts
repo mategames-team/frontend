@@ -21,7 +21,6 @@ export interface GetGamesResponse {
 
 export const getGames = async (params: GetGamesRequest = {}) => {
   const query = new URLSearchParams();
-  console.log(params.year);
 
   if (params.search) query.set('search', params.search);
   if (params.page) query.set('page', String(params.page));
@@ -36,7 +35,6 @@ export const getGames = async (params: GetGamesRequest = {}) => {
     : '/games/local';
 
   console.log(endpoint);
-
   const response = await axios.get<GetGamesResponse>(`${BASE_URL}${endpoint}`);
 
   return response.data;

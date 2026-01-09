@@ -1,8 +1,8 @@
 import styles from './Review.module.scss';
 import userAvatar from '@/assets/avatars-female/female-4.png';
-import Like from '@/assets/icons/like.svg?react';
-import Dislike from '@/assets/icons/dislike.svg?react';
-import { useState } from 'react';
+// import Like from '@/assets/icons/like.svg?react';
+// import Dislike from '@/assets/icons/dislike.svg?react';
+// import { useState } from 'react';
 import clsx from 'clsx';
 import type { UserComment } from '@/types/Comment';
 
@@ -14,8 +14,8 @@ interface Props {
 }
 
 export const Review: React.FC<Props> = ({ variant = 'default', review }) => {
-  const [likeCount, setLikeCount] = useState(4);
-  const [dislikeCount, setDislikeCount] = useState(2);
+  // const [likeCount, setLikeCount] = useState(4);
+  // const [dislikeCount, setDislikeCount] = useState(2);
   return (
     <section className={styles.review}>
       <div className={styles.review__userInfo}>
@@ -37,7 +37,7 @@ export const Review: React.FC<Props> = ({ variant = 'default', review }) => {
       <p className={clsx(styles.review__content, 'text-main')}>
         {review?.text || 'No text'}
       </p>
-      <div className={styles.review__vote}>
+      {/* <div className={styles.review__vote}>
         <button
           className={styles.review__voteBtn}
           onClick={() => setLikeCount((prev) => prev + 1)}
@@ -52,7 +52,7 @@ export const Review: React.FC<Props> = ({ variant = 'default', review }) => {
           <Dislike className={styles.review__voteIcon} />
           <span className={styles.review__voteCount}>{dislikeCount}</span>
         </button>
-      </div>
+      </div> */}
     </section>
   );
 };

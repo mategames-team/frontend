@@ -10,7 +10,7 @@ export const App = () => {
   const { isLoading } = useAppSelector((state) => state.user);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
     // dispatch(fetchCurrentUser());
   }, []);

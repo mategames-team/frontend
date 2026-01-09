@@ -8,17 +8,30 @@ import { mockGames } from '@/mock/mockGames';
 import { getGames } from '@/api/games';
 import type { Game } from '@/types/Game';
 import FiltersIcon from '@/assets/icons/filter.svg?react';
+import { Pagination } from '@/components/Pagination/Pagination';
 
 export const CatalogPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [games, setGames] = useState<Game[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState<boolean>(false);
+  const [totalPages, setTotalPages] = useState(0);
 
+  const currentPage = Number(searchParams.get('page')) || 1;
   const search = searchParams.get('search')?.toLowerCase().trim() || '';
   const platforms = searchParams.get('platforms') || '';
   const genres = searchParams.get('genres') || '';
   const year = searchParams.get('year') || '';
+
+  const handlePageChange = (newPage: number) => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.set('page', String(newPage));
+      return next;
+    });
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handleFilterChange = (filters: Record<string, string[] | string>) => {
     setSearchParams((prev) => {
@@ -43,16 +56,18 @@ export const CatalogPage = () => {
     const fetchGames = async () => {
       try {
         setIsLoading(true);
-        console.log(platforms, genres, year);
 
         const res = await getGames({
           search,
           platforms,
           genres,
           year,
+          page: currentPage - 1,
+          limit: 30,
         });
 
         setGames(res.content);
+        setTotalPages(res.totalPages);
       } catch (error) {
         console.error('Error fetching games from database:', error);
         setGames(mockGames);
@@ -62,7 +77,7 @@ export const CatalogPage = () => {
     };
 
     fetchGames();
-  }, [search, platforms, genres, year]);
+  }, [search, platforms, genres, year, currentPage]);
 
   if (isLoading) {
     return <Loader progress={99} />;
@@ -83,17 +98,27 @@ export const CatalogPage = () => {
         </div>
 
         <div className={styles.catalog__content}>
-          {games.length > 0 ? (
-            <ul className={styles.gameList}>
-              {games.map((game) => (
-                <li key={game.apiId} className={styles.gameList_item}>
-                  <GameCard game={game} />
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No games found</p>
-          )}
+          <div>
+            {games.length > 0 ? (
+              <ul className={styles.gameList}>
+                {games.map((game) => (
+                  <li key={game.apiId} className={styles.gameList_item}>
+                    <GameCard game={game} />
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No games found</p>
+            )}
+
+            {totalPages > 1 && (
+              <Pagination
+                current={currentPage}
+                total={totalPages}
+                onChange={handlePageChange}
+              />
+            )}
+          </div>
 
           <Filters
             handleFilterChange={handleFilterChange}

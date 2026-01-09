@@ -18,7 +18,7 @@ export const HomePage = () => {
       setIsLoading(true);
       const [allGamesRes, games2020Res] = await Promise.all([
         getGames(),
-        getGames({ year: 2020 }),
+        getGames({ year: '2020' }),
       ]);
 
       setPopularGames(allGamesRes.content);
