@@ -17,7 +17,6 @@ interface Props {
 export const Review: React.FC<Props> = ({ variant = 'default', review }) => {
   // const [likeCount, setLikeCount] = useState(4);
   // const [dislikeCount, setDislikeCount] = useState(2);
-  console.log('review', review);
   return (
     <section className={styles.review}>
       <div

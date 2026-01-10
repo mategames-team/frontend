@@ -4,8 +4,6 @@
   padding-bottom: 40px;
   background-color: $bg-color;
 
-  @include content-padding-inline();
-
   &__navigation {
     display: flex;
     align-items: start;

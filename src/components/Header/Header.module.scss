@@ -2,7 +2,6 @@
 
 .header {
   background-color: $bg-color;
-  @include content-padding-inline();
 
   &__wrapper {
     display: flex;

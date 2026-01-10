@@ -23,43 +23,45 @@ export const BurgerMenu: React.FC<Props> = ({
 
   return (
     <div className={`${styles.menu} ${isMenuOpen ? styles.open : ''}`}>
-      <div className={styles.menu__top}>
-        <Logo />
-        <button onClick={closeMenu} className={styles.closeButton}>
-          <CloseIcon />
-        </button>
-      </div>
+      <div className='container'>
+        <div className={styles.menu__top}>
+          <Logo />
+          <button onClick={closeMenu} className={styles.closeButton}>
+            <CloseIcon />
+          </button>
+        </div>
 
-      {isAuthenticated ? (
-        <UserMenuContent userData={data} onItemClick={closeMenu} />
-      ) : (
-        <nav>
-          <NavLinks
-            onClick={closeMenu}
-            links={['home', 'catalogue', 'profile']}
-            className={styles.menu__links}
-          />
+        {isAuthenticated ? (
+          <UserMenuContent userData={data} onItemClick={closeMenu} />
+        ) : (
+          <nav>
+            <NavLinks
+              onClick={closeMenu}
+              links={['home', 'catalogue', 'profile']}
+              className={styles.menu__links}
+            />
 
-          <Button
-            variant='secondary'
-            onClick={openLoginModal}
-            className={styles.menu__button}
-            fullWidth={true}
-          >
-            Log in
-          </Button>
-          <div className={styles.menu__register}>
-            Do you not have an account?&nbsp;
-            <button
-              type='button'
-              onClick={openRegistrationModal}
-              className={styles.menu__registerLink}
+            <Button
+              variant='secondary'
+              onClick={openLoginModal}
+              className={styles.menu__button}
+              fullWidth={true}
             >
-              Create account
-            </button>
-          </div>
-        </nav>
-      )}
+              Log in
+            </Button>
+            <div className={styles.menu__register}>
+              Do you not have an account?&nbsp;
+              <button
+                type='button'
+                onClick={openRegistrationModal}
+                className={styles.menu__registerLink}
+              >
+                Create account
+              </button>
+            </div>
+          </nav>
+        )}
+      </div>
     </div>
   );
 };
