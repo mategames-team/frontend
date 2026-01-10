@@ -27,7 +27,7 @@ export const ProfilePage = () => {
     <div className={styles.profile}>
       <div className='container'>
         <div className={styles.profile__content}>
-          <ProfileHeader userData={data} />
+          <ProfileHeader userData={data ?? {}} />
 
           <ProfileTabs
             activeTab={activeTab}
