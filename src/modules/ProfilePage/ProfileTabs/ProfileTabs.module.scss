@@ -3,4 +3,8 @@
 .tabs {
   display: flex;
   gap: 20px;
+
+  &__item {
+    font-size: 14px;
+  }
 }
