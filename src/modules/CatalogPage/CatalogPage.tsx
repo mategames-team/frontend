@@ -18,7 +18,7 @@ export const CatalogPage = () => {
   const [totalPages, setTotalPages] = useState(0);
 
   const currentPage = Number(searchParams.get('page')) || 1;
-  const search = searchParams.get('search')?.toLowerCase().trim() || '';
+  const name = searchParams.get('name')?.toLowerCase().trim() || '';
   const platforms = searchParams.get('platforms') || '';
   const genres = searchParams.get('genres') || '';
   const year = searchParams.get('year') || '';
@@ -58,7 +58,7 @@ export const CatalogPage = () => {
         setIsLoading(true);
 
         const res = await getGames({
-          search,
+          name,
           platforms,
           genres,
           year,
@@ -77,7 +77,7 @@ export const CatalogPage = () => {
     };
 
     fetchGames();
-  }, [search, platforms, genres, year, currentPage]);
+  }, [name, platforms, genres, year, currentPage]);
 
   if (isLoading) {
     return <Loader progress={99} />;
