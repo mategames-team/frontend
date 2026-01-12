@@ -4,6 +4,7 @@ import { Button } from '@/components/common/Button/Button';
 import { RatingBars } from '@/components/RatingBars/RatingBars';
 import clsx from 'clsx';
 import { createComment } from '@/api/comments';
+import { useAppSelector } from '@/store/hooks';
 
 interface GameRatingFormProps {
   gameApiId: number;
@@ -17,11 +18,17 @@ export const GameRatingForm: React.FC<GameRatingFormProps> = ({
   const [reviewText, setReviewText] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [rating, setRating] = useState<number>(0);
+  const { isAuthenticated } = useAppSelector((state) => state.user);
+  const [error, setError] = useState<string | null>(null);
 
   const handleRatingSubmit = async () => {
     setIsLoading(true);
 
     try {
+      if (!isAuthenticated) {
+        setError('You must be logged in to submit a review.');
+      }
+
       await createComment(gameApiId, reviewText, rating);
 
       onSubmissionSuccess();
@@ -41,11 +48,17 @@ export const GameRatingForm: React.FC<GameRatingFormProps> = ({
 
         <div className={styles.reviewSection}>
           <textarea
-            className={clsx(styles.textArea, 'text-main')}
+            className={clsx(
+              styles.textArea,
+              'text-main',
+              error && styles.textArea_error
+            )}
             value={reviewText}
             onChange={(e) => setReviewText(e.target.value)}
             placeholder='Share your mind'
           />
+
+          {error && <p className={styles.error}>{error}</p>}
 
           <div className={styles.buttonWrapper}>
             <Button

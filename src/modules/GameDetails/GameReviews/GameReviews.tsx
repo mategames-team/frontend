@@ -48,7 +48,6 @@ export const GameReviews: React.FC<{ gameApiId: number }> = ({ gameApiId }) => {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    // Скрол до заголовка коментарів, щоб користувач бачив початок списку
     const section = document.getElementById('reviews-list');
     section?.scrollIntoView({ behavior: 'smooth' });
   };

@@ -14,8 +14,9 @@ export const GameDetails = () => {
   const [game, setGame] = useState<Game | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const { data } = useAppSelector((state) => state.user);
+  const { data, isAuthenticated } = useAppSelector((state) => state.user);
 
   const currentStatus = data?.userGames?.find(
     (g) => g.apiId === Number(gameId)
@@ -46,6 +47,15 @@ export const GameDetails = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
   // Shorten description
   const paragraphs = game?.description?.split('</p>') ?? [];
   const shortDescription = paragraphs.slice(0, 1).join('</p>') + '</p>';
@@ -66,12 +76,22 @@ export const GameDetails = () => {
               className={styles.gameDetails__image}
             />
           </div>
-          <StatusButtons
-            variant='full'
-            className={styles.statusBtn__onMobile}
-            onAction={(status) => updateStatus(status, currentStatus)}
-            activeStatus={currentStatus}
-          />
+
+          <div className={styles.statusBtn__onMobile}>
+            {error && <p className={styles.error}>{error}</p>}
+            <StatusButtons
+              variant='full'
+              onAction={(status) => {
+                console.log('status', status);
+                if (!isAuthenticated) {
+                  setError('Login to update game status');
+                  return;
+                }
+                updateStatus(status, currentStatus);
+              }}
+              activeStatus={currentStatus}
+            />
+          </div>
 
           <div className={styles.gameDetails__info}>
             <header className={styles.gameDetails__header}>
@@ -107,12 +127,22 @@ export const GameDetails = () => {
                 )}
               </div>
 
-              <StatusButtons
-                variant='full'
-                className={styles.statusBtn__onDesktop}
-                onAction={(status) => updateStatus(status, currentStatus)}
-                activeStatus={currentStatus}
-              />
+              <div className={styles.statusBtn__onDesktop}>
+                {error && <p className={styles.error}>{error}</p>}
+
+                <StatusButtons
+                  variant='full'
+                  onAction={(status) => {
+                    console.log(isAuthenticated);
+                    if (!isAuthenticated) {
+                      setError('Login to update game status');
+                      return;
+                    }
+                    updateStatus(status, currentStatus);
+                  }}
+                  activeStatus={currentStatus}
+                />
+              </div>
             </div>
 
             <div className={styles.gameDetails__detailsGrid}>

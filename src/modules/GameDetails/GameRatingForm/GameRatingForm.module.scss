@@ -38,9 +38,27 @@
   &::placeholder {
     color: $color-gray-60;
   }
+
+  &_error {
+    border-color: $color-status-error;
+  }
 }
 
 .buttonWrapper {
   display: flex;
   justify-content: flex-end;
+}
+
+.error {
+  color: $color-status-error;
+  font-size: 16px;
+  line-height: 20px;
+  opacity: 0;
+  animation: fade-in 0.3s forwards;
+}
+
+@keyframes fade-in {
+  to {
+    opacity: 1;
+  }
 }

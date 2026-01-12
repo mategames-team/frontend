@@ -26,7 +26,6 @@ api.interceptors.response.use(
 
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      window.location.href = '/';
     }
   }
 );

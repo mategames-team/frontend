@@ -125,13 +125,48 @@
     display: none;
     @include on-tablet {
       display: grid;
+      position: relative;
     }
   }
 
   &__onDesktop {
     display: grid;
+    flex-shrink: 0;
+    position: relative;
+    align-items: start;
+
     @include on-tablet {
       display: none;
     }
+  }
+}
+
+.error {
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  background-color: $accent-purple;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 999;
+
+  animation: fadeInDown 0.2s ease-out;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: $accent-purple transparent transparent transparent;
   }
 }
