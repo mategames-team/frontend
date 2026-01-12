@@ -42,6 +42,10 @@ export const GameDetails = () => {
     fetchGameDetails();
   }, [gameId]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   // Shorten description
   const paragraphs = game?.description?.split('</p>') ?? [];
   const shortDescription = paragraphs.slice(0, 1).join('</p>') + '</p>';
@@ -126,7 +130,9 @@ export const GameDetails = () => {
               <div className={styles.gameDetails__detailGroup}>
                 <h4 className={styles.gameDetails__detailTitle}>Genre</h4>
                 <p className={`text-main ${styles.gameDetails__detailValue}`}>
-                  {game.genres?.map((g) => g.name).join(', ') ?? 'N/A'}
+                  {game.genres
+                    ?.map((g) => g.name[0] + g.name.slice(1).toLowerCase())
+                    .join(', ') ?? 'N/A'}
                 </p>
               </div>
             </div>

@@ -10,17 +10,18 @@ import MenuIcon from '@/assets/icons/menu.svg?react';
 import SearchIcon from '@/assets/icons/search.svg?react';
 import CloseIcon from '@/assets/icons/close.svg?react';
 import { BurgerMenu } from '../common/BurgerMenu/BurgerMenu';
-
-type ModalType = 'login' | 'registration' | 'success' | null;
+import { setActiveModal } from '@/store/slices/uiSlice';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 export const Header = () => {
-  const [activeModal, setActiveModal] = useState<ModalType>(null);
+  const { activeModal } = useAppSelector((state) => state.ui);
+  const dispatch = useAppDispatch();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchbarOpen, setIsSearchbarOpen] = useState(false);
 
-  const closeModals = () => setActiveModal(null);
-  const openLogin = () => setActiveModal('login');
-  const openRegister = () => setActiveModal('registration');
+  const closeModals = () => dispatch(setActiveModal(null));
+  const openLogin = () => dispatch(setActiveModal('login'));
+  const openRegister = () => dispatch(setActiveModal('registration'));
 
   const closeMenu = () => setIsMenuOpen(false);
 

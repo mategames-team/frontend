@@ -8,13 +8,10 @@ export const SearchBar = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const [value, setValue] = useState<string>(searchParams.get('name') || '');
+  const [value, setValue] = useState<string>(searchParams.get('search') || '');
   const [suggestions, setSuggestions] = useState<Game[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-
-  // const debounceDelay = 400;
-  // const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -33,11 +30,13 @@ export const SearchBar = () => {
     const timer = setTimeout(async () => {
       const newParams = new URLSearchParams(searchParams);
       if (value.trim()) {
-        newParams.set('name', value);
+        newParams.set('search', value);
         newParams.set('page', '1');
+        newParams.set('size', '5');
+        newParams.set('limit', '5');
 
         try {
-          const res = await getGames({ name: value, size: 5 });
+          const res = await getGames({ search: value, page_size: 5 });
           console.log(res);
           setSuggestions(res.content);
           setIsDropdownOpen(true);
@@ -45,7 +44,7 @@ export const SearchBar = () => {
           console.error(e);
         }
       } else {
-        newParams.delete('name');
+        newParams.delete('search');
         setSuggestions([]);
         setIsDropdownOpen(false);
       }
@@ -62,7 +61,8 @@ export const SearchBar = () => {
 
   const handleViewAll = () => {
     setIsDropdownOpen(false);
-    navigate(`/catalogue?name=${encodeURIComponent(value)}`);
+    console.log(encodeURIComponent(value));
+    navigate(`/catalogue?search=${encodeURIComponent(value)}`);
   };
 
   return (
@@ -78,7 +78,7 @@ export const SearchBar = () => {
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               setIsDropdownOpen(false);
-              navigate(`/catalogue?name=${encodeURIComponent(value)}`);
+              navigate(`/catalogue?search=${encodeURIComponent(value)}`);
             }
           }}
         />

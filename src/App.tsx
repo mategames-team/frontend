@@ -1,13 +1,24 @@
 import './styles/main.scss';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useSearchParams } from 'react-router-dom';
 import { Header } from './components/Header/Header';
 import { Footer } from './components/Footer/Footer';
-import { Loader } from './components/Loader/Loader';
-import { useAppSelector } from './store/hooks';
+import { useAppDispatch } from './store/hooks';
 import { useEffect } from 'react';
+import { setActiveModal } from './store/slices/uiSlice';
 
 export const App = () => {
-  const { isLoading } = useAppSelector((state) => state.user);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (searchParams.get('auth') === 'login') {
+      dispatch(setActiveModal('login'));
+
+      const newParams = new URLSearchParams(searchParams);
+      newParams.delete('auth');
+      setSearchParams(newParams, { replace: true });
+    }
+  }, [searchParams, dispatch, setSearchParams]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -17,8 +28,6 @@ export const App = () => {
 
   return (
     <div className=''>
-      {isLoading && <Loader progress={99} />}
-
       <Header />
 
       <main className='main'>

@@ -3,7 +3,6 @@ import { useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { GameCard } from '@/components/GameCard/GameCard';
 import { Filters } from '@/components/Filters/Filters';
-import { Loader } from '@/components/Loader/Loader';
 import { mockGames } from '@/mock/mockGames';
 import { getGames } from '@/api/games';
 import type { Game } from '@/types/Game';
@@ -18,7 +17,7 @@ export const CatalogPage = () => {
   const [totalPages, setTotalPages] = useState(0);
 
   const currentPage = Number(searchParams.get('page')) || 1;
-  const name = searchParams.get('name')?.toLowerCase().trim() || '';
+  const search = searchParams.get('search')?.toLowerCase().trim() || '';
   const platforms = searchParams.get('platforms') || '';
   const genres = searchParams.get('genres') || '';
   const year = searchParams.get('year') || '';
@@ -34,6 +33,7 @@ export const CatalogPage = () => {
   };
 
   const handleFilterChange = (filters: Record<string, string[] | string>) => {
+    console.log(filters);
     setSearchParams((prev) => {
       const newParams = new URLSearchParams(prev);
 
@@ -54,16 +54,19 @@ export const CatalogPage = () => {
 
   useEffect(() => {
     const fetchGames = async () => {
+      let formattedDates = '';
+      if (year) {
+        formattedDates = `${year}-01-01,${year}-12-31`;
+      }
+
       try {
         setIsLoading(true);
-
         const res = await getGames({
-          name,
+          search,
           platforms,
           genres,
-          year,
+          dates: formattedDates,
           page: currentPage - 1,
-          limit: 30,
         });
 
         setGames(res.content);
@@ -77,10 +80,10 @@ export const CatalogPage = () => {
     };
 
     fetchGames();
-  }, [name, platforms, genres, year, currentPage]);
+  }, [search, platforms, genres, year, currentPage]);
 
   if (isLoading) {
-    return <Loader progress={99} />;
+    return null;
   }
 
   return (

@@ -18,15 +18,38 @@ type Filters = {
   year: string[];
 };
 
-const genres = [
-  'Action',
-  'Adventure',
-  'RPG',
-  'Platformer',
-  'Shooter',
-  'Indie',
-  'Sports',
-];
+const SECTIONS = [
+  {
+    title: 'Platforms',
+    key: 'platforms',
+    data: [
+      { name: 'PC', value: '1' },
+      { name: 'PlayStation', value: '2' },
+      { name: 'Xbox', value: '3' },
+      { name: 'Nintendo Switch', value: '7' },
+    ],
+  },
+  {
+    title: 'Genre',
+    key: 'genres',
+    data: [
+      { name: 'Action', value: 'action' },
+      { name: 'Indie', value: 'indie' },
+      { name: 'Adventure', value: 'adventure' },
+      { name: 'RPG', value: 'role-playing-games-rpg' },
+      { name: 'Strategy', value: 'strategy' },
+      { name: 'Shooter', value: 'shooter' },
+    ],
+  },
+  {
+    title: 'Year',
+    key: 'year',
+    data: Array.from({ length: 11 }, (_, i) => ({
+      name: String(2025 - i),
+      value: String(2025 - i),
+    })),
+  },
+] as const;
 
 export const Filters: React.FC<Props> = ({
   handleFilterChange,
@@ -35,74 +58,36 @@ export const Filters: React.FC<Props> = ({
 }) => {
   const [searchParams] = useSearchParams();
 
-  const [localFilters, setLocalFilters] = useState<Filters>({
+  const [localFilters, setLocalFilters] = useState<Filters>(() => ({
     platforms: searchParams.get('platforms')?.split(',').filter(Boolean) || [],
     genres: searchParams.get('genres')?.split(',').filter(Boolean) || [],
     year: searchParams.get('year')?.split(',').filter(Boolean) || [],
-  });
+  }));
 
-  const toggleLocalFilter = (
-    category: 'platforms' | 'genres' | 'year',
-    value: string
-  ) => {
+  const toggleFilter = (category: keyof Filters, value: string) => {
     const val = value.toLowerCase();
-    setLocalFilters((prev) => {
-      const currentValues = prev[category];
-      const isExist = currentValues.includes(val);
 
+    setLocalFilters((prev) => {
+      const current = prev[category];
       return {
         ...prev,
-        [category]: isExist
-          ? currentValues.filter((v) => v !== val)
-          : [...currentValues, val],
+        [category]: current.includes(val)
+          ? current.filter((v) => v !== val)
+          : [...current, val],
       };
     });
   };
 
-  const onApply = () => {
-    handleFilterChange(localFilters);
+  const handleAction = (clear = false) => {
+    const filters = clear
+      ? { platforms: [], genres: [], year: [] }
+      : localFilters;
 
-    if (isFiltersOpen) {
-      setIsFiltersOpen(false);
-    }
-  };
+    if (clear) setLocalFilters(filters);
 
-  const handleReset = () => {
-    const clearedFilters = {
-      platforms: [],
-      genres: [],
-      year: [],
-    };
+    handleFilterChange(filters);
 
-    setLocalFilters(clearedFilters);
-    handleFilterChange(clearedFilters);
-
-    if (isFiltersOpen) {
-      setIsFiltersOpen(false);
-    }
-  };
-
-  const renderFilterItem = (
-    category: 'platforms' | 'genres' | 'year',
-    value: string
-  ) => {
-    const val = value.toLowerCase();
-    const isActive = localFilters[category].includes(val);
-
-    return (
-      <li
-        key={value}
-        className={styles.filters__listItem}
-        onClick={() => toggleLocalFilter(category, value)}
-      >
-        <div
-          className={clsx(styles.checkbox, isActive && styles.checkbox__active)}
-        >
-          {isActive && <Checkbox />}
-        </div>
-        <span className='text-secondary'>{value}</span>
-      </li>
-    );
+    if (isFiltersOpen) setIsFiltersOpen(false);
   };
 
   return (
@@ -116,7 +101,7 @@ export const Filters: React.FC<Props> = ({
         <button
           type='button'
           className={styles.filters__resetBtn}
-          onClick={handleReset}
+          onClick={() => handleAction(true)}
         >
           Reset all
         </button>
@@ -128,32 +113,37 @@ export const Filters: React.FC<Props> = ({
         )}
       </div>
 
-      <div className={styles.filters__section}>
-        <h4 className={styles.filters__sectionTitle}>Platforms</h4>
-        <ul className={styles.filters__list}>
-          {['PC', 'PlayStation', 'Xbox'].map((platform) =>
-            renderFilterItem('platforms', platform)
-          )}
-        </ul>
-      </div>
+      {SECTIONS.map((section) => (
+        <div key={section.key} className={styles.filters__section}>
+          <h4 className={styles.filters__sectionTitle}>{section.title}</h4>
+          <ul className={styles.filters__list}>
+            {section.data.map((item) => {
+              const isActive = localFilters[section.key].includes(
+                item.value.toLowerCase()
+              );
+              return (
+                <li
+                  key={item.value}
+                  className={styles.filters__listItem}
+                  onClick={() => toggleFilter(section.key, item.value)}
+                >
+                  <div
+                    className={clsx(
+                      styles.checkbox,
+                      isActive && styles.checkbox__active
+                    )}
+                  >
+                    {isActive && <Checkbox />}
+                  </div>
+                  <span className='text-secondary'>{item.name}</span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ))}
 
-      <div className={styles.filters__section}>
-        <h4 className={styles.filters__sectionTitle}>Genre</h4>
-        <ul className={styles.filters__list}>
-          {genres.map((genre) => renderFilterItem('genres', genre))}
-        </ul>
-      </div>
-
-      <div className={styles.filters__section}>
-        <h4 className={styles.filters__sectionTitle}>Year</h4>
-        <ul className={styles.filters__list}>
-          {['2023', '2022', '2021', '2020', '2019', '2018', '2017'].map(
-            (year) => renderFilterItem('year', year)
-          )}
-        </ul>
-      </div>
-
-      <Button variant='primary' fullWidth={true} onClick={onApply}>
+      <Button variant='primary' fullWidth={true} onClick={() => handleAction()}>
         Apply filters
       </Button>
     </aside>
