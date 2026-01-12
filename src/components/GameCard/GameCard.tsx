@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { StatusButtons } from '../common/StatusButtons/StatusButtons';
 import { useUpdateGameStatus } from '@/hooks/useUpdateGameStatus';
 import { useAppSelector } from '@/store/hooks';
+import { useEffect, useState } from 'react';
 
 interface Props {
   game: Game;
@@ -21,14 +22,23 @@ export const GameCard: React.FC<Props> = ({
   onStatusUpdated,
 }) => {
   const classes = clsx(styles.card, styles[size]);
+  const { data, isAuthenticated } = useAppSelector((state) => state.user);
+  const [error, setError] = useState<string | null>(null);
 
   const { updateStatus } = useUpdateGameStatus(game.apiId, onStatusUpdated);
-
-  const { data } = useAppSelector((state) => state.user);
 
   const currentStatus = data?.userGames?.find(
     (g) => g.apiId === Number(game.apiId)
   )?.status;
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
 
   return (
     <article className={classes}>
@@ -42,14 +52,21 @@ export const GameCard: React.FC<Props> = ({
             loading='lazy'
           />
         </Link>
+      </div>
 
-        {/* Hover overlay content */}
-        <div className={styles.hoverContent}>
-          <StatusButtons
-            onAction={(status) => updateStatus(status, currentStatus)}
-            activeStatus={currentStatus}
-          />
-        </div>
+      {/* Hover overlay content */}
+      <div className={styles.hoverContent}>
+        {error && <span className={styles.error}>{error}</span>}
+        <StatusButtons
+          onAction={(status) => {
+            if (!isAuthenticated) {
+              setError('Login to update game status');
+              return;
+            }
+            updateStatus(status, currentStatus);
+          }}
+          activeStatus={currentStatus}
+        />
       </div>
 
       {/* Card Content */}

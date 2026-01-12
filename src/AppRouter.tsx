@@ -6,6 +6,7 @@ import { ProfilePage } from './modules/ProfilePage/ProfilePage';
 import { NotFoundPage } from './modules/NotFoundPage';
 import { GameDetails } from './modules/GameDetails/GameDetails';
 import { SettingsPage } from './modules/SettingsPage/SettingsPage';
+import { ProtectedRoute } from './modules/ProtectedRoute/ProtectedRoute';
 
 export const AppRouter = () => {
   return (
@@ -13,14 +14,15 @@ export const AppRouter = () => {
       <Route element={<App />}>
         <Route path='/' element={<HomePage />} />
         <Route path='/catalogue' element={<CatalogPage />} />
-        <Route path='/profile' element={<ProfilePage />} />
-        <Route path='/profile/settings' element={<SettingsPage />} />
         <Route path='/games/:gameId' element={<GameDetails />} />
+
+        <Route element={<ProtectedRoute />}>
+          <Route path='/profile' element={<ProfilePage />} />
+          <Route path='/profile/settings' element={<SettingsPage />} />
+        </Route>
       </Route>
 
       <Route path='/home' element={<Navigate to='/' replace />} />
-
-      {/* 404 page */}
       <Route path='*' element={<NotFoundPage />} />
     </Routes>
   );

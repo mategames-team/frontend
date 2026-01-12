@@ -3,14 +3,8 @@
 .search {
   display: flex;
   align-items: center;
-
   max-width: 427px;
   width: 100%;
-
-  background: $bg-color;
-  padding: 16px 18px;
-  border-radius: 12px;
-  border: 1px solid $color-gray-60;
   line-height: 20px;
 
   @include on-tablet {
@@ -30,4 +24,94 @@
   font-size: 16px;
   font-weight: 400;
   line-height: 20px;
+}
+// ====================
+.searchContainer {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+}
+
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  background: $bg-color;
+  border: 1px solid $color-gray-60;
+  border-radius: 12px;
+  padding: 16px 18px;
+  color: $secondary-color;
+  outline: none;
+}
+
+.input {
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  right: 0;
+  background: $elements-bg;
+  border-radius: 16px;
+  overflow: hidden;
+  z-index: 100;
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.5);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.suggestionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.suggestionItem {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: border 0.2s;
+  border: 1px solid $color-gray-80;
+
+  &:hover {
+    border-color: $color-gray-40;
+  }
+}
+
+.gameImg {
+  width: 80px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+
+  @include on-tablet {
+    width: 60px;
+    height: 80px;
+  }
+}
+
+.gameInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.gameName {
+  color: $secondary-color;
+  margin-bottom: 4px;
+}
+
+.viewAll {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  color: $secondary-color;
+  cursor: pointer;
 }

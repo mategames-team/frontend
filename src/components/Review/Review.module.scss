@@ -10,16 +10,20 @@
 
   &__userInfo {
     display: grid;
-    grid-template-columns: repeat(4, max-content) 1fr;
+    grid-template-columns: repeat(3, max-content) 1fr;
     align-items: center;
     gap: 12px;
 
-    @include on-tablet {
-      grid-template-columns: repeat(3, max-content) 1fr;
+    &--profile {
+      grid-template-columns: repeat(4, max-content) 1fr;
 
-      grid-template-areas:
-        'item1 item2 item4 item5'
-        'item3 item3 item3 item3';
+      @include on-tablet {
+        grid-template-columns: repeat(3, max-content) 1fr;
+
+        grid-template-areas:
+          'item1 item2 item4 item5'
+          'item3 item3 item3 item3';
+      }
     }
   }
 

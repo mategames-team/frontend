@@ -1,7 +1,10 @@
 export interface UserComment {
-  id: number;
   gameApiId: number;
-  text: string;
+  gameName: string;
+  id: number;
   localDateTime: string;
+  profileName: string;
   rating: number;
+  text: string;
+  userId: number;
 }

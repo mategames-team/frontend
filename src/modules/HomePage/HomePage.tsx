@@ -5,32 +5,12 @@ import { useEffect, useState } from 'react';
 import type { Game } from '@/types/Game';
 import { getGames } from '@/api/games';
 import axios from 'axios';
-import { Loader } from '@/components/Loader/Loader';
 import { mapRawgToMyFormat } from '@/utils/mapRawgToMyFormat';
 
 export const HomePage = () => {
   const [popularGames, setPopularGames] = useState<Game[]>([]);
   const [newGames, setNewGames] = useState<Game[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const fetchGames = async () => {
-    try {
-      setIsLoading(true);
-      const [allGamesRes, games2020Res] = await Promise.all([
-        getGames(),
-        getGames({ year: 2020 }),
-      ]);
-
-      setPopularGames(allGamesRes.content);
-      setNewGames(games2020Res.content);
-    } catch (error) {
-      console.error('Error fetching games from database:', error);
-
-      fetchGamesFromApi();
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const fetchGamesFromApi = async () => {
     const baseUrl =
@@ -53,12 +33,28 @@ export const HomePage = () => {
   };
 
   useEffect(() => {
+    const fetchGames = async () => {
+      try {
+        setIsLoading(true);
+        const [allGamesRes, games2020Res] = await Promise.all([
+          getGames(),
+          getGames({ dates: '2025-04-01,2025-12-31' }),
+        ]);
+        setPopularGames(allGamesRes.content);
+        setNewGames(games2020Res.content);
+      } catch (error) {
+        console.error('Error fetching games from database:', error);
+
+        fetchGamesFromApi();
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     fetchGames();
   }, []);
 
-  if (isLoading) {
-    return <Loader progress={99} />;
-  }
+  if (isLoading) return null;
 
   return (
     <div className={styles.home}>

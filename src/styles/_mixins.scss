@@ -20,7 +20,7 @@
     padding-inline: 16px;
   }
 
-  @include on-desktop {
+  @media (min-width: $tablet-width) {
     padding-inline: 32px;
   }
 }

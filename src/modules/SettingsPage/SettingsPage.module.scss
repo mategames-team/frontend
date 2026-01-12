@@ -1,8 +1,6 @@
 @import '@/styles/main.scss';
 
 .settings {
-  @include content-padding-inline();
-
   &__grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

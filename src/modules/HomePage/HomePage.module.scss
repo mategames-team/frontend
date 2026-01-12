@@ -21,8 +21,6 @@
     padding: 80px 0 125px;
   }
 
-  @include content-padding-inline();
-
   &__title {
     color: $secondary-color;
     max-width: 874px;

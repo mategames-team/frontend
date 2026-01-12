@@ -17,6 +17,7 @@ export const ProfileTabs: React.FC<Props> = ({ activeTab, onChange }) => {
             variant={tab.value === activeTab ? 'primary' : 'secondary-white'}
             size='small'
             onClick={() => onChange(tab.value)}
+            className={styles.tabs__item}
           >
             {tab.label}
           </Button>

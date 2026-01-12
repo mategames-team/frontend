@@ -5,32 +5,18 @@ import styles from './GameDetails.module.scss';
 import { StatusButtons } from '@/components/common/StatusButtons/StatusButtons';
 import { GameRatingForm } from './GameRatingForm/GameRatingForm';
 import { GameReviews } from './GameReviews/GameReviews';
-import { Loader } from '@/components/Loader/Loader';
 import { getGameById } from '@/api/games';
 import { useUpdateGameStatus } from '@/hooks/useUpdateGameStatus';
 import { useAppSelector } from '@/store/hooks';
-
-const mockGameData: Game = {
-  apiId: 1,
-  name: 'S.T.A.L.K.E.R. 2: Heart of Chornobyl',
-  year: 2024,
-  apiRating: 7.9,
-  backgroundImage:
-    'https://media.rawg.io/media/games/b45/b45575f34285f2c4479c9a5f719d972e.jpg',
-  description:
-    'The Chernobyl Exclusion Zone changed significantly after the second explosion in 2006. Violent mutants, deadly anomalies, and warring factions made the Zone a place where survival was extremely difficult. Nevertheless, artefacts of incredible value attracted many people, known as stalkers. They ventured into the Zone at their own risk, seeking to get rich or even find the Truth hidden somewhere in the Heart of Chernobyl.',
-  platforms: [{ generalName: 'PC' }, { generalName: 'Xbox Series X' }],
-  creator: 'GSC Game World',
-  genres: [{ name: 'Action' }, { name: 'Shooter' }, { name: 'Horror' }],
-};
 
 export const GameDetails = () => {
   const { gameId } = useParams<{ gameId: string }>();
   const [game, setGame] = useState<Game | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const { data } = useAppSelector((state) => state.user);
+  const { data, isAuthenticated } = useAppSelector((state) => state.user);
 
   const currentStatus = data?.userGames?.find(
     (g) => g.apiId === Number(gameId)
@@ -48,7 +34,6 @@ export const GameDetails = () => {
 
         setGame(response);
       } catch (error) {
-        setGame(mockGameData);
         console.error('Error fetching game details:', error);
       } finally {
         setIsLoading(false);
@@ -58,6 +43,19 @@ export const GameDetails = () => {
     fetchGameDetails();
   }, [gameId]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
   // Shorten description
   const paragraphs = game?.description?.split('</p>') ?? [];
   const shortDescription = paragraphs.slice(0, 1).join('</p>') + '</p>';
@@ -65,9 +63,7 @@ export const GameDetails = () => {
   const isDescExpanded = () =>
     isExpanded ? game?.description : shortDescription;
 
-  if (isLoading || !game) {
-    return <Loader progress={70} />;
-  }
+  if (isLoading || !game) return null;
 
   return (
     <div className='container'>
@@ -80,12 +76,22 @@ export const GameDetails = () => {
               className={styles.gameDetails__image}
             />
           </div>
-          <StatusButtons
-            variant='full'
-            className={styles.statusBtn__onMobile}
-            onAction={(status) => updateStatus(status, currentStatus)}
-            activeStatus={currentStatus}
-          />
+
+          <div className={styles.statusBtn__onMobile}>
+            {error && <p className={styles.error}>{error}</p>}
+            <StatusButtons
+              variant='full'
+              onAction={(status) => {
+                console.log('status', status);
+                if (!isAuthenticated) {
+                  setError('Login to update game status');
+                  return;
+                }
+                updateStatus(status, currentStatus);
+              }}
+              activeStatus={currentStatus}
+            />
+          </div>
 
           <div className={styles.gameDetails__info}>
             <header className={styles.gameDetails__header}>
@@ -93,7 +99,9 @@ export const GameDetails = () => {
                 <h2 className={styles.gameDetails__title}>{game.name}</h2>
                 <p className={styles.gameDetails__year}>{game.year}</p>
               </div>
-              <div className={styles.gameDetails__rating}>{game.apiRating}</div>
+              <div className={styles.gameDetails__rating}>
+                {game.apiRating.toFixed(1)}
+              </div>
             </header>
 
             {/* Description */}
@@ -119,12 +127,22 @@ export const GameDetails = () => {
                 )}
               </div>
 
-              <StatusButtons
-                variant='full'
-                className={styles.statusBtn__onDesktop}
-                onAction={(status) => updateStatus(status, currentStatus)}
-                activeStatus={currentStatus}
-              />
+              <div className={styles.statusBtn__onDesktop}>
+                {error && <p className={styles.error}>{error}</p>}
+
+                <StatusButtons
+                  variant='full'
+                  onAction={(status) => {
+                    console.log(isAuthenticated);
+                    if (!isAuthenticated) {
+                      setError('Login to update game status');
+                      return;
+                    }
+                    updateStatus(status, currentStatus);
+                  }}
+                  activeStatus={currentStatus}
+                />
+              </div>
             </div>
 
             <div className={styles.gameDetails__detailsGrid}>
@@ -133,8 +151,8 @@ export const GameDetails = () => {
                 <h4 className={styles.gameDetails__detailTitle}>Platforms</h4>
                 <p className={`text-main ${styles.gameDetails__detailValue}`}>
                   {game.platforms
-                    ?.map((platform) => platform.generalName)
-                    .join(', ') ?? 'N/A'}
+                    ?.map((platform) => platform.generalName.replace('_', ' '))
+                    .join(', ')}
                 </p>
               </div>
 
@@ -142,7 +160,9 @@ export const GameDetails = () => {
               <div className={styles.gameDetails__detailGroup}>
                 <h4 className={styles.gameDetails__detailTitle}>Genre</h4>
                 <p className={`text-main ${styles.gameDetails__detailValue}`}>
-                  {game.genres?.map((genre) => genre.name).join(', ') ?? 'N/A'}
+                  {game.genres
+                    ?.map((g) => g.name[0] + g.name.slice(1).toLowerCase())
+                    .join(', ') ?? 'N/A'}
                 </p>
               </div>
             </div>

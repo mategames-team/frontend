@@ -1,0 +1,57 @@
+@import '@/styles/main.scss';
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 40px;
+  font-family: inherit;
+}
+
+.page {
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: 0%;
+
+  background: none;
+  border: none;
+  color: $primary-color;
+  cursor: pointer;
+  padding: 4px 0;
+  min-width: 24px;
+  transition: color 0.2s;
+
+  &:hover:not(.dots) {
+    color: $secondary-color;
+  }
+}
+
+.active {
+  color: $secondary-color;
+  text-decoration: underline;
+}
+
+.dots {
+  cursor: default;
+  color: $primary-color;
+}
+
+.arrow {
+  color: $secondary-color;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  transition: opacity 0.2s;
+
+  &:disabled {
+    opacity: 0.2;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
+    opacity: 0.7;
+  }
+}

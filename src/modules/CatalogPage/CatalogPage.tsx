@@ -3,32 +3,47 @@ import { useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { GameCard } from '@/components/GameCard/GameCard';
 import { Filters } from '@/components/Filters/Filters';
-import { Loader } from '@/components/Loader/Loader';
 import { mockGames } from '@/mock/mockGames';
 import { getGames } from '@/api/games';
 import type { Game } from '@/types/Game';
 import FiltersIcon from '@/assets/icons/filter.svg?react';
+import { Pagination } from '@/components/Pagination/Pagination';
 
 export const CatalogPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [games, setGames] = useState<Game[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState<boolean>(false);
+  const [totalPages, setTotalPages] = useState(0);
 
+  const currentPage = Number(searchParams.get('page')) || 1;
   const search = searchParams.get('search')?.toLowerCase().trim() || '';
   const platforms = searchParams.get('platforms') || '';
   const genres = searchParams.get('genres') || '';
   const year = searchParams.get('year') || '';
 
-  const handleFilterChange = (filters: Record<string, string>) => {
+  const handlePageChange = (newPage: number) => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.set('page', String(newPage));
+      return next;
+    });
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleFilterChange = (filters: Record<string, string[] | string>) => {
+    console.log(filters);
     setSearchParams((prev) => {
       const newParams = new URLSearchParams(prev);
 
       Object.entries(filters).forEach(([category, value]) => {
-        if (value) {
-          newParams.set(category, value);
-        } else {
-          newParams.delete(category);
+        if (Array.isArray(value)) {
+          if (value.length > 0) {
+            newParams.set(category, value.join(','));
+          } else {
+            newParams.delete(category);
+          }
         }
       });
 
@@ -39,17 +54,23 @@ export const CatalogPage = () => {
 
   useEffect(() => {
     const fetchGames = async () => {
+      let formattedDates = '';
+      if (year) {
+        formattedDates = `${year}-01-01,${year}-12-31`;
+      }
+
       try {
         setIsLoading(true);
-
         const res = await getGames({
           search,
           platforms,
           genres,
-          year: year ? Number(year) : undefined,
+          dates: formattedDates,
+          page: currentPage - 1,
         });
 
         setGames(res.content);
+        setTotalPages(res.totalPages);
       } catch (error) {
         console.error('Error fetching games from database:', error);
         setGames(mockGames);
@@ -59,10 +80,10 @@ export const CatalogPage = () => {
     };
 
     fetchGames();
-  }, [search, platforms, genres, year]);
+  }, [search, platforms, genres, year, currentPage]);
 
   if (isLoading) {
-    return <Loader progress={99} />;
+    return null;
   }
 
   return (
@@ -80,17 +101,27 @@ export const CatalogPage = () => {
         </div>
 
         <div className={styles.catalog__content}>
-          {games.length > 0 ? (
-            <ul className={styles.gameList}>
-              {games.map((game) => (
-                <li key={game.apiId} className={styles.gameList_item}>
-                  <GameCard game={game} />
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No games found</p>
-          )}
+          <div>
+            {games.length > 0 ? (
+              <ul className={styles.gameList}>
+                {games.map((game) => (
+                  <li key={game.apiId} className={styles.gameList_item}>
+                    <GameCard game={game} />
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No games found</p>
+            )}
+
+            {totalPages > 1 && (
+              <Pagination
+                current={currentPage}
+                total={totalPages}
+                onChange={handlePageChange}
+              />
+            )}
+          </div>
 
           <Filters
             handleFilterChange={handleFilterChange}
