@@ -8,7 +8,9 @@ import { getGames } from '@/api/games';
 import type { Game } from '@/types/Game';
 import FiltersIcon from '@/assets/icons/filter.svg?react';
 import { Pagination } from '@/components/Pagination/Pagination';
-import { PageLoader } from '@/components/PageLoader/PageLoader';
+import { GameCardSkeleton } from '@/components/GameCardSkeleton/GameCardSkeleton';
+
+const SKELETON_COUNT = 8;
 
 const CatalogPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -104,9 +106,13 @@ const CatalogPage = () => {
         <div className={styles.catalog__content}>
           <div className={styles.catalog__gameListWrapper}>
             {isLoading ? (
-              <div className={styles.loaderContainer}>
-                <PageLoader />
-              </div>
+              <ul className={styles.gameList}>
+                {Array.from({ length: SKELETON_COUNT }).map((_, index) => (
+                  <li key={index} className={styles.gameList_item}>
+                    <GameCardSkeleton />
+                  </li>
+                ))}
+              </ul>
             ) : (
               <>
                 {games.length > 0 ? (

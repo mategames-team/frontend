@@ -1,0 +1,48 @@
+.skeleton {
+  background: #2a2c4e;
+  border-radius: 16px;
+  overflow: hidden;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.image {
+  width: 100%;
+  aspect-ratio: 315 / 374;
+  background: linear-gradient(90deg, #2a2c4e 25%, #35375e 50%, #2a2c4e 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.info {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.title,
+.meta {
+  height: 14px;
+  background: #35375e;
+  border-radius: 4px;
+  animation: shimmer 1.5s infinite;
+}
+
+.title {
+  width: 80%;
+  height: 20px;
+}
+.meta {
+  width: 40%;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
