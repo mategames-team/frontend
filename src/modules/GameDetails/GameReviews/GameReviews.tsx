@@ -36,7 +36,7 @@ export const GameReviews: React.FC<{ gameApiId: number }> = ({ gameApiId }) => {
     };
 
     fetchGameReviews();
-  }, []);
+  }, [gameApiId]);
 
   const totalPages = Math.ceil(comments.length / itemsPerPage);
   const indexOfLastComment = currentPage * itemsPerPage;

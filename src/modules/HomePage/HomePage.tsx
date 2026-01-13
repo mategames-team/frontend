@@ -6,8 +6,9 @@ import type { Game } from '@/types/Game';
 import { getGames } from '@/api/games';
 import axios from 'axios';
 import { mapRawgToMyFormat } from '@/utils/mapRawgToMyFormat';
+import { PageLoader } from '@/components/PageLoader/PageLoader';
 
-export const HomePage = () => {
+const HomePage = () => {
   const [popularGames, setPopularGames] = useState<Game[]>([]);
   const [newGames, setNewGames] = useState<Game[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -54,7 +55,11 @@ export const HomePage = () => {
     fetchGames();
   }, []);
 
-  if (isLoading) return null;
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  if (isLoading) return <PageLoader />;
 
   return (
     <div className={styles.home}>
@@ -78,3 +83,5 @@ export const HomePage = () => {
     </div>
   );
 };
+
+export default HomePage;

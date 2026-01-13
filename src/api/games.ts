@@ -32,7 +32,7 @@ export const getGames = async (params: GetGamesRequest = {}) => {
   if (params.page_size) query.set('page_size', String(params.page_size));
   if (params.genres) query.set('genres', params.genres);
   if (params.platforms) query.set('platforms', params.platforms);
-  if (params.year) query.set('year', String(params.year.split(',')[0])); // <-- fix this on backend
+  if (params.year) query.set('year', String(params.year.split(',')[0]));
   if (params.dates) query.set('dates', params.dates);
 
   const queryString = query.toString();

@@ -6,6 +6,7 @@ import { useSearchParams } from 'react-router-dom';
 import type { ProfileTab } from '@/types/profileTabs';
 import { useAppSelector } from '@/store/hooks';
 import type { GameStatus } from '@/types/Game';
+import { PageLoader } from '@/components/PageLoader/PageLoader';
 
 const STATUS_MAP: Record<string, string> = {
   backlog: 'BACKLOG',
@@ -13,15 +14,19 @@ const STATUS_MAP: Record<string, string> = {
   completed: 'COMPLETED',
 };
 
-export const ProfilePage = () => {
+const ProfilePage = () => {
   const [seatchParams, setSearchParams] = useSearchParams();
-  const { data, isAuthenticated } = useAppSelector((state) => state.user);
+  const { data, isAuthenticated, isLoading } = useAppSelector(
+    (state) => state.user
+  );
 
   if (!isAuthenticated) {
     console.log('Not authenticated');
   }
 
   const activeTab = (seatchParams.get('tab') as ProfileTab) ?? 'backlog';
+
+  if (isLoading) return <PageLoader />;
 
   return (
     <div className={styles.profile}>
@@ -40,3 +45,5 @@ export const ProfilePage = () => {
     </div>
   );
 };
+
+export default ProfilePage;

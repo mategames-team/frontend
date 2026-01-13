@@ -8,8 +8,9 @@ import { GameReviews } from './GameReviews/GameReviews';
 import { getGameById } from '@/api/games';
 import { useUpdateGameStatus } from '@/hooks/useUpdateGameStatus';
 import { useAppSelector } from '@/store/hooks';
+import { PageLoader } from '@/components/PageLoader/PageLoader';
 
-export const GameDetails = () => {
+const GameDetails = () => {
   const { gameId } = useParams<{ gameId: string }>();
   const [game, setGame] = useState<Game | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -63,7 +64,7 @@ export const GameDetails = () => {
   const isDescExpanded = () =>
     isExpanded ? game?.description : shortDescription;
 
-  if (isLoading || !game) return null;
+  if (isLoading || !game) return <PageLoader />;
 
   return (
     <div className='container'>
@@ -181,3 +182,5 @@ export const GameDetails = () => {
     </div>
   );
 };
+
+export default GameDetails;

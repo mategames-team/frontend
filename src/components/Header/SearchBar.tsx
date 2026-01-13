@@ -5,7 +5,7 @@ import { getGames } from '@/api/games';
 import type { Game } from '@/types/Game';
 
 export const SearchBar = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const [value, setValue] = useState<string>(searchParams.get('search') || '');
@@ -27,32 +27,30 @@ export const SearchBar = () => {
   }, []);
 
   useEffect(() => {
-    const timer = setTimeout(async () => {
-      const newParams = new URLSearchParams(searchParams);
-      if (value.trim()) {
-        newParams.set('search', value);
-        newParams.set('page', '1');
-        newParams.set('size', '5');
-        newParams.set('limit', '5');
+    if (!value.trim()) return;
 
-        try {
-          const res = await getGames({ search: value, page_size: 5 });
-          console.log(res);
-          setSuggestions(res.content);
-          setIsDropdownOpen(true);
-        } catch (e) {
-          console.error(e);
-        }
-      } else {
-        newParams.delete('search');
-        setSuggestions([]);
-        setIsDropdownOpen(false);
+    const timer = setTimeout(async () => {
+      try {
+        const res = await getGames({ search: value, page_size: 5 });
+        setSuggestions(res.content);
+        setIsDropdownOpen(true);
+      } catch (e) {
+        console.error(e);
       }
-      setSearchParams(newParams);
     }, 400);
 
     return () => clearTimeout(timer);
   }, [value]);
+
+  const handleChange = (value: string) => {
+    const newValue = value;
+    setValue(newValue);
+
+    if (!newValue.trim()) {
+      setSuggestions([]);
+      setIsDropdownOpen(false);
+    }
+  };
 
   const handleSelectGame = (gameId: number) => {
     setIsDropdownOpen(false);
@@ -61,7 +59,6 @@ export const SearchBar = () => {
 
   const handleViewAll = () => {
     setIsDropdownOpen(false);
-    console.log(encodeURIComponent(value));
     navigate(`/catalogue?search=${encodeURIComponent(value)}`);
   };
 
@@ -74,7 +71,7 @@ export const SearchBar = () => {
           placeholder='Search game...'
           value={value}
           onFocus={() => value && setIsDropdownOpen(true)}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => handleChange(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               setIsDropdownOpen(false);

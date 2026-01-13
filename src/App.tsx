@@ -3,12 +3,27 @@ import { Outlet, useSearchParams } from 'react-router-dom';
 import { Header } from './components/Header/Header';
 import { Footer } from './components/Footer/Footer';
 import { useAppDispatch } from './store/hooks';
-import { useEffect } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { setActiveModal } from './store/slices/uiSlice';
+import { Loader } from './components/Loader/Loader';
+import { PageLoader } from './components/PageLoader/PageLoader';
 
 export const App = () => {
+  const [firstVisit, setFirstVisit] = useState(
+    !sessionStorage.getItem('hasVisited')
+  );
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (firstVisit) {
+      const timer = setTimeout(() => {
+        sessionStorage.setItem('hasVisited', 'true');
+        setFirstVisit(false);
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [firstVisit]);
 
   useEffect(() => {
     if (searchParams.get('auth') === 'login') {
@@ -26,14 +41,17 @@ export const App = () => {
     // dispatch(fetchCurrentUser());
   }, []);
 
+  if (firstVisit) return <Loader />;
+
   return (
-    <div className=''>
+    <div className='app'>
       <Header />
 
-      <main className='main'>
-        <Outlet />
-      </main>
-
+      <Suspense fallback={<PageLoader />}>
+        <main className='main'>
+          <Outlet />
+        </main>
+      </Suspense>
       <Footer />
     </div>
   );

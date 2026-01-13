@@ -23,9 +23,9 @@ const SECTIONS = [
     title: 'Platforms',
     key: 'platforms',
     data: [
-      { name: 'PC', value: '1' },
-      { name: 'PlayStation', value: '2' },
-      { name: 'Xbox', value: '3' },
+      { name: 'PC', value: '4' },
+      { name: 'PlayStation', value: '187' },
+      { name: 'Xbox', value: '186' },
       { name: 'Nintendo Switch', value: '7' },
     ],
   },
@@ -65,15 +65,13 @@ export const Filters: React.FC<Props> = ({
   }));
 
   const toggleFilter = (category: keyof Filters, value: string) => {
-    const val = value.toLowerCase();
-
     setLocalFilters((prev) => {
       const current = prev[category];
       return {
         ...prev,
-        [category]: current.includes(val)
-          ? current.filter((v) => v !== val)
-          : [...current, val],
+        [category]: current.includes(value)
+          ? current.filter((v) => v !== value)
+          : [...current, value],
       };
     });
   };
@@ -118,9 +116,7 @@ export const Filters: React.FC<Props> = ({
           <h4 className={styles.filters__sectionTitle}>{section.title}</h4>
           <ul className={styles.filters__list}>
             {section.data.map((item) => {
-              const isActive = localFilters[section.key].includes(
-                item.value.toLowerCase()
-              );
+              const isActive = localFilters[section.key].includes(item.value);
               return (
                 <li
                   key={item.value}
