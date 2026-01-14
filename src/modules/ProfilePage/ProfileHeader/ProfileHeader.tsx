@@ -4,16 +4,19 @@ import type { UserData } from '@/types/User';
 import userAvatar from '@/assets/avatars-female/female-2.png';
 import Location from '@/assets/icons/location.svg?react';
 import Settings from '@/assets/icons/settings.svg?react';
-import { getUserComments } from '@/api/comments';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 type Props = {
   userData: UserData;
+  isOwnProfile: boolean;
+  commentsCount: number;
 };
 
-export const ProfileHeader: React.FC<Props> = ({ userData }) => {
-  const [commentsCount, setCommentsCount] = useState<number>(0);
-
+export const ProfileHeader: React.FC<Props> = ({
+  userData,
+  isOwnProfile,
+  commentsCount,
+}) => {
   const gamesStats = useMemo(() => {
     const userGames = userData?.userGames || [];
 
@@ -22,18 +25,6 @@ export const ProfileHeader: React.FC<Props> = ({ userData }) => {
       completed: userGames.filter((g) => g.status === 'COMPLETED').length,
     };
   }, [userData?.userGames]);
-
-  useEffect(() => {
-    const fetchComments = async () => {
-      try {
-        const comments = await getUserComments();
-        setCommentsCount(comments.length);
-      } catch (error) {
-        console.error('Failed to fetch comments', error);
-      }
-    };
-    fetchComments();
-  }, []);
 
   const stats = [
     { label: 'In backlog', value: gamesStats.backlog },
@@ -45,7 +36,7 @@ export const ProfileHeader: React.FC<Props> = ({ userData }) => {
     <section className={styles.header}>
       <div className={styles.header__top}>
         <img
-          src={userAvatar}
+          src={userData?.avatarUrl || userAvatar}
           alt='Profile Avatar'
           className={styles.header__avatar}
         />
@@ -60,9 +51,12 @@ export const ProfileHeader: React.FC<Props> = ({ userData }) => {
             </div>
           )}
         </div>
-        <Link to='/profile/settings' className={styles.header__settings}>
-          <Settings className={styles.header__settingsIcon} />
-        </Link>
+
+        {isOwnProfile && (
+          <Link to='/profile/settings' className={styles.header__settings}>
+            <Settings className={styles.header__settingsIcon} />
+          </Link>
+        )}
       </div>
 
       <h4 className={styles.bio}>{userData?.about || 'No bio yet...'}</h4>

@@ -41,11 +41,12 @@ export const getGameComments = async (gameApiId: string) => {
   return response.data.content;
 };
 
-export const getUserComments = async () => {
-  const response = await api.get<{ content: UserComment[] }>(
-    `${BASE_URL}/comments`
-  );
-  console.log('api/getUserComments', response);
-
+export const getUserComments = async (userId?: string) => {
+  const response = await api.get(`${BASE_URL}/comments`, {
+    params: {
+      id: userId,
+    },
+  });
+  console.log(response);
   return response.data.content;
 };

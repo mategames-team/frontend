@@ -8,6 +8,7 @@ import Trash from '@/assets/icons/trash.svg?react';
 import type { UserComment } from '@/types/Comment';
 import { GameRatingForm } from '@/modules/GameDetails/GameRatingForm/GameRatingForm';
 import { deleteComment } from '@/api/comments';
+import { useAppSelector } from '@/store/hooks';
 
 interface Props {
   variant?: 'default' | 'profile';
@@ -21,6 +22,9 @@ export const Review: React.FC<Props> = ({
   onUpdate,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const { data: currentUser } = useAppSelector((state) => state.user);
+
+  const isOwnReview = Number(currentUser?.id) === review.userId;
 
   const handleSuccess = () => {
     setIsEditing(false);
@@ -49,7 +53,12 @@ export const Review: React.FC<Props> = ({
           alt='User Avatar'
           className={styles.review__avatar}
         />
-        <h4 className={styles.review__username}>{review?.profileName}</h4>
+        <Link
+          to={`/profile/${review?.userId}`}
+          className={styles.review__usernameLink}
+        >
+          <h4 className={styles.review__username}>{review?.profileName}</h4>
+        </Link>
         <span className={styles.review__date}>
           {review?.localDateTime.slice(0, 10)}
         </span>
@@ -78,7 +87,7 @@ export const Review: React.FC<Props> = ({
         </p>
       )}
 
-      {variant === 'profile' && !isEditing && (
+      {variant === 'profile' && !isEditing && isOwnReview && (
         <div className={styles.review__actions}>
           <button
             className={styles.review__actionBtn}

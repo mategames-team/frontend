@@ -17,14 +17,13 @@ export const addUserGame = async (
   return response.data;
 };
 
-export const getUserGames = async (status: GameStatus) => {
+export const getUserGames = async (status: GameStatus, userId?: string) => {
   const response = await api.get(`${BASE_URL}/user-games`, {
     params: {
       status: status,
+      id: userId,
     },
   });
-
-  console.log('/api/getUserGames.ts response:', response);
   return response.data.content;
 };
 

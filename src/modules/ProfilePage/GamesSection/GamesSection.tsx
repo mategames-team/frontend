@@ -8,7 +8,17 @@ import { Review } from '@/components/Review/Review';
 import { GameCard } from '@/components/GameCard/GameCard';
 import { PageLoader } from '@/components/PageLoader/PageLoader';
 
-export const GamesSection = ({ status }: { status: GameStatus }) => {
+type Props = {
+  status: GameStatus;
+  userId?: string;
+  onCommentsLoaded: () => void;
+};
+
+export const GamesSection: React.FC<Props> = ({
+  status,
+  userId,
+  onCommentsLoaded,
+}) => {
   const [games, setGames] = useState([]);
   const [reviews, setReviews] = useState<UserComment[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -17,10 +27,11 @@ export const GamesSection = ({ status }: { status: GameStatus }) => {
     setIsLoading(true);
     try {
       if (status) {
-        const response = await getUserGames(status);
+        const response = await getUserGames(status, userId);
         setGames(response);
+        console.log(response);
       } else {
-        const response = await getUserComments();
+        const response = await getUserComments(userId);
         setReviews(response);
         setGames([]);
       }
@@ -33,10 +44,13 @@ export const GamesSection = ({ status }: { status: GameStatus }) => {
 
   useEffect(() => {
     fetchData();
-  }, [status]);
+  }, [status, userId]);
 
-  const handleRemoveFromLocalState = (userGameId: number): void => {
-    setGames((prev) => prev.filter((item: GameDto) => item.id !== userGameId));
+  const handleRemoveFromLocalState = (id: number): void => {
+    setGames((prev) => {
+      const newList = prev.filter((g: GameDto) => g.id !== id);
+      return newList;
+    });
   };
 
   if (isLoading) return <PageLoader />;
@@ -62,7 +76,10 @@ export const GamesSection = ({ status }: { status: GameStatus }) => {
                 key={review.id}
                 review={review}
                 variant='profile'
-                onUpdate={fetchData}
+                onUpdate={() => {
+                  fetchData();
+                  onCommentsLoaded();
+                }}
               />
             ))
           ) : (
