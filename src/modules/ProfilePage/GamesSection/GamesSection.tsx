@@ -6,44 +6,40 @@ import type { GameDto, GameStatus } from '@/types/Game';
 import type { UserComment } from '@/types/Comment';
 import { Review } from '@/components/Review/Review';
 import { GameCard } from '@/components/GameCard/GameCard';
+import { PageLoader } from '@/components/PageLoader/PageLoader';
 
 export const GamesSection = ({ status }: { status: GameStatus }) => {
   const [games, setGames] = useState([]);
   const [reviews, setReviews] = useState<UserComment[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchGames = async () => {
-      setIsLoading(true);
-
-      try {
-        if (status) {
-          const response = await getUserGames(status);
-          console.log(response);
-
-          setGames(response);
-        } else {
-          const response = await getUserComments();
-          console.log(response);
-
-          setReviews(response);
-          setGames([]);
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setIsLoading(false);
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      if (status) {
+        const response = await getUserGames(status);
+        setGames(response);
+      } else {
+        const response = await getUserComments();
+        setReviews(response);
+        setGames([]);
       }
-    };
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    fetchGames();
+  useEffect(() => {
+    fetchData();
   }, [status]);
 
   const handleRemoveFromLocalState = (userGameId: number): void => {
     setGames((prev) => prev.filter((item: GameDto) => item.id !== userGameId));
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <PageLoader />;
 
   return (
     <>
@@ -62,7 +58,12 @@ export const GamesSection = ({ status }: { status: GameStatus }) => {
         <div className={styles.reviewsList}>
           {reviews.length > 0 ? (
             reviews.map((review: UserComment) => (
-              <Review key={review.id} review={review} variant='profile' />
+              <Review
+                key={review.id}
+                review={review}
+                variant='profile'
+                onUpdate={fetchData}
+              />
             ))
           ) : (
             <p>No reviews yet</p>

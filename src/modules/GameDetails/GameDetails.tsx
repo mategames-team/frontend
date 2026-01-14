@@ -9,10 +9,13 @@ import { getGameById } from '@/api/games';
 import { useUpdateGameStatus } from '@/hooks/useUpdateGameStatus';
 import { useAppSelector } from '@/store/hooks';
 import { PageLoader } from '@/components/PageLoader/PageLoader';
+import { getGameComments } from '@/api/comments';
+import type { UserComment } from '@/types/Comment';
 
 const GameDetails = () => {
   const { gameId } = useParams<{ gameId: string }>();
   const [game, setGame] = useState<Game | null>(null);
+  const [comments, setComments] = useState<UserComment[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -43,6 +46,24 @@ const GameDetails = () => {
 
     fetchGameDetails();
   }, [gameId]);
+
+  // Fetch comments
+  const fetchGameReviews = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await getGameComments(gameId!);
+      setComments(response);
+    } catch (error) {
+      console.error('Error fetching game reviews:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchGameReviews();
+  }, [game]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -171,13 +192,11 @@ const GameDetails = () => {
         </div>
 
         <div className={styles.gameDetails__rateAction}>
-          <GameRatingForm
-            gameApiId={game.apiId}
-            onSubmissionSuccess={() => {}}
-          />
+          <h4 className={styles.gameDetails__rateActionTitle}>Your rate</h4>
+          <GameRatingForm gameApiId={game.apiId} onSuccess={fetchGameReviews} />
         </div>
 
-        <GameReviews gameApiId={game.apiId} />
+        <GameReviews comments={comments} />
       </section>
     </div>
   );

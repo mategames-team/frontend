@@ -93,4 +93,11 @@
   &__voteCount {
     transform: translateY(2px);
   }
+
+  &__actions {
+    margin-left: auto;
+    display: flex;
+    gap: 16px;
+    color: $secondary-color;
+  }
 }

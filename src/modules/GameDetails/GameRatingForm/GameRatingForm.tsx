@@ -3,36 +3,46 @@ import styles from './GameRatingForm.module.scss';
 import { Button } from '@/components/common/Button/Button';
 import { RatingBars } from '@/components/RatingBars/RatingBars';
 import clsx from 'clsx';
-import { createComment } from '@/api/comments';
+import { createComment, updateComment } from '@/api/comments';
 import { useAppSelector } from '@/store/hooks';
 
-interface GameRatingFormProps {
+interface Props {
   gameApiId: number;
-  onSubmissionSuccess: () => void;
+  reviewId?: number;
+  onSuccess?: () => void;
+  initialText?: string;
+  initialRating?: number;
 }
 
-export const GameRatingForm: React.FC<GameRatingFormProps> = ({
+export const GameRatingForm: React.FC<Props> = ({
   gameApiId,
-  onSubmissionSuccess,
+  reviewId,
+  onSuccess,
+  initialText,
+  initialRating,
 }) => {
-  const [reviewText, setReviewText] = useState<string>('');
+  const [rating, setRating] = useState<number>(initialRating || 0);
+  const [reviewText, setReviewText] = useState<string>(initialText || '');
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [rating, setRating] = useState<number>(0);
-  const { isAuthenticated } = useAppSelector((state) => state.user);
   const [error, setError] = useState<string | null>(null);
+  const { isAuthenticated } = useAppSelector((state) => state.user);
 
   const handleRatingSubmit = async () => {
     setIsLoading(true);
 
+    if (!isAuthenticated) {
+      setError('You must be logged in to submit a review.');
+      return;
+    }
+
     try {
-      if (!isAuthenticated) {
-        setError('You must be logged in to submit a review.');
+      if (reviewId) {
+        await updateComment(reviewId, reviewText, rating);
+      } else {
+        await createComment(gameApiId, reviewText, rating);
       }
 
-      await createComment(gameApiId, reviewText, rating);
-
-      onSubmissionSuccess();
-      setReviewText('');
+      if (onSuccess) onSuccess();
     } catch (error) {
       console.error('Error submitting rating:', error);
     } finally {
@@ -42,7 +52,6 @@ export const GameRatingForm: React.FC<GameRatingFormProps> = ({
 
   return (
     <>
-      <h4 className={styles.title}>Your rate</h4>
       <section className={styles.diary}>
         <RatingBars onChange={setRating} value={rating} />
 
