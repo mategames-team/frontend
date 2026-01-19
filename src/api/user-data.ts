@@ -1,8 +1,12 @@
 import type { UserData } from '@/types/User';
 import { api, BASE_URL } from './http';
 
-export const getUserData = async (): Promise<UserData> => {
-  const response = await api.get(`${BASE_URL}/users/info`);
+export const getUserData = async (userId?: string): Promise<UserData> => {
+  const response = await api.get(`${BASE_URL}/users/info`, {
+    params: {
+      id: userId,
+    },
+  });
 
   console.log('fetchMe response:', response);
   return response.data;

@@ -1,10 +1,14 @@
+import { useState } from 'react';
 import styles from './GameReviews.module.scss';
 import { Button } from '@/components/common/Button/Button';
-import { useEffect, useState } from 'react';
 import { Review } from '@/components/Review/Review';
-import { getGameComments } from '@/api/comments';
-import type { UserComment } from '@/types/Comment';
 import { Pagination } from '@/components/Pagination/Pagination';
+import type { UserComment } from '@/types/Comment';
+
+type Props = {
+  gameApiId?: string;
+  comments: UserComment[];
+};
 
 const REVIEW_TABS = [
   { label: 'less than 4', value: 'low' },
@@ -13,30 +17,30 @@ const REVIEW_TABS = [
   { label: '8+', value: 'best' },
 ];
 
-export const GameReviews: React.FC<{ gameApiId: number }> = ({ gameApiId }) => {
+export const GameReviews: React.FC<Props> = ({ comments }) => {
   const [activeTab, setActiveTab] = useState<string>('');
-  const [comments, setComments] = useState<UserComment[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [comments, setComments] = useState<UserComment[]>([]);
+  // const [isLoading, setIsLoading] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
 
-  useEffect(() => {
-    const fetchGameReviews = async () => {
-      setIsLoading(true);
+  // useEffect(() => {
+  //   const fetchGameReviews = async () => {
+  //     setIsLoading(true);
 
-      try {
-        const response = await getGameComments(gameApiId);
-        setComments(response);
-      } catch (error) {
-        console.error('Error fetching game reviews:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  //     try {
+  //       const response = await getGameComments(gameApiId);
+  //       setComments(response);
+  //     } catch (error) {
+  //       console.error('Error fetching game reviews:', error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
 
-    fetchGameReviews();
-  }, []);
+  //   fetchGameReviews();
+  // }, [gameApiId]);
 
   const totalPages = Math.ceil(comments.length / itemsPerPage);
   const indexOfLastComment = currentPage * itemsPerPage;
@@ -72,25 +76,19 @@ export const GameReviews: React.FC<{ gameApiId: number }> = ({ gameApiId }) => {
         ))}
       </div>
 
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
-        <>
-          <div className={styles.reviews__list}>
-            {currentComments.map((comment) => (
-              <Review key={comment.id} review={comment} />
-            ))}
-          </div>
-          {totalPages > 1 && (
-            <div className={styles.reviews__pagination}>
-              <Pagination
-                current={currentPage}
-                total={totalPages}
-                onChange={handlePageChange}
-              />
-            </div>
-          )}
-        </>
+      <div className={styles.reviews__list}>
+        {currentComments.map((comment) => (
+          <Review key={comment.id} review={comment} />
+        ))}
+      </div>
+      {totalPages > 1 && (
+        <div className={styles.reviews__pagination}>
+          <Pagination
+            current={currentPage}
+            total={totalPages}
+            onChange={handlePageChange}
+          />
+        </div>
       )}
     </section>
   );

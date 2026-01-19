@@ -6,44 +6,60 @@ import type { GameDto, GameStatus } from '@/types/Game';
 import type { UserComment } from '@/types/Comment';
 import { Review } from '@/components/Review/Review';
 import { GameCard } from '@/components/GameCard/GameCard';
+import { PageLoader } from '@/components/PageLoader/PageLoader';
+import { useNavigate } from 'react-router-dom';
 
-export const GamesSection = ({ status }: { status: GameStatus }) => {
+type Props = {
+  status: GameStatus;
+  userId?: string;
+  onCommentsLoaded: () => void;
+  randomAvatar: string;
+};
+
+export const GamesSection: React.FC<Props> = ({
+  status,
+  userId,
+  onCommentsLoaded,
+  randomAvatar,
+}) => {
   const [games, setGames] = useState([]);
   const [reviews, setReviews] = useState<UserComment[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchGames = async () => {
-      setIsLoading(true);
+  const navigate = useNavigate();
 
-      try {
-        if (status) {
-          const response = await getUserGames(status);
-          console.log(response);
-
-          setGames(response);
-        } else {
-          const response = await getUserComments();
-          console.log(response);
-
-          setReviews(response);
-          setGames([]);
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setIsLoading(false);
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      if (status) {
+        const response = await getUserGames(status, userId);
+        setGames(response);
+        console.log(response);
+      } else {
+        const response = await getUserComments(userId);
+        setReviews(response);
+        setGames([]);
       }
-    };
-
-    fetchGames();
-  }, [status]);
-
-  const handleRemoveFromLocalState = (userGameId: number): void => {
-    setGames((prev) => prev.filter((item: GameDto) => item.id !== userGameId));
+    } catch (error) {
+      console.log('Error fetching data:', error);
+      navigate('/?auth=login');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  useEffect(() => {
+    fetchData();
+  }, [status, userId]);
+
+  const handleRemoveFromLocalState = (id: number): void => {
+    setGames((prev) => {
+      const newList = prev.filter((g: GameDto) => g.id !== id);
+      return newList;
+    });
+  };
+
+  if (isLoading) return <PageLoader />;
 
   return (
     <>
@@ -62,7 +78,16 @@ export const GamesSection = ({ status }: { status: GameStatus }) => {
         <div className={styles.reviewsList}>
           {reviews.length > 0 ? (
             reviews.map((review: UserComment) => (
-              <Review key={review.id} review={review} variant='profile' />
+              <Review
+                key={review.id}
+                review={review}
+                variant='profile'
+                onUpdate={() => {
+                  fetchData();
+                  onCommentsLoaded();
+                }}
+                randomAvatar={randomAvatar}
+              />
             ))
           ) : (
             <p>No reviews yet</p>

@@ -8,8 +8,11 @@ import { getGames } from '@/api/games';
 import type { Game } from '@/types/Game';
 import FiltersIcon from '@/assets/icons/filter.svg?react';
 import { Pagination } from '@/components/Pagination/Pagination';
+import { GameCardSkeleton } from '@/components/GameCardSkeleton/GameCardSkeleton';
 
-export const CatalogPage = () => {
+const SKELETON_COUNT = 8;
+
+const CatalogPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [games, setGames] = useState<Game[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -82,9 +85,9 @@ export const CatalogPage = () => {
     fetchGames();
   }, [search, platforms, genres, year, currentPage]);
 
-  if (isLoading) {
-    return null;
-  }
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
 
   return (
     <section className={styles.catalog}>
@@ -101,20 +104,32 @@ export const CatalogPage = () => {
         </div>
 
         <div className={styles.catalog__content}>
-          <div>
-            {games.length > 0 ? (
+          <div className={styles.catalog__gameListWrapper}>
+            {isLoading ? (
               <ul className={styles.gameList}>
-                {games.map((game) => (
-                  <li key={game.apiId} className={styles.gameList_item}>
-                    <GameCard game={game} />
+                {Array.from({ length: SKELETON_COUNT }).map((_, index) => (
+                  <li key={index} className={styles.gameList_item}>
+                    <GameCardSkeleton />
                   </li>
                 ))}
               </ul>
             ) : (
-              <p>No games found</p>
+              <>
+                {games.length > 0 ? (
+                  <ul className={styles.gameList}>
+                    {games.map((game) => (
+                      <li key={game.apiId} className={styles.gameList_item}>
+                        <GameCard game={game} />
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No games found</p>
+                )}
+              </>
             )}
 
-            {totalPages > 1 && (
+            {!isLoading && totalPages > 1 && (
               <Pagination
                 current={currentPage}
                 total={totalPages}
@@ -133,3 +148,5 @@ export const CatalogPage = () => {
     </section>
   );
 };
+
+export default CatalogPage;

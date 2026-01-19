@@ -24,6 +24,10 @@
     gap: 4px;
     color: $secondary-color;
   }
+
+  &__gameListWrapper {
+    width: 100%;
+  }
 }
 
 .gameList {

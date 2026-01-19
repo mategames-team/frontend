@@ -20,12 +20,30 @@ import { logout } from '@/store/slices/userSlice';
 import { updateProfile } from '@/store/slices/user.thunks';
 import { ChangePassword } from '@/components/ChangePassword/ChangePassword';
 
+const AVATARS: Record<string, string> = {
+  'male-1.png': userAvatarMale1,
+  'male-2.png': userAvatarMale2,
+  'male-3.png': userAvatarMale3,
+  'male-4.png': userAvatarMale4,
+  'male-5.png': userAvatarMale5,
+  'female-1.png': userAvatarFemale1,
+  'female-2.png': userAvatarFemale2,
+  'female-3.png': userAvatarFemale3,
+  'female-4.png': userAvatarFemale4,
+  'female-5.png': userAvatarFemale5,
+};
+
 export const SettingsPage = () => {
   const { data, isLoading } = useAppSelector((state) => state.user);
   const [username, setUsername] = useState<string>(data?.profileName || '');
   const [location, setLocation] = useState<string>(data?.location || '');
   const [about, setAbout] = useState<string>(data?.about || '');
+  const [selectedAvatar, setSelectedAvatar] = useState<string>(
+    data?.avatarUrl || 'male-1.png',
+  );
+
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -36,7 +54,14 @@ export const SettingsPage = () => {
 
   const handleSubmit = async () => {
     try {
-      dispatch(updateProfile({ profileName: username, about, location }));
+      dispatch(
+        updateProfile({
+          profileName: username,
+          about,
+          location,
+          avatarUrl: selectedAvatar,
+        }),
+      );
     } catch (error) {
       console.log('updateUserData error:', error);
     }
@@ -45,7 +70,8 @@ export const SettingsPage = () => {
   const isChanged =
     username !== (data?.profileName || '') ||
     location !== (data?.location || '') ||
-    about !== (data?.about || '');
+    about !== (data?.about || '') ||
+    selectedAvatar !== (data?.avatarUrl || 'male-1.png');
 
   return (
     <section className={styles.settings}>
@@ -57,7 +83,7 @@ export const SettingsPage = () => {
               <h2 className={styles.settings__title}>About me</h2>
 
               <img
-                src={userAvatarMale3}
+                src={AVATARS[selectedAvatar]}
                 alt='User avatar'
                 className={styles.profileForm__avatar}
               />
@@ -66,63 +92,26 @@ export const SettingsPage = () => {
                 <h4
                   className={clsx(
                     styles.settings__subtitle,
-                    styles.profileForm__subtitle
+                    styles.profileForm__subtitle,
                   )}
                 >
                   Change avatar
                 </h4>
 
                 <div className={styles.profileForm__avatarsGrid}>
-                  <img
-                    src={userAvatarMale1}
-                    alt='User avatar'
-                    className={styles.profileForm__gridAvatar}
-                  />
-                  <img
-                    src={userAvatarMale2}
-                    alt='User avatar'
-                    className={styles.profileForm__gridAvatar}
-                  />
-                  <img
-                    src={userAvatarMale3}
-                    alt='User avatar'
-                    className={styles.profileForm__gridAvatar}
-                  />
-                  <img
-                    src={userAvatarMale4}
-                    alt='User avatar'
-                    className={styles.profileForm__gridAvatar}
-                  />
-                  <img
-                    src={userAvatarMale5}
-                    alt='User avatar'
-                    className={styles.profileForm__gridAvatar}
-                  />
-                  <img
-                    src={userAvatarFemale1}
-                    alt='User avatar'
-                    className={styles.profileForm__gridAvatar}
-                  />
-                  <img
-                    src={userAvatarFemale2}
-                    alt='User avatar'
-                    className={styles.profileForm__gridAvatar}
-                  />
-                  <img
-                    src={userAvatarFemale3}
-                    alt='User avatar'
-                    className={styles.profileForm__gridAvatar}
-                  />
-                  <img
-                    src={userAvatarFemale4}
-                    alt='User avatar'
-                    className={styles.profileForm__gridAvatar}
-                  />
-                  <img
-                    src={userAvatarFemale5}
-                    alt='User avatar'
-                    className={styles.profileForm__gridAvatar}
-                  />
+                  {Object.entries(AVATARS).map(([name, path]) => (
+                    <img
+                      key={name}
+                      src={path}
+                      alt={name}
+                      onClick={() => setSelectedAvatar(name)}
+                      className={clsx(
+                        styles.profileForm__gridAvatar,
+                        selectedAvatar === name &&
+                          styles.profileForm__gridAvatar_active,
+                      )}
+                    />
+                  ))}
                 </div>
               </div>
 
@@ -133,7 +122,7 @@ export const SettingsPage = () => {
                 <h4
                   className={clsx(
                     styles.settings__subtitle,
-                    styles.profileForm__subtitle
+                    styles.profileForm__subtitle,
                   )}
                 >
                   Personal information
@@ -152,7 +141,7 @@ export const SettingsPage = () => {
                     onChange={(e) => setUsername(e.target.value)}
                     className={clsx(
                       styles.profileForm__input,
-                      'text-secondary'
+                      'text-secondary',
                     )}
                   />
                 </div>
@@ -170,7 +159,7 @@ export const SettingsPage = () => {
                     onChange={(e) => setLocation(e.target.value)}
                     className={clsx(
                       styles.profileForm__input,
-                      'text-secondary'
+                      'text-secondary',
                     )}
                   />
                 </div>
@@ -187,7 +176,7 @@ export const SettingsPage = () => {
                     onChange={(e) => setAbout(e.target.value)}
                     className={clsx(
                       styles.profileForm__textarea,
-                      'text-secondary'
+                      'text-secondary',
                     )}
                   />
                 </div>
@@ -218,7 +207,7 @@ export const SettingsPage = () => {
                 <p
                   className={clsx(
                     styles.settingsPrivacy__description,
-                    'text-secondary'
+                    'text-secondary',
                   )}
                 >
                   If you have a private account, other users can't see your
@@ -239,7 +228,7 @@ export const SettingsPage = () => {
                 <p
                   className={clsx(
                     styles.settingsPrivacy__description,
-                    'text-secondary'
+                    'text-secondary',
                   )}
                 >
                   Other players can view your saved games/games you are
@@ -258,7 +247,7 @@ export const SettingsPage = () => {
                 <p
                   className={clsx(
                     styles.settingsPrivacy__description,
-                    'text-secondary'
+                    'text-secondary',
                   )}
                 >
                   If you have a private account, other users can't see your

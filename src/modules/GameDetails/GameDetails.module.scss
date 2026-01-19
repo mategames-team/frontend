@@ -118,6 +118,11 @@
   &__detailValue {
     color: $primary-color;
   }
+
+  &__rateActionTitle {
+    color: $secondary-color;
+    margin-bottom: 24px;
+  }
 }
 
 .statusBtn {

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/react.svg" />
+    <link rel="icon" type="image/svg+xml" href="/logo_book.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -19,7 +19,13 @@
     <title>Gamer's Diary</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <script>
+        if (sessionStorage.getItem('hasVisited')) {
+          document.getElementById('root').innerHTML = '';
+        }
+      </script>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

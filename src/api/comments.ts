@@ -8,10 +8,7 @@ export const createComment = async (
 ) => {
   const response = await api.post<Comment>(
     `${BASE_URL}/comments/games/${gameApiId}`,
-    {
-      text,
-      rating,
-    }
+    { text, rating }
   );
 
   return response.data;
@@ -26,10 +23,16 @@ export const updateComment = async (
   text: string,
   rating: number
 ) => {
-  await api.patch(`${BASE_URL}/comments/${commentId}`, { text, rating });
+  const response = await api.patch(`${BASE_URL}/comments/${commentId}`, {
+    text,
+    rating,
+  });
+  console.log(response.data);
+
+  return response.data;
 };
 
-export const getGameComments = async (gameApiId: number) => {
+export const getGameComments = async (gameApiId: string) => {
   const response = await api.get<{ content: UserComment[] }>(
     `${BASE_URL}/games/${gameApiId}/comments`
   );
@@ -38,11 +41,12 @@ export const getGameComments = async (gameApiId: number) => {
   return response.data.content;
 };
 
-export const getUserComments = async () => {
-  const response = await api.get<{ content: UserComment[] }>(
-    `${BASE_URL}/comments`
-  );
-  console.log('api/getUserComments', response);
-
+export const getUserComments = async (userId?: string) => {
+  const response = await api.get(`${BASE_URL}/comments`, {
+    params: {
+      id: userId,
+    },
+  });
+  console.log(response);
   return response.data.content;
 };
