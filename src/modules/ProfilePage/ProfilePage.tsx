@@ -1,16 +1,17 @@
+import { useEffect, useState } from 'react';
+import { useParams, useSearchParams } from 'react-router-dom';
 import styles from './ProfilePage.module.scss';
 import { ProfileHeader } from './ProfileHeader/ProfileHeader';
 import { ProfileTabs } from './ProfileTabs/ProfileTabs';
 import { GamesSection } from './GamesSection/GamesSection';
-import { useParams, useSearchParams } from 'react-router-dom';
-import type { ProfileTab } from '@/types/profileTabs';
 import { useAppSelector } from '@/store/hooks';
-import type { GameStatus } from '@/types/Game';
 import { PageLoader } from '@/components/PageLoader/PageLoader';
-import { useEffect, useState } from 'react';
 import type { UserData } from '@/types/User';
+import type { ProfileTab } from '@/types/profileTabs';
+import type { GameStatus } from '@/types/Game';
 import { getUserData } from '@/api/user-data';
 import { getUserComments } from '@/api/comments';
+import { getRandomAvatar } from '@/utils/avatars';
 
 const STATUS_MAP: Record<string, string> = {
   backlog: 'BACKLOG',
@@ -22,6 +23,7 @@ const ProfilePage = () => {
   const { userId } = useParams<{ userId: string }>();
   const [seatchParams, setSearchParams] = useSearchParams();
   const [commentsCount, setCommentsCount] = useState(0);
+  const [randomAvatar] = useState(getRandomAvatar);
 
   const {
     data: currentUser,
@@ -89,6 +91,7 @@ const ProfilePage = () => {
             userData={displayedUser || ({} as UserData)}
             isOwnProfile={!userId}
             commentsCount={commentsCount}
+            randomAvatar={randomAvatar}
           />
 
           <ProfileTabs
@@ -100,6 +103,7 @@ const ProfilePage = () => {
             status={STATUS_MAP[activeTab] as GameStatus}
             userId={userId}
             onCommentsLoaded={fetchCount}
+            randomAvatar={randomAvatar}
           />
         </div>
       </div>

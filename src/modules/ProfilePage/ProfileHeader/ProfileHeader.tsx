@@ -1,21 +1,22 @@
-import styles from './ProfileHeader.module.scss';
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import styles from './ProfileHeader.module.scss';
 import type { UserData } from '@/types/User';
-import userAvatar from '@/assets/avatars-female/female-2.png';
 import Location from '@/assets/icons/location.svg?react';
 import Settings from '@/assets/icons/settings.svg?react';
-import { useMemo } from 'react';
 
 type Props = {
   userData: UserData;
   isOwnProfile: boolean;
   commentsCount: number;
+  randomAvatar: string;
 };
 
 export const ProfileHeader: React.FC<Props> = ({
   userData,
   isOwnProfile,
   commentsCount,
+  randomAvatar,
 }) => {
   const gamesStats = useMemo(() => {
     const userGames = userData?.userGames || [];
@@ -36,7 +37,7 @@ export const ProfileHeader: React.FC<Props> = ({
     <section className={styles.header}>
       <div className={styles.header__top}>
         <img
-          src={userData?.avatarUrl || userAvatar}
+          src={userData?.avatarUrl || randomAvatar}
           alt='Profile Avatar'
           className={styles.header__avatar}
         />

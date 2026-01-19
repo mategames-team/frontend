@@ -7,21 +7,26 @@ import type { UserComment } from '@/types/Comment';
 import { Review } from '@/components/Review/Review';
 import { GameCard } from '@/components/GameCard/GameCard';
 import { PageLoader } from '@/components/PageLoader/PageLoader';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   status: GameStatus;
   userId?: string;
   onCommentsLoaded: () => void;
+  randomAvatar: string;
 };
 
 export const GamesSection: React.FC<Props> = ({
   status,
   userId,
   onCommentsLoaded,
+  randomAvatar,
 }) => {
   const [games, setGames] = useState([]);
   const [reviews, setReviews] = useState<UserComment[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -36,7 +41,8 @@ export const GamesSection: React.FC<Props> = ({
         setGames([]);
       }
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.log('Error fetching data:', error);
+      navigate('/?auth=login');
     } finally {
       setIsLoading(false);
     }
@@ -80,6 +86,7 @@ export const GamesSection: React.FC<Props> = ({
                   fetchData();
                   onCommentsLoaded();
                 }}
+                randomAvatar={randomAvatar}
               />
             ))
           ) : (

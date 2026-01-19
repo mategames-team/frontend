@@ -2,26 +2,30 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Review.module.scss';
 import clsx from 'clsx';
-import userAvatar from '@/assets/avatars-female/female-4.png';
 import Edit from '@/assets/icons/edit.svg?react';
 import Trash from '@/assets/icons/trash.svg?react';
 import type { UserComment } from '@/types/Comment';
 import { GameRatingForm } from '@/modules/GameDetails/GameRatingForm/GameRatingForm';
 import { deleteComment } from '@/api/comments';
 import { useAppSelector } from '@/store/hooks';
+import { getRandomAvatar } from '@/utils/avatars';
 
 interface Props {
   variant?: 'default' | 'profile';
   review: UserComment;
   onUpdate?: () => void;
+  randomAvatar?: string;
 }
 
 export const Review: React.FC<Props> = ({
   variant = 'default',
   review,
   onUpdate,
+  randomAvatar,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [reviewAvatar] = useState(randomAvatar || getRandomAvatar());
+
   const { data: currentUser } = useAppSelector((state) => state.user);
 
   const isOwnReview = Number(currentUser?.id) === review.userId;
@@ -45,11 +49,11 @@ export const Review: React.FC<Props> = ({
       <div
         className={clsx(
           styles.review__userInfo,
-          variant === 'profile' && styles['review__userInfo--profile']
+          variant === 'profile' && styles['review__userInfo--profile'],
         )}
       >
         <img
-          src={userAvatar}
+          src={reviewAvatar}
           alt='User Avatar'
           className={styles.review__avatar}
         />
