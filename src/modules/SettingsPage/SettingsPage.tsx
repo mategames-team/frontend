@@ -1,6 +1,6 @@
 import styles from './SettingsPage.module.scss';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import userAvatarMale1 from '@/assets/avatars-male/male-1.png';
 import userAvatarMale2 from '@/assets/avatars-male/male-2.png';
@@ -52,16 +52,31 @@ export const SettingsPage = () => {
     navigate('/');
   };
 
-  const handleSubmit = async () => {
+  useEffect(() => {
+    const updateState = () => {
+      setUsername(data?.profileName || '');
+      setLocation(data?.location || '');
+      setAbout(data?.about || '');
+      setSelectedAvatar(data?.avatarUrl || 'male-1.png');
+    };
+
+    if (data) {
+      updateState();
+    }
+  }, [data]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     try {
-      dispatch(
+      await dispatch(
         updateProfile({
           profileName: username,
           about,
           location,
           avatarUrl: selectedAvatar,
         }),
-      );
+      ).unwrap();
     } catch (error) {
       console.log('updateUserData error:', error);
     }

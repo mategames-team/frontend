@@ -3,8 +3,8 @@ Follow these steps to set up the project locally:
 ### Clone the repository
 
 ```
-git clone https://github.com/Mitlosh/react_gadgets-ecommerce.git
-cd react_gadgets-ecommerce
+git clone https://github.com/mategames-team/frontend.git
+cd frontend
 ```
 
 ### Install dependencies
