@@ -19,35 +19,15 @@ const REVIEW_TABS = [
 
 export const GameReviews: React.FC<Props> = ({ comments }) => {
   const [activeTab, setActiveTab] = useState<string>('');
-  // const [comments, setComments] = useState<UserComment[]>([]);
-  // const [isLoading, setIsLoading] = useState(false);
-
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
-
-  // useEffect(() => {
-  //   const fetchGameReviews = async () => {
-  //     setIsLoading(true);
-
-  //     try {
-  //       const response = await getGameComments(gameApiId);
-  //       setComments(response);
-  //     } catch (error) {
-  //       console.error('Error fetching game reviews:', error);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-
-  //   fetchGameReviews();
-  // }, [gameApiId]);
 
   const totalPages = Math.ceil(comments.length / itemsPerPage);
   const indexOfLastComment = currentPage * itemsPerPage;
   const indexOfFirstComment = indexOfLastComment - itemsPerPage;
   const currentComments = comments.slice(
     indexOfFirstComment,
-    indexOfLastComment
+    indexOfLastComment,
   );
 
   const handlePageChange = (page: number) => {
