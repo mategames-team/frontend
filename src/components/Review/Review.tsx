@@ -7,8 +7,11 @@ import Trash from '@/assets/icons/trash.svg?react';
 import type { UserComment } from '@/types/Comment';
 import { GameRatingForm } from '@/modules/GameDetails/GameRatingForm/GameRatingForm';
 import { deleteComment } from '@/api/comments';
-import { useAppSelector } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { getRandomAvatar } from '@/utils/avatars';
+import { setActiveModal } from '@/store/slices/uiSlice';
+import { SuccessModal } from '../SuccessModal/SuccessModal';
+import { DeleteConfirmationModal } from '../DeleteConfirmationModal/DeleteConfirmationModal';
 
 interface Props {
   variant?: 'default' | 'profile';
@@ -24,18 +27,22 @@ export const Review: React.FC<Props> = ({
   randomAvatar,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [reviewAvatar] = useState(randomAvatar || getRandomAvatar());
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
+  const [reviewAvatar] = useState(randomAvatar || getRandomAvatar());
   const { data: currentUser } = useAppSelector((state) => state.user);
+  const activeModal = useAppSelector((state) => state.ui.activeModal);
+  const dispatch = useAppDispatch();
 
   const isOwnReview = Number(currentUser?.id) === review.userId;
 
   const handleSuccess = () => {
     setIsEditing(false);
     onUpdate?.();
+    dispatch(setActiveModal('success'));
   };
 
-  const handleDelete = async () => {
+  const confirmDelete = async () => {
     try {
       await deleteComment(review.id);
       onUpdate?.();
@@ -91,6 +98,13 @@ export const Review: React.FC<Props> = ({
         </p>
       )}
 
+      {isDeleteModalOpen && (
+        <DeleteConfirmationModal
+          onConfirm={confirmDelete}
+          onClose={() => setIsDeleteModalOpen(false)}
+        />
+      )}
+
       {variant === 'profile' && !isEditing && isOwnReview && (
         <div className={styles.review__actions}>
           <button
@@ -99,10 +113,22 @@ export const Review: React.FC<Props> = ({
           >
             <Edit className={styles.review__actionIcon} />
           </button>
-          <button className={styles.review__actionBtn} onClick={handleDelete}>
+          <button
+            className={styles.review__actionBtn}
+            onClick={() => setIsDeleteModalOpen(true)}
+          >
             <Trash className={styles.review__actionIcon} />
           </button>
         </div>
+      )}
+
+      {activeModal === 'success' && (
+        <SuccessModal
+          message='Your review has been successfully changed.'
+          buttonText='OK'
+          onButtonClick={() => dispatch(setActiveModal(null))}
+          onClose={() => dispatch(setActiveModal(null))}
+        />
       )}
     </section>
   );

@@ -44,6 +44,8 @@ export const GameRatingForm: React.FC<Props> = ({
     try {
       if (reviewId) {
         await updateComment(reviewId, reviewText, rating);
+        const result = await updateComment(reviewId, reviewText, rating);
+        console.log('Success:', result);
       } else {
         await createComment(gameApiId, reviewText, rating);
       }
