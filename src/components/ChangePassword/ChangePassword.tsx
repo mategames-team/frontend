@@ -6,6 +6,7 @@ import EyeVisible from '../../assets/icons/eye-outline.svg?react';
 import EyeInvisible from '../../assets/icons/eye-off.svg?react';
 import { useAppSelector } from '@/store/hooks';
 import { patchUserPassword } from '@/api/user-data';
+import { SuccessModal } from '../SuccessModal/SuccessModal';
 
 interface Props {
   isOpen: boolean;
@@ -20,6 +21,7 @@ interface FormErrors {
 
 export const ChangePassword: React.FC<Props> = ({ isOpen, onClose }) => {
   const modalRef = useRef<HTMLDivElement>(null);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [currentPassword, setCurrentPassword] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
   const [repeatPassword, setIsRepeatPassword] = useState<string>('');
@@ -35,6 +37,14 @@ export const ChangePassword: React.FC<Props> = ({ isOpen, onClose }) => {
   });
 
   const { isLoading } = useAppSelector((state) => state.user);
+
+  const handleFullClose = () => {
+    setIsSuccess(false);
+    setCurrentPassword('');
+    setNewPassword('');
+    setIsRepeatPassword('');
+    onClose();
+  };
 
   // Close the modal
   useEffect(() => {
@@ -109,7 +119,7 @@ export const ChangePassword: React.FC<Props> = ({ isOpen, onClose }) => {
         newPassword,
         repeatPassword,
       });
-      onClose();
+      setIsSuccess(true);
     } catch (error) {
       console.log('Login failed', error);
       setErrors({
@@ -128,141 +138,150 @@ export const ChangePassword: React.FC<Props> = ({ isOpen, onClose }) => {
       onMouseDown={handleOverlayMouseDown}
       role='dialog'
     >
-      <div className={styles.modal} ref={modalRef}>
-        <button className={styles.modal__close} onClick={onClose}>
-          <CloseIcon className={styles.modal__closeIcon} />
-        </button>
-        <h2 className={styles.modal__title}>Change password</h2>
+      {isSuccess ? (
+        <SuccessModal
+          message='Your password has been successfully changed.'
+          buttonText='OK'
+          onButtonClick={handleFullClose}
+          onClose={handleFullClose}
+        />
+      ) : (
+        <div className={styles.modal} ref={modalRef}>
+          <button className={styles.modal__close} onClick={handleFullClose}>
+            <CloseIcon className={styles.modal__closeIcon} />
+          </button>
+          <h2 className={styles.modal__title}>Change password</h2>
 
-        <div className={styles.modalContent}>
-          <form onSubmit={handleSubmit} className={styles.form} noValidate>
-            <div className={styles.form__inputGroup}>
-              <label htmlFor='password'>Password</label>
-              <div className={styles.form__inputWrapper}>
-                <input
-                  id='password'
-                  type={isPasswordVisible ? 'text' : 'password'}
-                  value={currentPassword}
-                  onChange={(e) => {
-                    setCurrentPassword(e.target.value);
-                    setErrors((prev) => ({ ...prev, password: '' }));
-                  }}
-                  minLength={8}
-                  className={`${styles.form__input} ${
-                    errors.currentPassword ? styles.form__inputError : ''
-                  }`}
-                  placeholder='Current password'
-                />
-                <button
-                  type='button'
-                  className={styles.form__inputToggle}
-                  onClick={() => setIsPasswordVisible((prev) => !prev)}
-                >
-                  {isPasswordVisible ? (
-                    <EyeInvisible className={styles.form__inputIcon} />
-                  ) : (
-                    <EyeVisible className={styles.form__inputIcon} />
-                  )}
-                </button>
+          <div className={styles.modalContent}>
+            <form onSubmit={handleSubmit} className={styles.form} noValidate>
+              <div className={styles.form__inputGroup}>
+                <label htmlFor='password'>Password</label>
+                <div className={styles.form__inputWrapper}>
+                  <input
+                    id='password'
+                    type={isPasswordVisible ? 'text' : 'password'}
+                    value={currentPassword}
+                    onChange={(e) => {
+                      setCurrentPassword(e.target.value);
+                      setErrors((prev) => ({ ...prev, password: '' }));
+                    }}
+                    minLength={8}
+                    className={`${styles.form__input} ${
+                      errors.currentPassword ? styles.form__inputError : ''
+                    }`}
+                    placeholder='Current password'
+                  />
+                  <button
+                    type='button'
+                    className={styles.form__inputToggle}
+                    onClick={() => setIsPasswordVisible((prev) => !prev)}
+                  >
+                    {isPasswordVisible ? (
+                      <EyeInvisible className={styles.form__inputIcon} />
+                    ) : (
+                      <EyeVisible className={styles.form__inputIcon} />
+                    )}
+                  </button>
+                </div>
+                {errors.currentPassword && (
+                  <p className={styles.form__error}>{errors.currentPassword}</p>
+                )}
               </div>
-              {errors.currentPassword && (
-                <p className={styles.form__error}>{errors.currentPassword}</p>
-              )}
-            </div>
 
-            <div className={styles.form__inputGroup}>
-              <label htmlFor='newPassword'>New password</label>
-              <div className={styles.form__inputWrapper}>
-                <input
-                  id='newPassword'
-                  type={isNewPassVisible ? 'text' : 'password'}
-                  value={newPassword}
-                  onChange={(e) => {
-                    setNewPassword(e.target.value);
-                    setErrors((prev) => ({ ...prev, password: '' }));
-                  }}
-                  minLength={8}
-                  className={`${styles.form__input} ${
-                    errors.newPassword ? styles.form__inputError : ''
-                  }`}
-                  placeholder='Enter your new password'
-                />
-                <button
-                  type='button'
-                  className={styles.form__inputToggle}
-                  onClick={() => setIsNewPassVisible((prev) => !prev)}
-                >
-                  {isNewPassVisible ? (
-                    <EyeInvisible className={styles.form__inputIcon} />
-                  ) : (
-                    <EyeVisible className={styles.form__inputIcon} />
-                  )}
-                </button>
+              <div className={styles.form__inputGroup}>
+                <label htmlFor='newPassword'>New password</label>
+                <div className={styles.form__inputWrapper}>
+                  <input
+                    id='newPassword'
+                    type={isNewPassVisible ? 'text' : 'password'}
+                    value={newPassword}
+                    onChange={(e) => {
+                      setNewPassword(e.target.value);
+                      setErrors((prev) => ({ ...prev, password: '' }));
+                    }}
+                    minLength={8}
+                    className={`${styles.form__input} ${
+                      errors.newPassword ? styles.form__inputError : ''
+                    }`}
+                    placeholder='Enter your new password'
+                  />
+                  <button
+                    type='button'
+                    className={styles.form__inputToggle}
+                    onClick={() => setIsNewPassVisible((prev) => !prev)}
+                  >
+                    {isNewPassVisible ? (
+                      <EyeInvisible className={styles.form__inputIcon} />
+                    ) : (
+                      <EyeVisible className={styles.form__inputIcon} />
+                    )}
+                  </button>
+                </div>
+                {errors.newPassword && (
+                  <p className={styles.form__error}>{errors.newPassword}</p>
+                )}
               </div>
-              {errors.newPassword && (
-                <p className={styles.form__error}>{errors.newPassword}</p>
-              )}
-            </div>
 
-            <div className={styles.form__inputGroup}>
-              <label htmlFor='confirmPassword'>Confirm password</label>
-              <div className={styles.form__inputWrapper}>
-                <input
-                  id='confirmPassword'
-                  type={isConfirmPassdVisible ? 'text' : 'password'}
-                  value={repeatPassword}
-                  onChange={(e) => {
-                    setIsRepeatPassword(e.target.value);
-                    setErrors((prev) => ({ ...prev, password: '' }));
-                  }}
-                  minLength={8}
-                  className={`${styles.form__input} ${
-                    errors.repeatPassword ? styles.form__inputError : ''
-                  }`}
-                  placeholder='Confirm your password'
-                />
-                <button
-                  type='button'
-                  className={styles.form__inputToggle}
-                  onClick={() => setIsRepeatPasswordVisible((prev) => !prev)}
-                >
-                  {isConfirmPassdVisible ? (
-                    <EyeInvisible className={styles.form__inputIcon} />
-                  ) : (
-                    <EyeVisible className={styles.form__inputIcon} />
-                  )}
-                </button>
+              <div className={styles.form__inputGroup}>
+                <label htmlFor='confirmPassword'>Confirm password</label>
+                <div className={styles.form__inputWrapper}>
+                  <input
+                    id='confirmPassword'
+                    type={isConfirmPassdVisible ? 'text' : 'password'}
+                    value={repeatPassword}
+                    onChange={(e) => {
+                      setIsRepeatPassword(e.target.value);
+                      setErrors((prev) => ({ ...prev, password: '' }));
+                    }}
+                    minLength={8}
+                    className={`${styles.form__input} ${
+                      errors.repeatPassword ? styles.form__inputError : ''
+                    }`}
+                    placeholder='Confirm your password'
+                  />
+                  <button
+                    type='button'
+                    className={styles.form__inputToggle}
+                    onClick={() => setIsRepeatPasswordVisible((prev) => !prev)}
+                  >
+                    {isConfirmPassdVisible ? (
+                      <EyeInvisible className={styles.form__inputIcon} />
+                    ) : (
+                      <EyeVisible className={styles.form__inputIcon} />
+                    )}
+                  </button>
+                </div>
+                {errors.repeatPassword && (
+                  <p className={styles.form__error}>{errors.repeatPassword}</p>
+                )}
               </div>
-              {errors.repeatPassword && (
-                <p className={styles.form__error}>{errors.repeatPassword}</p>
-              )}
-            </div>
 
-            <div className={styles.form__buttonsGroup}>
-              <Button
-                className={styles.form__button}
-                type='button'
-                variant='secondary'
-                size='large'
-                fullWidth={true}
-                onClick={onClose}
-              >
-                Cancel
-              </Button>
-              <Button
-                className={styles.form__button}
-                type='submit'
-                variant='primary'
-                size='large'
-                fullWidth={true}
-                isLoading={isLoading}
-              >
-                Save password
-              </Button>
-            </div>
-          </form>
+              <div className={styles.form__buttonsGroup}>
+                <Button
+                  className={styles.form__button}
+                  type='button'
+                  variant='secondary'
+                  size='large'
+                  fullWidth={true}
+                  onClick={handleFullClose}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className={styles.form__button}
+                  type='submit'
+                  variant='primary'
+                  size='large'
+                  fullWidth={true}
+                  isLoading={isLoading}
+                >
+                  Save password
+                </Button>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

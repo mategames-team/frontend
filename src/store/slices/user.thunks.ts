@@ -60,7 +60,7 @@ export const loginUser = createAsyncThunk<
       const message = err.response?.data?.message || 'Login failed';
 
       return rejectWithValue(
-        Array.isArray(serverErrors) ? serverErrors : [message]
+        Array.isArray(serverErrors) ? serverErrors : [message],
       );
     }
 
@@ -89,6 +89,7 @@ export const updateProfile = createAsyncThunk(
   async (payload: Partial<UserData>, { rejectWithValue }) => {
     try {
       const response = await patchUserData(payload);
+      console.log('Profile updated successfully:', response);
 
       return response;
     } catch (error) {
@@ -96,5 +97,5 @@ export const updateProfile = createAsyncThunk(
 
       return rejectWithValue(['Update failed']);
     }
-  }
+  },
 );

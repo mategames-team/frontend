@@ -102,8 +102,8 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
     if (!password) {
       newErrors.password = 'Please enter a password.';
       isValid = false;
-    } else if (password.length < 6) {
-      newErrors.password = 'Your password must contain at least 6 characters.';
+    } else if (password.length < 8 && password.length > 25) {
+      newErrors.password = 'Password must be between 8 and 25 digits';
       isValid = false;
     }
 
@@ -136,18 +136,39 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
     if (!validateForm()) return;
 
     try {
-      dispatch(
+      await dispatch(
         registerUser({
           email,
           profileName: username,
           password,
           repeatPassword: confirmPassword,
-        })
+        }),
       ).unwrap();
 
       setIsRegistered(true);
     } catch (error) {
       console.log('Registration failed', error);
+      if (Array.isArray(error)) {
+        const serverErrors: FormErrors = {
+          email: '',
+          username: '',
+          password: '',
+          confirmPassword: '',
+        };
+
+        error.forEach((err: string) => {
+          const [field, message] = err.split(': ');
+
+          if (field === 'email') serverErrors.email = message;
+          if (field === 'profileName' || field === 'username')
+            serverErrors.username = message;
+          if (field === 'password') serverErrors.password = message;
+          if (field === 'repeatPassword')
+            serverErrors.confirmPassword = message;
+        });
+
+        setErrors(serverErrors);
+      }
     }
   };
 

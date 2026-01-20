@@ -18,9 +18,8 @@ export interface UserState {
 const token = localStorage.getItem('token');
 
 export const initialState: UserState = {
-  ...(token && { data: { token } }),
-  data: null,
-  isAuthenticated: false,
+  data: token ? ({ token } as unknown as UserData) : null,
+  isAuthenticated: !!token,
   isLoading: false,
   error: null,
 };
@@ -42,7 +41,7 @@ const userSlice = createSlice({
     },
     updateGame: (
       state,
-      action: { payload: { apiId: number; status: GameStatus } }
+      action: { payload: { apiId: number; status: GameStatus } },
     ) => {
       if (state.data) {
         if (!state.data.userGames) {
@@ -51,7 +50,7 @@ const userSlice = createSlice({
 
         const { apiId, status } = action.payload;
         const existingGame = state.data.userGames.find(
-          (g) => g.apiId === apiId
+          (g) => g.apiId === apiId,
         );
 
         if (existingGame) {
@@ -64,7 +63,7 @@ const userSlice = createSlice({
     deleteGame: (state, action: { payload: number }) => {
       if (state.data && state.data.userGames) {
         state.data.userGames = state.data.userGames?.filter(
-          (g) => g.apiId !== action.payload
+          (g) => g.apiId !== action.payload,
         );
       }
     },
@@ -96,10 +95,12 @@ const userSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(updateProfile.fulfilled, (state, action) => {
+        console.log('REDUX PAYLOAD:', action.payload);
+
+        state.isLoading = false;
         if (state.data) {
           state.data = { ...state.data, ...action.payload };
         }
-        state.isLoading = false;
       })
 
       .addCase(registerUser.pending, (state) => {

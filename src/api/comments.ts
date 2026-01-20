@@ -4,11 +4,11 @@ import { api, BASE_URL } from './http';
 export const createComment = async (
   gameApiId: number,
   text: string,
-  rating: number
+  rating: number,
 ) => {
   const response = await api.post<Comment>(
     `${BASE_URL}/comments/games/${gameApiId}`,
-    { text, rating }
+    { text, rating },
   );
 
   return response.data;
@@ -21,11 +21,11 @@ export const deleteComment = async (commentId: number) => {
 export const updateComment = async (
   commentId: number,
   text: string,
-  rating: number
+  rating: number,
 ) => {
   const response = await api.patch(`${BASE_URL}/comments/${commentId}`, {
     text,
-    rating,
+    rating: Number(rating),
   });
   console.log(response.data);
 
@@ -34,7 +34,7 @@ export const updateComment = async (
 
 export const getGameComments = async (gameApiId: string) => {
   const response = await api.get<{ content: UserComment[] }>(
-    `${BASE_URL}/games/${gameApiId}/comments`
+    `${BASE_URL}/games/${gameApiId}/comments`,
   );
   console.log(response);
 

@@ -1,6 +1,11 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-export type ModalType = 'login' | 'registration' | null;
+export type ModalType =
+  | 'login'
+  | 'registration'
+  | 'authPrompt'
+  | 'success'
+  | null;
 
 export interface UiState {
   isMenuOpen: boolean;

@@ -7,7 +7,6 @@ import type { UserComment } from '@/types/Comment';
 import { Review } from '@/components/Review/Review';
 import { GameCard } from '@/components/GameCard/GameCard';
 import { PageLoader } from '@/components/PageLoader/PageLoader';
-import { useNavigate } from 'react-router-dom';
 
 type Props = {
   status: GameStatus;
@@ -26,8 +25,6 @@ export const GamesSection: React.FC<Props> = ({
   const [reviews, setReviews] = useState<UserComment[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const navigate = useNavigate();
-
   const fetchData = async () => {
     setIsLoading(true);
     try {
@@ -42,7 +39,6 @@ export const GamesSection: React.FC<Props> = ({
       }
     } catch (error) {
       console.log('Error fetching data:', error);
-      navigate('/?auth=login');
     } finally {
       setIsLoading(false);
     }

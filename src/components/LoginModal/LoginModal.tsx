@@ -98,10 +98,30 @@ export const LoginModal: React.FC<LoginModalProps> = ({
       onClose();
     } catch (error) {
       console.log('Login failed', error);
-      setErrors({
-        email: 'Invalid email or password.',
-        password: 'Invalid email or password.',
-      });
+      const serverErrors: FormErrors = {
+        email: '',
+        password: '',
+      };
+
+      if (Array.isArray(error)) {
+        error.forEach((err: string) => {
+          if (err.includes(': ')) {
+            const [field, message] = err.split(': ');
+            if (field === 'email') serverErrors.email = message;
+            if (field === 'password') serverErrors.password = message;
+          } else {
+            serverErrors.email = err;
+            serverErrors.password = err;
+          }
+        });
+
+        setErrors(serverErrors);
+      } else {
+        setErrors({
+          email: 'An error occurred. Please try again.',
+          password: 'An error occurred. Please try again.',
+        });
+      }
     }
   };
 
