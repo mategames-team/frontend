@@ -17,10 +17,10 @@ export const AppRouter = () => {
         <Route path='/' element={<HomePage />} />
         <Route path='/catalogue' element={<CatalogPage />} />
         <Route path='/games/:gameId' element={<GameDetails />} />
+        <Route path='/profile/:userId' element={<ProfilePage />} />
 
         <Route element={<ProtectedRoute />}>
           <Route path='/profile' element={<ProfilePage />} />
-          <Route path='/profile/:userId' element={<ProfilePage />} />
           <Route path='/profile/settings' element={<SettingsPage />} />
         </Route>
       </Route>

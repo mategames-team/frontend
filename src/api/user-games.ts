@@ -3,14 +3,14 @@ import { api, BASE_URL } from './http';
 
 export const addUserGame = async (
   apiId: number,
-  status: string
+  status: string,
 ): Promise<GameDto> => {
   const response = await api.post<GameDto>(
     `${BASE_URL}/user-games?status=${status}`,
     {
       apiId,
       status,
-    }
+    },
   );
 
   console.log('/api/addUserGame.ts response:', response);
@@ -21,7 +21,7 @@ export const getUserGames = async (status: GameStatus, userId?: string) => {
   const response = await api.get(`${BASE_URL}/user-games`, {
     params: {
       status: status,
-      id: userId,
+      userId: userId,
     },
   });
   return response.data.content;
