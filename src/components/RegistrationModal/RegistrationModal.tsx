@@ -7,6 +7,7 @@ import EyeInvisible from '../../assets/icons/eye-off.svg?react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { registerUser } from '@/store/slices/user.thunks';
 import { SuccessModal } from '../SuccessModal/SuccessModal';
+import { setActiveModal } from '@/store/slices/uiSlice';
 
 interface RegistrationModalProps {
   isOpen: boolean;
@@ -146,6 +147,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
       ).unwrap();
 
       setIsRegistered(true);
+      dispatch(setActiveModal('success'));
     } catch (error) {
       console.log('Registration failed', error);
       if (Array.isArray(error)) {
