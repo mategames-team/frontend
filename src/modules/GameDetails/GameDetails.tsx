@@ -1,5 +1,5 @@
 import type { Game } from '@/types/Game';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './GameDetails.module.scss';
 import { StatusButtons } from '@/components/common/StatusButtons/StatusButtons';
@@ -17,13 +17,14 @@ const GameDetails = () => {
   const [game, setGame] = useState<Game | null>(null);
   const [comments, setComments] = useState<UserComment[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isCommentsLoading, setIsCommentsLoading] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const { data, isAuthenticated } = useAppSelector((state) => state.user);
 
   const currentStatus = data?.userGames?.find(
-    (g) => g.apiId === Number(gameId)
+    (g) => g.apiId === Number(gameId),
   )?.status;
 
   const { updateStatus } = useUpdateGameStatus(Number(gameId));
@@ -48,22 +49,24 @@ const GameDetails = () => {
   }, [gameId]);
 
   // Fetch comments
-  const fetchGameReviews = async () => {
-    setIsLoading(true);
+  const fetchGameReviews = useCallback(async () => {
+    if (!gameId) return;
+
+    setIsCommentsLoading(true);
 
     try {
-      const response = await getGameComments(gameId!);
+      const response = await getGameComments(gameId);
       setComments(response);
     } catch (error) {
       console.error('Error fetching game reviews:', error);
     } finally {
-      setIsLoading(false);
+      setIsCommentsLoading(false);
     }
-  };
+  }, [gameId]);
 
   useEffect(() => {
     fetchGameReviews();
-  }, [game]);
+  }, [fetchGameReviews]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -104,7 +107,6 @@ const GameDetails = () => {
             <StatusButtons
               variant='full'
               onAction={(status) => {
-                console.log('status', status);
                 if (!isAuthenticated) {
                   setError('Login to update game status');
                   return;
@@ -155,7 +157,6 @@ const GameDetails = () => {
                 <StatusButtons
                   variant='full'
                   onAction={(status) => {
-                    console.log(isAuthenticated);
                     if (!isAuthenticated) {
                       setError('Login to update game status');
                       return;
@@ -196,7 +197,11 @@ const GameDetails = () => {
           <GameRatingForm gameApiId={game.apiId} onSuccess={fetchGameReviews} />
         </div>
 
-        <GameReviews comments={comments} />
+        {isCommentsLoading ? (
+          <PageLoader />
+        ) : (
+          <GameReviews comments={comments} />
+        )}
       </section>
     </div>
   );

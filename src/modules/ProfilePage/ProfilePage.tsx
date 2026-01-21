@@ -79,7 +79,7 @@ const ProfilePage = () => {
 
   if (isAuthLoading || isDataLoading) return <PageLoader />;
 
-  if (!userId && !currentUser && !isAuthLoading) {
+  if (!userId) {
     return <div className='container'>Please log in to see your profile</div>;
   }
 

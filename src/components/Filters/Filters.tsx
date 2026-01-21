@@ -12,11 +12,12 @@ interface Props {
   setIsFiltersOpen: (value: boolean) => void;
 }
 
-type Filters = {
+export interface Filters {
   platforms: string[];
   genres: string[];
-  year: string[];
-};
+  yearFrom: string;
+  yearTo: string;
+}
 
 const SECTIONS = [
   {
@@ -41,14 +42,6 @@ const SECTIONS = [
       { name: 'Shooter', value: 'shooter' },
     ],
   },
-  {
-    title: 'Year',
-    key: 'year',
-    data: Array.from({ length: 11 }, (_, i) => ({
-      name: String(2025 - i),
-      value: String(2025 - i),
-    })),
-  },
 ] as const;
 
 export const Filters: React.FC<Props> = ({
@@ -58,15 +51,20 @@ export const Filters: React.FC<Props> = ({
 }) => {
   const [searchParams] = useSearchParams();
 
-  const [localFilters, setLocalFilters] = useState<Filters>(() => ({
+  const [localFilters, setLocalFilters] = useState<Partial<Filters>>(() => ({
     platforms: searchParams.get('platforms')?.split(',').filter(Boolean) || [],
     genres: searchParams.get('genres')?.split(',').filter(Boolean) || [],
-    year: searchParams.get('year')?.split(',').filter(Boolean) || [],
   }));
+
+  const [yearFrom, setYearFrom] = useState(
+    searchParams.get('yearFrom') || '1995',
+  );
+  const [yearTo, setYearTo] = useState(searchParams.get('yearTo') || '2026');
 
   const toggleFilter = (category: keyof Filters, value: string) => {
     setLocalFilters((prev) => {
-      const current = prev[category];
+      const current = prev[category] as string[];
+
       return {
         ...prev,
         [category]: current.includes(value)
@@ -77,13 +75,24 @@ export const Filters: React.FC<Props> = ({
   };
 
   const handleAction = (clear = false) => {
-    const filters = clear
-      ? { platforms: [], genres: [], year: [] }
-      : localFilters;
-
-    if (clear) setLocalFilters(filters);
-
-    handleFilterChange(filters);
+    if (clear) {
+      setLocalFilters({ platforms: [], genres: [] });
+      setYearFrom('1995');
+      setYearTo('2026');
+      handleFilterChange({
+        platforms: localFilters.platforms || [],
+        genres: localFilters.genres || [],
+        yearFrom: '',
+        yearTo: '',
+      });
+    } else {
+      handleFilterChange({
+        platforms: localFilters.platforms ?? [],
+        genres: localFilters.genres ?? [],
+        yearFrom: yearFrom || '',
+        yearTo: yearTo || '',
+      });
+    }
 
     if (isFiltersOpen) setIsFiltersOpen(false);
   };
@@ -116,7 +125,9 @@ export const Filters: React.FC<Props> = ({
           <h4 className={styles.filters__sectionTitle}>{section.title}</h4>
           <ul className={styles.filters__list}>
             {section.data.map((item) => {
-              const isActive = localFilters[section.key].includes(item.value);
+              const currentCategory =
+                localFilters[section.key as keyof typeof localFilters] || [];
+              const isActive = currentCategory.includes(item.value);
               return (
                 <li
                   key={item.value}
@@ -126,7 +137,7 @@ export const Filters: React.FC<Props> = ({
                   <div
                     className={clsx(
                       styles.checkbox,
-                      isActive && styles.checkbox__active
+                      isActive && styles.checkbox__active,
                     )}
                   >
                     {isActive && <Checkbox />}
@@ -138,6 +149,32 @@ export const Filters: React.FC<Props> = ({
           </ul>
         </div>
       ))}
+
+      <div className={styles.filters__section}>
+        <h4 className={styles.filters__sectionTitle}>Year</h4>
+        <div className={styles.yearsRow}>
+          <div className={styles.yearInputGroup}>
+            <label className={styles.yearLabel}>From</label>
+            <input
+              type='number'
+              className={styles.yearInput}
+              value={yearFrom}
+              onChange={(e) => setYearFrom(e.target.value)}
+              placeholder='1995'
+            />
+          </div>
+          <div className={styles.yearInputGroup}>
+            <label className={styles.yearLabel}>To</label>
+            <input
+              type='number'
+              className={styles.yearInput}
+              value={yearTo}
+              onChange={(e) => setYearTo(e.target.value)}
+              placeholder='2026'
+            />
+          </div>
+        </div>
+      </div>
 
       <Button variant='primary' fullWidth={true} onClick={() => handleAction()}>
         Apply filters
