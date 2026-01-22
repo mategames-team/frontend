@@ -27,7 +27,7 @@ api.interceptors.response.use(
       localStorage.removeItem('token');
       localStorage.removeItem('user');
     }
-  }
+  },
 );
 
 export async function request<T>(endpoint: string): Promise<T> {
