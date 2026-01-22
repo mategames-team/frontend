@@ -147,7 +147,7 @@ export const SettingsPage = () => {
                   <label
                     className={clsx(styles.profileForm__label, 'text-small')}
                   >
-                    Username
+                    My nickname
                   </label>
                   <input
                     type='text'
@@ -201,7 +201,7 @@ export const SettingsPage = () => {
                   className={styles.profileForm__submit}
                   disabled={!isChanged || isLoading}
                 >
-                  Save changes
+                  Save
                 </Button>
               </form>
             </div>
@@ -253,7 +253,7 @@ export const SettingsPage = () => {
 
               <div className={styles.settingsPrivacy__item}>
                 <div className={styles.settingsPrivacy__header}>
-                  <h4 className={styles.settings__subtitle}>Private account</h4>
+                  <h4 className={styles.settings__subtitle}>Show reviews and ratings</h4>
                   <label className={styles.switch}>
                     <input type='checkbox' />
                     <span className={styles.slider}></span>
@@ -265,8 +265,7 @@ export const SettingsPage = () => {
                     'text-secondary',
                   )}
                 >
-                  If you have a private account, other users can't see your
-                  profile.
+                  Other players can view your reviews and ratings in your profile.
                 </p>
               </div>
             </div>

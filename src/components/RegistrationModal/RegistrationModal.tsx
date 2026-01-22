@@ -150,23 +150,35 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
       dispatch(setActiveModal('success'));
     } catch (error) {
       console.log('Registration failed', error);
+      const serverErrors: FormErrors = {
+        email: '',
+        username: '',
+        password: '',
+        confirmPassword: '',
+      };
+
       if (Array.isArray(error)) {
-        const serverErrors: FormErrors = {
-          email: '',
-          username: '',
-          password: '',
-          confirmPassword: '',
-        };
-
         error.forEach((err: string) => {
-          const [field, message] = err.split(': ');
+          const lowerErr = err.toLowerCase();
 
-          if (field === 'email') serverErrors.email = message;
-          if (field === 'profileName' || field === 'username')
-            serverErrors.username = message;
-          if (field === 'password') serverErrors.password = message;
-          if (field === 'repeatPassword')
-            serverErrors.confirmPassword = message;
+          if (lowerErr.includes('email')) {
+            serverErrors.email = err;
+          } else if (
+            lowerErr.includes('username') ||
+            lowerErr.includes('profile')
+          ) {
+            serverErrors.username = err;
+          } else if (lowerErr.includes('password')) {
+            if (
+              lowerErr.includes('repeat') ||
+              lowerErr.includes('confirm') ||
+              lowerErr.includes('match')
+            ) {
+              serverErrors.confirmPassword = err;
+            } else {
+              serverErrors.password = err;
+            }
+          }
         });
 
         setErrors(serverErrors);
@@ -197,7 +209,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
         <button className={styles.modal__close} onClick={onClose}>
           <CloseIcon className={styles.modal__closeIcon} />
         </button>
-        <h2 className={styles.modal__title}>Create an account</h2>
+        <h2 className={styles.modal__title}>Create account</h2>
 
         <form onSubmit={handleSubmit} className={styles.form} noValidate>
           <div className={styles.form__inputGroup}>
@@ -221,7 +233,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
           </div>
 
           <div className={styles.form__inputGroup}>
-            <label htmlFor='username'>Username</label>
+            <label htmlFor='username'>Nickname</label>
             <input
               id='username'
               type='text'
