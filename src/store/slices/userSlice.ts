@@ -94,6 +94,11 @@ const userSlice = createSlice({
         state.data = { ...state.data, ...action.payload };
         state.isLoading = false;
       })
+      .addCase(fetchCurrentUser.rejected, (state) => {
+        state.isAuthenticated = false;
+        state.data = null;
+        localStorage.removeItem('token');
+      })
       .addCase(updateProfile.fulfilled, (state, action) => {
         console.log('REDUX PAYLOAD:', action.payload);
 

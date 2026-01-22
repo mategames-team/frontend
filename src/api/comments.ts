@@ -1,5 +1,6 @@
 import type { UserComment } from '@/types/Comment';
 import { api, BASE_URL } from './http';
+import type { AxiosRequestConfig } from 'node_modules/axios/index.d.cts';
 
 export const createComment = async (
   gameApiId: number,
@@ -35,9 +36,11 @@ export const updateComment = async (
 export const getGameComments = async (gameApiId: string) => {
   const response = await api.get<{ content: UserComment[] }>(
     `${BASE_URL}/games/${gameApiId}/comments`,
+    {
+      skipAuth: true,
+    } as AxiosRequestConfig<{ content: UserComment[] }>,
   );
   console.log(response);
-
   return response.data.content;
 };
 
