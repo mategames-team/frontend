@@ -1,13 +1,13 @@
+import { useEffect, useState } from 'react';
 import styles from './CatalogPage.module.scss';
 import { useSearchParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import { GameCard } from '@/components/GameCard/GameCard';
 import { Filters } from '@/components/Filters/Filters';
-import { getGames } from '@/api/games';
-import type { Game } from '@/types/Game';
-import FiltersIcon from '@/assets/icons/filter.svg?react';
 import { Pagination } from '@/components/Pagination/Pagination';
 import { GameCardSkeleton } from '@/components/GameCardSkeleton/GameCardSkeleton';
+import { getGames } from '@/api/games';
+import FiltersIcon from '@/assets/icons/filter.svg?react';
+import type { Game } from '@/types/Game';
 
 const SKELETON_COUNT = 8;
 

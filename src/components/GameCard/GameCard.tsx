@@ -12,6 +12,7 @@ interface Props {
   onStatusUpdated?: () => void;
   size?: Size;
   currentTabStatus?: string;
+  className?: string;
 }
 
 type Size = 'small' | 'large';
@@ -20,15 +21,16 @@ export const GameCard: React.FC<Props> = ({
   game,
   size = 'small',
   onStatusUpdated,
+  className,
 }) => {
-  const classes = clsx(styles.card, styles[size]);
+  const classes = clsx(styles.card, styles[size], className);
   const { data, isAuthenticated } = useAppSelector((state) => state.user);
   const [error, setError] = useState<string | null>(null);
 
   const { updateStatus } = useUpdateGameStatus(game.apiId, onStatusUpdated);
 
   const currentStatus = data?.userGames?.find(
-    (g) => g.apiId === Number(game.apiId)
+    (g) => g.apiId === Number(game.apiId),
   )?.status;
 
   useEffect(() => {
