@@ -208,7 +208,7 @@ export const SettingsPage = () => {
           </section>
 
           {/* Privacy */}
-          <section className={styles.settings__section}>
+          {/* <section className={styles.settings__section}>
             <h2 className={styles.settings__title}>Privacy</h2>
             <div className={styles.settingsPrivacy}>
               <div className={styles.settingsPrivacy__item}>
@@ -270,7 +270,7 @@ export const SettingsPage = () => {
                 </p>
               </div>
             </div>
-          </section>
+          </section> */}
 
           {/* Password and Security */}
           <section className={styles.settings__section}>
