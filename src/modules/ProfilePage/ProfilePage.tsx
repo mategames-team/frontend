@@ -54,7 +54,6 @@ const ProfilePage = () => {
         setIsDataLoading(true);
         try {
           const response = await getUserData(userId);
-          console.log(response);
 
           setDisplayedUser(response);
         } catch (error) {
@@ -70,10 +69,6 @@ const ProfilePage = () => {
 
     fetchUserInfo();
   }, [userId, currentUser]);
-
-  if (!isAuthenticated) {
-    console.log('Not authenticated');
-  }
 
   const activeTab = (seatchParams.get('tab') as ProfileTab) ?? 'backlog';
 
