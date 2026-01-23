@@ -53,7 +53,6 @@ export const GameCard: React.FC<Props> = ({
           onAction={(status) => {
             if (!isAuthenticated) {
               dispatch(setActiveModal('authPrompt'));
-              console.log('User not authenticated. Prompting login.');
               return;
             }
             updateStatus(status, currentStatus);

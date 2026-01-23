@@ -70,6 +70,10 @@ const ProfilePage = () => {
     fetchUserInfo();
   }, [userId, currentUser]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   const activeTab = (seatchParams.get('tab') as ProfileTab) ?? 'backlog';
 
   if (isAuthLoading || isDataLoading) return <PageLoader />;

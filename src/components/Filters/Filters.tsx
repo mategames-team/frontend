@@ -130,13 +130,15 @@ export const Filters: React.FC<Props> = ({
     >
       <div className={styles.filters__header}>
         <h2 className={styles.filters__title}>Filters</h2>
-        <button
-          type='button'
-          className={styles.filters__resetBtn}
-          onClick={() => handleAction(true)}
-        >
-          Reset all
-        </button>
+        {!isFiltersOpen && (
+          <button
+            type='button'
+            className={styles.filters__resetBtn}
+            onClick={() => handleAction(true)}
+          >
+            Reset all
+          </button>
+        )}
         {isFiltersOpen && (
           <CloseIcon
             className={styles.filters__close}
@@ -244,9 +246,25 @@ export const Filters: React.FC<Props> = ({
         </div>
       </div>
 
-      <Button variant='primary' fullWidth={true} onClick={() => handleAction()}>
-        Apply filters
-      </Button>
+      <div className={styles.filters__actions}>
+        {isFiltersOpen && (
+          <Button
+            variant='secondary'
+            fullWidth={true}
+            className={styles.filters__applyMobile}
+            onClick={() => handleAction()}
+          >
+            Reset filters
+          </Button>
+        )}
+        <Button
+          variant='primary'
+          fullWidth={true}
+          onClick={() => handleAction()}
+        >
+          Apply filters
+        </Button>
+      </div>
     </aside>
   );
 };

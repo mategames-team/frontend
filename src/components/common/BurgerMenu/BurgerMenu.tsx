@@ -1,6 +1,5 @@
 import styles from './BurgerMenu.module.scss';
 import { NavLinks } from '../NavLinks/NavLinks';
-import { Logo } from '../Logo/Logo';
 import CloseIcon from '@/assets/icons/close.svg?react';
 import { Button } from '../Button/Button';
 import { useAppSelector } from '@/store/hooks';
@@ -25,7 +24,7 @@ export const BurgerMenu: React.FC<Props> = ({
     <div className={`${styles.menu} ${isMenuOpen ? styles.open : ''}`}>
       <div className='container'>
         <div className={styles.menu__top}>
-          <Logo />
+          <h3 className={styles.menu__title}>Menu</h3>
           <button onClick={closeMenu} className={styles.closeButton}>
             <CloseIcon />
           </button>
@@ -37,7 +36,7 @@ export const BurgerMenu: React.FC<Props> = ({
           <nav>
             <NavLinks
               onClick={closeMenu}
-              links={['home', 'catalogue', 'profile']}
+              links={['main', 'catalogue', 'profile']}
               className={styles.menu__links}
             />
 

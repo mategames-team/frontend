@@ -114,6 +114,12 @@
       opacity: 0.7;
     }
   }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
 }
 
 .checkbox {
