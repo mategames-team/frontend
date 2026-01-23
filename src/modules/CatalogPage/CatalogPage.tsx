@@ -101,7 +101,7 @@ const CatalogPage = () => {
     <section className={styles.catalog}>
       <div className='container'>
         <div className={styles.catalog__header}>
-          <p className={`${styles.catalog__title} text-secondary`}>Catalog</p>
+          <p className={`${styles.catalog__title} text-secondary`}>Catalogue</p>
           <button
             className={`${styles.catalog__filtersButton} btn-text-large`}
             onClick={() => setIsFiltersOpen((prev) => !prev)}

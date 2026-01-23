@@ -6,11 +6,12 @@ import { GameRatingForm } from './GameRatingForm/GameRatingForm';
 import { GameReviews } from './GameReviews/GameReviews';
 import { getGameById } from '@/api/games';
 import { useUpdateGameStatus } from '@/hooks/useUpdateGameStatus';
-import { useAppSelector } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { PageLoader } from '@/components/PageLoader/PageLoader';
 import { getGameComments } from '@/api/comments';
 import type { Game } from '@/types/Game';
 import type { UserComment } from '@/types/Comment';
+import { setActiveModal } from '@/store/slices/uiSlice';
 
 const processDescription = (htmlDescription: string | undefined) => {
   if (!htmlDescription) return [];
@@ -38,6 +39,7 @@ const GameDetails = () => {
   const [error, setError] = useState<string | null>(null);
 
   const { data, isAuthenticated } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
 
   const currentStatus = data?.userGames?.find(
     (g) => g.apiId === Number(gameId),
@@ -130,12 +132,11 @@ const GameDetails = () => {
           </div>
 
           <div className={styles.statusBtn__onMobile}>
-            {error && <p className={styles.error}>{error}</p>}
             <StatusButtons
               variant='full'
               onAction={(status) => {
                 if (!isAuthenticated) {
-                  setError('Login to update game status');
+                  dispatch(setActiveModal('authPrompt'));
                   return;
                 }
                 updateStatus(status, currentStatus);
@@ -180,13 +181,11 @@ const GameDetails = () => {
               </div>
 
               <div className={styles.statusBtn__onDesktop}>
-                {error && <p className={styles.error}>{error}</p>}
-
                 <StatusButtons
                   variant='full'
                   onAction={(status) => {
                     if (!isAuthenticated) {
-                      setError('Login to update game status');
+                      dispatch(setActiveModal('authPrompt'));
                       return;
                     }
                     updateStatus(status, currentStatus);

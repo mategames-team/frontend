@@ -21,11 +21,16 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response && error.response.status === 401) {
-      console.warn('Token expired, please log out...', error);
+    if (error.response?.status === 500 || error.response?.status === 401) {
+      const isJwtError =
+        error.response?.data?.message?.toLowerCase().includes('jwt') ||
+        error.response?.data?.error?.includes('Internal Server Error');
 
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
+      if (isJwtError) {
+        console.warn('Token expired or invalid. Logging out...');
+        localStorage.removeItem('token');
+        window.location.reload();
+      }
     }
   },
 );
