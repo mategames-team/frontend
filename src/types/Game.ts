@@ -8,6 +8,12 @@ export interface GameGenre {
   name: string;
 }
 
+export interface Developers {
+  id: number;
+  apiId: number;
+  name: string;
+}
+
 export interface Game {
   apiId: number;
   name: string;
@@ -16,7 +22,7 @@ export interface Game {
   year: number;
   description?: string;
   platforms?: GamePlatform[];
-  creator?: string;
+  developers?: Developers[];
   genres?: GameGenre[];
 }
 

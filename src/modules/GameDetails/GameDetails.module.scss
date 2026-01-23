@@ -24,9 +24,13 @@
     position: relative;
     flex-shrink: 0;
     width: 420px;
+    aspect-ratio: 3 / 4;
+    max-height: 560px;
 
     @include on-tablet {
       width: 100%;
+      aspect-ratio: 16 / 9;
+      max-height: none;
     }
   }
   &__image {
@@ -34,6 +38,7 @@
     height: 100%;
     object-fit: cover;
     border-radius: 16px;
+    display: block;
 
     @include on-tablet {
       border-radius: 12px;
@@ -102,6 +107,10 @@
     color: $primary-color;
     margin-bottom: 20px;
     flex: 1;
+
+    p {
+      margin-bottom: 16px;
+    }
   }
 
   &__detailsGrid {

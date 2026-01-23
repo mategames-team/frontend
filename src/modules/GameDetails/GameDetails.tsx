@@ -1,5 +1,4 @@
-import type { Game } from '@/types/Game';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './GameDetails.module.scss';
 import { StatusButtons } from '@/components/common/StatusButtons/StatusButtons';
@@ -10,7 +9,24 @@ import { useUpdateGameStatus } from '@/hooks/useUpdateGameStatus';
 import { useAppSelector } from '@/store/hooks';
 import { PageLoader } from '@/components/PageLoader/PageLoader';
 import { getGameComments } from '@/api/comments';
+import type { Game } from '@/types/Game';
 import type { UserComment } from '@/types/Comment';
+
+const processDescription = (htmlDescription: string | undefined) => {
+  if (!htmlDescription) return [];
+
+  const cleanHtml = htmlDescription.replace(/^<p>/, '').replace(/<\/p>$/, '');
+
+  const normalized = cleanHtml
+    .replace(/<\/p>\s*<p>/g, '|')
+    .replace(/<br\s*\/?>/g, '|')
+    .replace(/\n/g, '|');
+
+  return normalized
+    .split('|')
+    .map((p) => p.trim())
+    .filter((p) => p.length > 0);
+};
 
 const GameDetails = () => {
   const { gameId } = useParams<{ gameId: string }>();
@@ -36,6 +52,7 @@ const GameDetails = () => {
         setIsLoading(true);
 
         const response = await getGameById(gameId!);
+        console.log('Game details response:', response);
 
         setGame(response);
       } catch (error) {
@@ -81,12 +98,22 @@ const GameDetails = () => {
     }
   }, [error]);
 
-  // Shorten description
-  const paragraphs = game?.description?.split('</p>') ?? [];
-  const shortDescription = paragraphs.slice(0, 1).join('</p>') + '</p>';
+  const paragraphs = useMemo(
+    () => processDescription(game?.description),
+    [game?.description],
+  );
 
-  const isDescExpanded = () =>
-    isExpanded ? game?.description : shortDescription;
+  const shortDescription = paragraphs
+    .slice(0, 2)
+    .map((p) => `<p>${p}</p>`)
+    .join('');
+
+  const getDisplayDescription = () => {
+    if (isExpanded) {
+      return paragraphs.map((p) => `<p>${p}</p>`).join('');
+    }
+    return shortDescription;
+  };
 
   if (isLoading || !game) return <PageLoader />;
 
@@ -134,10 +161,11 @@ const GameDetails = () => {
                 <h4 className={styles.gameDetails__descriptionTitle}>
                   Description
                 </h4>
+
                 <div
                   className={`${styles.gameDetails__descriptionText} text-main`}
                   dangerouslySetInnerHTML={{
-                    __html: isDescExpanded() || '',
+                    __html: getDisplayDescription(),
                   }}
                 />
 
@@ -186,6 +214,13 @@ const GameDetails = () => {
                   {game.genres
                     ?.map((g) => g.name[0] + g.name.slice(1).toLowerCase())
                     .join(', ') ?? 'N/A'}
+                </p>
+              </div>
+
+              <div className={styles.gameDetails__detailGroup}>
+                <h4 className={styles.gameDetails__detailTitle}>Creator</h4>
+                <p className={`text-main ${styles.gameDetails__detailValue}`}>
+                  {game.developers?.[0]?.name ?? 'N/A'}
                 </p>
               </div>
             </div>
