@@ -17,6 +17,7 @@ export interface RegisterResponse {
   about?: string;
   location?: string;
   createdAt?: string;
+  token: string;
 }
 
 export interface LoginRequest {
@@ -31,7 +32,7 @@ export interface LoginResponse {
 export const register = async (data: RegisterRequest) => {
   const response = await axios.post<RegisterResponse>(
     `${BASE_URL}/auth/registration`,
-    data
+    data,
   );
 
   return response.data;
@@ -40,7 +41,7 @@ export const register = async (data: RegisterRequest) => {
 export const login = async (data: LoginRequest) => {
   const response = await axios.post<LoginResponse>(
     `${BASE_URL}/auth/login`,
-    data
+    data,
   );
 
   return response.data;

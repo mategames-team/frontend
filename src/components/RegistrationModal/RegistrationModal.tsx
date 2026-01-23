@@ -6,7 +6,6 @@ import EyeVisible from '../../assets/icons/eye-outline.svg?react';
 import EyeInvisible from '../../assets/icons/eye-off.svg?react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { registerUser } from '@/store/slices/user.thunks';
-import { SuccessModal } from '../SuccessModal/SuccessModal';
 import { setActiveModal } from '@/store/slices/uiSlice';
 
 interface RegistrationModalProps {
@@ -41,7 +40,6 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
     password: '',
     confirmPassword: '',
   });
-  const [isRegistered, setIsRegistered] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
   const { isLoading } = useAppSelector((state) => state.user);
@@ -146,8 +144,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
         }),
       ).unwrap();
 
-      setIsRegistered(true);
-      dispatch(setActiveModal('success'));
+      dispatch(setActiveModal(null));
     } catch (error) {
       console.log('Registration failed', error);
       const serverErrors: FormErrors = {
@@ -187,17 +184,6 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
   };
 
   if (!isOpen) return null;
-
-  if (isRegistered) {
-    return (
-      <SuccessModal
-        message='You have successfully registered'
-        buttonText='Go to login'
-        onButtonClick={onSwitchToLogin}
-        onClose={onClose}
-      />
-    );
-  }
 
   return (
     <div
