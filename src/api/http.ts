@@ -9,7 +9,7 @@ export const api = axios.create({
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
 
-  if (token) {
+  if (token && !config.headers.noAuth) {
     config.headers.Authorization = `Bearer ${token}`;
   }
 
@@ -21,13 +21,18 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response && error.response.status === 401) {
-      console.warn('Token expired, please log out...', error);
+    if (error.response?.status === 500 || error.response?.status === 401) {
+      const isJwtError =
+        error.response?.data?.message?.toLowerCase().includes('jwt') ||
+        error.response?.data?.error?.includes('Internal Server Error');
 
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
+      if (isJwtError) {
+        console.warn('Token expired or invalid. Logging out...');
+        localStorage.removeItem('token');
+        window.location.reload();
+      }
     }
-  }
+  },
 );
 
 export async function request<T>(endpoint: string): Promise<T> {

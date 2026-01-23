@@ -92,11 +92,15 @@ const userSlice = createSlice({
       })
       .addCase(fetchCurrentUser.fulfilled, (state, action) => {
         state.data = { ...state.data, ...action.payload };
+        state.isAuthenticated = true;
         state.isLoading = false;
       })
+      .addCase(fetchCurrentUser.rejected, (state) => {
+        state.isAuthenticated = false;
+        state.data = null;
+        localStorage.removeItem('token');
+      })
       .addCase(updateProfile.fulfilled, (state, action) => {
-        console.log('REDUX PAYLOAD:', action.payload);
-
         state.isLoading = false;
         if (state.data) {
           state.data = { ...state.data, ...action.payload };
@@ -109,11 +113,14 @@ const userSlice = createSlice({
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.data = action.payload;
+        state.isAuthenticated = true;
         state.isLoading = false;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
+        state.isAuthenticated = false;
         state.error = action.payload as string[];
+        localStorage.removeItem('token');
       });
   },
 });

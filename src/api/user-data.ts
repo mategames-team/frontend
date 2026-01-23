@@ -8,7 +8,6 @@ export const getUserData = async (userId?: string): Promise<UserData> => {
     },
   });
 
-  console.log('fetchMe response:', response);
   return response.data;
 };
 

@@ -1,5 +1,5 @@
 import styles from './GamesSection.module.scss';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { getUserGames } from '@/api/user-games';
 import { getUserComments } from '@/api/comments';
 import type { GameDto, GameStatus } from '@/types/Game';
@@ -7,6 +7,8 @@ import type { UserComment } from '@/types/Comment';
 import { Review } from '@/components/Review/Review';
 import { GameCard } from '@/components/GameCard/GameCard';
 import { PageLoader } from '@/components/PageLoader/PageLoader';
+import ArrowRight from '@/assets/icons/arrow-right.svg?react';
+import { clsx } from 'clsx';
 
 type Props = {
   status: GameStatus;
@@ -15,23 +17,25 @@ type Props = {
   randomAvatar: string;
 };
 
+const VISIBLE_COUNT = 4;
+
 export const GamesSection: React.FC<Props> = ({
   status,
   userId,
   onCommentsLoaded,
   randomAvatar,
 }) => {
-  const [games, setGames] = useState([]);
+  const [games, setGames] = useState<GameDto[]>([]);
   const [reviews, setReviews] = useState<UserComment[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
       if (status) {
         const response = await getUserGames(status, userId);
         setGames(response);
-        console.log(response);
       } else {
         const response = await getUserComments(userId);
         setReviews(response);
@@ -42,15 +46,18 @@ export const GamesSection: React.FC<Props> = ({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [status, userId]);
 
   useEffect(() => {
     fetchData();
-  }, [status, userId]);
+    setIsExpanded(false);
+  }, [fetchData]);
+
+  const visibleGames = isExpanded ? games : games.slice(0, VISIBLE_COUNT);
 
   const handleRemoveFromLocalState = (id: number): void => {
     setGames((prev) => {
-      const newList = prev.filter((g: GameDto) => g.id !== id);
+      const newList = prev.filter((g) => g.id !== id);
       return newList;
     });
   };
@@ -60,16 +67,42 @@ export const GamesSection: React.FC<Props> = ({
   return (
     <>
       {status ? (
-        <ul className={styles.games}>
-          {games.map((game: GameDto) => (
-            <GameCard
-              key={game.id}
-              game={game.gameDto}
-              currentTabStatus={status}
-              onStatusUpdated={() => handleRemoveFromLocalState(game.id)}
-            />
-          ))}
-        </ul>
+        <div className={styles.sectionContainer}>
+          {games.length > VISIBLE_COUNT && (
+            <div className={styles.headerActions}>
+              <button
+                className={styles.viewAllBtn}
+                onClick={() => setIsExpanded(!isExpanded)}
+              >
+                {isExpanded ? 'Show less' : 'View all'}
+                <ArrowRight
+                  className={clsx(
+                    styles.arrowIcon,
+                    isExpanded && styles.arrowIcon__expanded,
+                  )}
+                />
+              </button>
+            </div>
+          )}
+
+          <ul className={styles.games}>
+            {visibleGames.map((game, index) => (
+              <li
+                key={game.id}
+                className={styles.gameItem}
+                style={{ animationDelay: `${(index % VISIBLE_COUNT) * 0.05}s` }}
+              >
+                <GameCard
+                  key={game.id}
+                  game={game.gameDto}
+                  size='large'
+                  currentTabStatus={status}
+                  onStatusUpdated={() => handleRemoveFromLocalState(game.id)}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
       ) : (
         <div className={styles.reviewsList}>
           {reviews.length > 0 ? (

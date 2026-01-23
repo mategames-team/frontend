@@ -19,13 +19,16 @@ export const registerUser = createAsyncThunk<
   { rejectValue: BackendError }
 >('user/register', async (userData, { rejectWithValue }) => {
   try {
-    const response = await register(userData);
+    const data = await register(userData);
 
-    if (!response) {
+    if (!data) {
       return rejectWithValue(['Server returned empty response']);
     }
+    if (data && data.token) {
+      localStorage.setItem('token', data.token);
+    }
 
-    return response;
+    return data;
   } catch (err) {
     if (axios.isAxiosError(err)) {
       const serverErrors = err.response?.data?.errors as BackendError;

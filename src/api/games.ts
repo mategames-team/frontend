@@ -1,5 +1,6 @@
 import axios from 'axios';
 import type { Game } from '@/types/Game';
+import type { AxiosRequestConfig } from 'node_modules/axios/index.d.cts';
 import { BASE_URL } from './http';
 
 export interface GetGamesRequest {
@@ -40,15 +41,15 @@ export const getGames = async (params: GetGamesRequest = {}) => {
     ? `/games/search?${queryString}`
     : '/games/search';
 
-  console.log(endpoint);
-
   const response = await axios.get<GetGamesResponse>(`${BASE_URL}${endpoint}`);
 
   return response.data;
 };
 
 export const getGameById = async (apiId: string | number) => {
-  const response = await axios.get<Game>(`${BASE_URL}/games/${apiId}`);
+  const response = await axios.get<Game>(`${BASE_URL}/games/${apiId}`, {
+    skipAuth: true,
+  } as AxiosRequestConfig<{ content: Game[] }>);
 
   return response.data;
 };

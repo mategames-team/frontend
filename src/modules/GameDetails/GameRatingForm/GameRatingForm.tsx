@@ -34,18 +34,20 @@ export const GameRatingForm: React.FC<Props> = ({
   const dispatch = useAppDispatch();
   const close = () => dispatch(closeAllModals());
 
+  const isReviewEmpty = reviewText.trim().length === 0;
+
   const handleRatingSubmit = async () => {
     if (!isAuthenticated) {
       dispatch(setActiveModal('authPrompt'));
       return;
     }
 
+    if (isReviewEmpty) return;
+
     setIsLoading(true);
     try {
       if (reviewId) {
         await updateComment(reviewId, reviewText, rating);
-        const result = await updateComment(reviewId, reviewText, rating);
-        console.log('Success:', result);
       } else {
         await createComment(gameApiId, reviewText, rating);
       }
@@ -77,6 +79,7 @@ export const GameRatingForm: React.FC<Props> = ({
               size='small'
               isLoading={isLoading}
               onClick={handleRatingSubmit}
+              disabled={isReviewEmpty || isLoading}
             >
               Post
             </Button>

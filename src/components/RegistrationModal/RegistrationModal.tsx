@@ -6,7 +6,7 @@ import EyeVisible from '../../assets/icons/eye-outline.svg?react';
 import EyeInvisible from '../../assets/icons/eye-off.svg?react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { registerUser } from '@/store/slices/user.thunks';
-import { SuccessModal } from '../SuccessModal/SuccessModal';
+import { setActiveModal } from '@/store/slices/uiSlice';
 
 interface RegistrationModalProps {
   isOpen: boolean;
@@ -40,7 +40,6 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
     password: '',
     confirmPassword: '',
   });
-  const [isRegistered, setIsRegistered] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
   const { isLoading } = useAppSelector((state) => state.user);
@@ -145,26 +144,38 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
         }),
       ).unwrap();
 
-      setIsRegistered(true);
+      dispatch(setActiveModal(null));
     } catch (error) {
       console.log('Registration failed', error);
+      const serverErrors: FormErrors = {
+        email: '',
+        username: '',
+        password: '',
+        confirmPassword: '',
+      };
+
       if (Array.isArray(error)) {
-        const serverErrors: FormErrors = {
-          email: '',
-          username: '',
-          password: '',
-          confirmPassword: '',
-        };
-
         error.forEach((err: string) => {
-          const [field, message] = err.split(': ');
+          const lowerErr = err.toLowerCase();
 
-          if (field === 'email') serverErrors.email = message;
-          if (field === 'profileName' || field === 'username')
-            serverErrors.username = message;
-          if (field === 'password') serverErrors.password = message;
-          if (field === 'repeatPassword')
-            serverErrors.confirmPassword = message;
+          if (lowerErr.includes('email')) {
+            serverErrors.email = err;
+          } else if (
+            lowerErr.includes('username') ||
+            lowerErr.includes('profile')
+          ) {
+            serverErrors.username = err;
+          } else if (lowerErr.includes('password')) {
+            if (
+              lowerErr.includes('repeat') ||
+              lowerErr.includes('confirm') ||
+              lowerErr.includes('match')
+            ) {
+              serverErrors.confirmPassword = err;
+            } else {
+              serverErrors.password = err;
+            }
+          }
         });
 
         setErrors(serverErrors);
@@ -173,17 +184,6 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
   };
 
   if (!isOpen) return null;
-
-  if (isRegistered) {
-    return (
-      <SuccessModal
-        message='You have successfully registered'
-        buttonText='Go to login'
-        onButtonClick={onSwitchToLogin}
-        onClose={onClose}
-      />
-    );
-  }
 
   return (
     <div
@@ -195,7 +195,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
         <button className={styles.modal__close} onClick={onClose}>
           <CloseIcon className={styles.modal__closeIcon} />
         </button>
-        <h2 className={styles.modal__title}>Create an account</h2>
+        <h2 className={styles.modal__title}>Create account</h2>
 
         <form onSubmit={handleSubmit} className={styles.form} noValidate>
           <div className={styles.form__inputGroup}>
@@ -219,7 +219,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
           </div>
 
           <div className={styles.form__inputGroup}>
-            <label htmlFor='username'>Username</label>
+            <label htmlFor='username'>Nickname</label>
             <input
               id='username'
               type='text'

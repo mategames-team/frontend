@@ -110,8 +110,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({
             if (field === 'email') serverErrors.email = message;
             if (field === 'password') serverErrors.password = message;
           } else {
-            serverErrors.email = err;
-            serverErrors.password = err;
+            serverErrors.email = 'Wrong email or password.';
+            serverErrors.password = 'Wrong email or password.';
           }
         });
 

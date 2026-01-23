@@ -121,7 +121,7 @@ export const ChangePassword: React.FC<Props> = ({ isOpen, onClose }) => {
       });
       setIsSuccess(true);
     } catch (error) {
-      console.log('Login failed', error);
+      console.error('Error changing password', error);
       setErrors({
         currentPassword: 'Invalid password.',
         newPassword: 'Invalid password.',

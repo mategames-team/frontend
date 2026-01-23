@@ -54,7 +54,6 @@ const ProfilePage = () => {
         setIsDataLoading(true);
         try {
           const response = await getUserData(userId);
-          console.log(response);
 
           setDisplayedUser(response);
         } catch (error) {
@@ -71,15 +70,15 @@ const ProfilePage = () => {
     fetchUserInfo();
   }, [userId, currentUser]);
 
-  if (!isAuthenticated) {
-    console.log('Not authenticated');
-  }
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
 
   const activeTab = (seatchParams.get('tab') as ProfileTab) ?? 'backlog';
 
   if (isAuthLoading || isDataLoading) return <PageLoader />;
 
-  if (!userId && !currentUser && !isAuthLoading) {
+  if (!userId && !isAuthenticated) {
     return <div className='container'>Please log in to see your profile</div>;
   }
 

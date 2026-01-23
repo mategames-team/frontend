@@ -1,14 +1,13 @@
+import { useEffect, useState } from 'react';
 import styles from './CatalogPage.module.scss';
 import { useSearchParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import { GameCard } from '@/components/GameCard/GameCard';
 import { Filters } from '@/components/Filters/Filters';
-import { mockGames } from '@/mock/mockGames';
-import { getGames } from '@/api/games';
-import type { Game } from '@/types/Game';
-import FiltersIcon from '@/assets/icons/filter.svg?react';
 import { Pagination } from '@/components/Pagination/Pagination';
 import { GameCardSkeleton } from '@/components/GameCardSkeleton/GameCardSkeleton';
+import { getGames } from '@/api/games';
+import FiltersIcon from '@/assets/icons/filter.svg?react';
+import type { Game } from '@/types/Game';
 
 const SKELETON_COUNT = 8;
 
@@ -23,7 +22,8 @@ const CatalogPage = () => {
   const search = searchParams.get('search')?.toLowerCase().trim() || '';
   const platforms = searchParams.get('platforms') || '';
   const genres = searchParams.get('genres') || '';
-  const year = searchParams.get('year') || '';
+  const yearFrom = searchParams.get('yearFrom') || '';
+  const yearTo = searchParams.get('yearTo') || '';
 
   const handlePageChange = (newPage: number) => {
     setSearchParams((prev) => {
@@ -35,8 +35,7 @@ const CatalogPage = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleFilterChange = (filters: Record<string, string[] | string>) => {
-    console.log(filters);
+  const handleFilterChange = (filters: Filters) => {
     setSearchParams((prev) => {
       const newParams = new URLSearchParams(prev);
 
@@ -44,6 +43,12 @@ const CatalogPage = () => {
         if (Array.isArray(value)) {
           if (value.length > 0) {
             newParams.set(category, value.join(','));
+          } else {
+            newParams.delete(category);
+          }
+        } else {
+          if (value) {
+            newParams.set(category, value);
           } else {
             newParams.delete(category);
           }
@@ -58,8 +63,12 @@ const CatalogPage = () => {
   useEffect(() => {
     const fetchGames = async () => {
       let formattedDates = '';
-      if (year) {
-        formattedDates = `${year}-01-01,${year}-12-31`;
+
+      if (yearFrom || yearTo) {
+        const start = yearFrom ? `${yearFrom}-01-01` : '1995-01-01';
+        const end = yearTo ? `${yearTo}-12-31` : '2026-12-31';
+
+        formattedDates = `${start},${end}`;
       }
 
       try {
@@ -76,14 +85,13 @@ const CatalogPage = () => {
         setTotalPages(res.totalPages);
       } catch (error) {
         console.error('Error fetching games from database:', error);
-        setGames(mockGames);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchGames();
-  }, [search, platforms, genres, year, currentPage]);
+  }, [search, platforms, genres, yearFrom, yearTo, currentPage]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -93,7 +101,7 @@ const CatalogPage = () => {
     <section className={styles.catalog}>
       <div className='container'>
         <div className={styles.catalog__header}>
-          <p className={`${styles.catalog__title} text-secondary`}>Catalog</p>
+          <p className={`${styles.catalog__title} text-secondary`}>Catalogue</p>
           <button
             className={`${styles.catalog__filtersButton} btn-text-large`}
             onClick={() => setIsFiltersOpen((prev) => !prev)}

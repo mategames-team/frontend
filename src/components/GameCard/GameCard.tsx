@@ -4,14 +4,15 @@ import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { StatusButtons } from '../common/StatusButtons/StatusButtons';
 import { useUpdateGameStatus } from '@/hooks/useUpdateGameStatus';
-import { useAppSelector } from '@/store/hooks';
-import { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { setActiveModal } from '@/store/slices/uiSlice';
 
 interface Props {
   game: Game;
   onStatusUpdated?: () => void;
   size?: Size;
   currentTabStatus?: string;
+  className?: string;
 }
 
 type Size = 'small' | 'large';
@@ -20,25 +21,17 @@ export const GameCard: React.FC<Props> = ({
   game,
   size = 'small',
   onStatusUpdated,
+  className,
 }) => {
-  const classes = clsx(styles.card, styles[size]);
+  const classes = clsx(styles.card, styles[size], className);
   const { data, isAuthenticated } = useAppSelector((state) => state.user);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
 
   const { updateStatus } = useUpdateGameStatus(game.apiId, onStatusUpdated);
 
   const currentStatus = data?.userGames?.find(
-    (g) => g.apiId === Number(game.apiId)
+    (g) => g.apiId === Number(game.apiId),
   )?.status;
-
-  useEffect(() => {
-    if (error) {
-      const timer = setTimeout(() => {
-        setError(null);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [error]);
 
   return (
     <article className={classes}>
@@ -56,11 +49,10 @@ export const GameCard: React.FC<Props> = ({
 
       {/* Hover overlay content */}
       <div className={styles.hoverContent}>
-        {error && <span className={styles.error}>{error}</span>}
         <StatusButtons
           onAction={(status) => {
             if (!isAuthenticated) {
-              setError('Login to update game status');
+              dispatch(setActiveModal('authPrompt'));
               return;
             }
             updateStatus(status, currentStatus);

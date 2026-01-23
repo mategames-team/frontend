@@ -1,5 +1,5 @@
 export const PROFILE_TABS = [
-  { label: 'Backlog', value: 'backlog' },
+  { label: 'Saved', value: 'backlog' },
   { label: 'In progress', value: 'in_progress' },
   { label: 'Completed', value: 'completed' },
   { label: 'Reviews', value: 'reviews' },
