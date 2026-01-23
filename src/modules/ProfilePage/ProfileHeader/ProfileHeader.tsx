@@ -28,7 +28,7 @@ export const ProfileHeader: React.FC<Props> = ({
   }, [userData?.userGames]);
 
   const stats = [
-    { label: 'In backlog', value: gamesStats.backlog },
+    { label: 'Wishlist', value: gamesStats.backlog },
     { label: 'Reviews', value: commentsCount },
     { label: 'Completed', value: gamesStats.completed },
   ];
