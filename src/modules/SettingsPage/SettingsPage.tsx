@@ -19,6 +19,7 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { logout } from '@/store/slices/userSlice';
 import { updateProfile } from '@/store/slices/user.thunks';
 import { ChangePassword } from '@/components/ChangePassword/ChangePassword';
+import { Breadcrumbs } from '@/components/common/Breadcrumps/Breadcrumps';
 
 const AVATARS: Record<string, string> = {
   'male-1.png': userAvatarMale1,
@@ -95,6 +96,7 @@ export const SettingsPage = () => {
   return (
     <section className={styles.settings}>
       <div className='container'>
+        <Breadcrumbs />
         <div className={styles.settings__grid}>
           {/* About Me */}
           <section className={styles.settings__section}>

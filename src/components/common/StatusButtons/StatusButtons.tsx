@@ -22,7 +22,7 @@ const STATUS_BUTTONS = [
   },
   {
     status: 'IN_PROGRESS',
-    label: 'Playing',
+    label: 'In progress',
     Icon: PlayingIcon,
   },
   {

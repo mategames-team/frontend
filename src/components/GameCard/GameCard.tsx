@@ -37,7 +37,7 @@ export const GameCard: React.FC<Props> = ({
     <article className={classes}>
       {/* Image */}
       <div className={styles.imageWrapper}>
-        <Link to={`/games/${game.apiId}`} className={styles.gameCardLink}>
+        <Link to={`/catalogue/${game.apiId}`} className={styles.gameCardLink}>
           <img
             className={styles.image}
             src={game.backgroundImage}
@@ -72,7 +72,7 @@ export const GameCard: React.FC<Props> = ({
           </span>
         </div>
 
-        <Link to={`/games/${game.apiId}`}>
+        <Link to={`/catalogue/${game.apiId}`}>
           <h4 className={styles.title}>{game.name}</h4>
         </Link>
       </div>
