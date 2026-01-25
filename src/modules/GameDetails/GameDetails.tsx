@@ -12,6 +12,7 @@ import { getGameComments } from '@/api/comments';
 import type { Game } from '@/types/Game';
 import type { UserComment } from '@/types/Comment';
 import { setActiveModal } from '@/store/slices/uiSlice';
+import { Breadcrumbs } from '@/components/common/Breadcrumps/Breadcrumps';
 
 const processDescription = (htmlDescription: string | undefined) => {
   if (!htmlDescription) return [];
@@ -52,9 +53,7 @@ const GameDetails = () => {
     const fetchGameDetails = async () => {
       try {
         setIsLoading(true);
-
         const response = await getGameById(gameId!);
-        console.log('Game details response:', response);
 
         setGame(response);
       } catch (error) {
@@ -121,6 +120,7 @@ const GameDetails = () => {
 
   return (
     <div className='container'>
+      <Breadcrumbs gameName={game?.name} />
       <section className={styles.gameDetails}>
         <div className={styles.gameDetails__сontent}>
           <div className={styles.gameDetails__imageBlock}>

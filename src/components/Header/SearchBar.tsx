@@ -54,7 +54,7 @@ export const SearchBar = () => {
 
   const handleSelectGame = (gameId: number) => {
     setIsDropdownOpen(false);
-    navigate(`/games/${gameId}`);
+    navigate(`/catalogue/${gameId}`);
   };
 
   const handleViewAll = () => {

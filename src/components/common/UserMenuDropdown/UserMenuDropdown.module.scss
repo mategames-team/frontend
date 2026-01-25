@@ -1,12 +1,12 @@
 @import '@/styles/main.scss';
 
 .userMobileMenu {
-  // background-color: $elements-bg;
   border-radius: 12px;
   padding: 16px 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 32px;
 }
 
 .userLinks {
@@ -18,10 +18,28 @@
 }
 
 .userInfo {
+  background-color: $elements-bg;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  padding: 8px;
+  border-radius: 12px;
+}
+
+.userHeader {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 16px;
+  padding: 8px 0;
+}
+
+.navigationLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+  align-items: center;
 }
 
 .avatar {

@@ -70,7 +70,7 @@ const HomePage = () => {
           </h1>
           <div className={styles.hero__btn}>
             <Button variant='primary' fullWidth={true} to='/catalogue'>
-              Choose your game
+              Choose game
             </Button>
           </div>
         </section>

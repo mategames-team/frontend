@@ -172,7 +172,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                     setPassword(e.target.value);
                     setErrors((prev) => ({ ...prev, password: '' }));
                   }}
-                  minLength={6}
+                  minLength={8}
                   className={`${styles.form__input} ${
                     errors.password ? styles.form__inputError : ''
                   }`}

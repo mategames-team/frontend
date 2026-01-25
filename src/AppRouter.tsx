@@ -16,7 +16,7 @@ export const AppRouter = () => {
       <Route element={<App />}>
         <Route path='/' element={<HomePage />} />
         <Route path='/catalogue' element={<CatalogPage />} />
-        <Route path='/games/:gameId' element={<GameDetails />} />
+        <Route path='/catalogue/:gameId' element={<GameDetails />} />
         <Route path='/profile/:userId' element={<ProfilePage />} />
 
         <Route element={<ProtectedRoute />}>

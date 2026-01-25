@@ -77,7 +77,9 @@ export const Review: React.FC<Props> = ({
           <span className={styles.review__game}>
             rated the game{' '}
             <span className={styles.gameName}>
-              <Link to={`/games/${review?.gameApiId}`}>{review?.gameName}</Link>
+              <Link to={`/catalogue/${review?.gameApiId}`}>
+                {review?.gameName}
+              </Link>
             </span>
           </span>
         )}
