@@ -166,6 +166,10 @@ export const ChangePassword: React.FC<Props> = ({ isOpen, onClose }) => {
                       setErrors((prev) => ({ ...prev, password: '' }));
                     }}
                     minLength={8}
+                    onPaste={(e) => e.preventDefault()}
+                    onCopy={(e) => e.preventDefault()}
+                    onCut={(e) => e.preventDefault()}
+                    onContextMenu={(e) => e.preventDefault()}
                     className={`${styles.form__input} ${
                       errors.currentPassword ? styles.form__inputError : ''
                     }`}
@@ -200,6 +204,10 @@ export const ChangePassword: React.FC<Props> = ({ isOpen, onClose }) => {
                       setErrors((prev) => ({ ...prev, password: '' }));
                     }}
                     minLength={8}
+                    onPaste={(e) => e.preventDefault()}
+                    onCopy={(e) => e.preventDefault()}
+                    onCut={(e) => e.preventDefault()}
+                    onContextMenu={(e) => e.preventDefault()}
                     className={`${styles.form__input} ${
                       errors.newPassword ? styles.form__inputError : ''
                     }`}
@@ -234,6 +242,10 @@ export const ChangePassword: React.FC<Props> = ({ isOpen, onClose }) => {
                       setErrors((prev) => ({ ...prev, password: '' }));
                     }}
                     minLength={8}
+                    onPaste={(e) => e.preventDefault()}
+                    onCopy={(e) => e.preventDefault()}
+                    onCut={(e) => e.preventDefault()}
+                    onContextMenu={(e) => e.preventDefault()}
                     className={`${styles.form__input} ${
                       errors.repeatPassword ? styles.form__inputError : ''
                     }`}

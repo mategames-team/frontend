@@ -9,7 +9,7 @@
 
 .image {
   width: 100%;
-  aspect-ratio: 315 / 374;
+  aspect-ratio: 231 / 274;
   background: linear-gradient(90deg, #2a2c4e 25%, #35375e 50%, #2a2c4e 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
@@ -20,6 +20,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  flex-grow: 1;
 }
 
 .title,
@@ -32,7 +33,7 @@
 
 .title {
   width: 80%;
-  height: 20px;
+  min-height: calc(1.2em * 2);
 }
 .meta {
   width: 40%;

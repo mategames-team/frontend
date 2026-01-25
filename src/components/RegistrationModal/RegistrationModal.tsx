@@ -249,7 +249,10 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
                   setPassword(e.target.value);
                   setErrors((prev) => ({ ...prev, password: '' }));
                 }}
-                minLength={6}
+                onPaste={(e) => e.preventDefault()}
+                onCopy={(e) => e.preventDefault()}
+                onCut={(e) => e.preventDefault()}
+                onContextMenu={(e) => e.preventDefault()}
                 className={`${styles.form__input} ${
                   errors.password ? styles.form__inputError : ''
                 }`}
@@ -283,7 +286,10 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
                   setConfirmPassword(e.target.value);
                   setErrors((prev) => ({ ...prev, confirmPassword: '' }));
                 }}
-                minLength={6}
+                onPaste={(e) => e.preventDefault()}
+                onCopy={(e) => e.preventDefault()}
+                onCut={(e) => e.preventDefault()}
+                onContextMenu={(e) => e.preventDefault()}
                 className={`${styles.form__input} ${
                   errors.confirmPassword ? styles.form__inputError : ''
                 }`}
