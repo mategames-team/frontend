@@ -4,11 +4,13 @@ import { Button } from '../common/Button/Button';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { closeAllModals, setActiveModal } from '@/store/slices/uiSlice';
 
-export const AuthPromptModal: React.FC = () => {
+export const AuthPromptModal: React.FC<{ text?: string }> = ({ text }) => {
   const dispatch = useAppDispatch();
   const activeModal = useAppSelector((state) => state.ui.activeModal);
 
   if (activeModal !== 'authPrompt') return null;
+
+  console.log('Rendering AuthPromptModal', text);
 
   return (
     <div className={styles.overlay} onClick={() => dispatch(closeAllModals())}>
@@ -22,7 +24,7 @@ export const AuthPromptModal: React.FC = () => {
 
         <div className={styles.modal__content}>
           <h2 className={styles.modal__title}>
-            To open the portal in your library, log into the system.
+            {text || 'To open the portal in your library, log into the system.'}
           </h2>
           <div className={styles.actions}>
             <Button

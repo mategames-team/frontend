@@ -42,7 +42,7 @@ export const GameRatingForm: React.FC<Props> = ({
       return;
     }
 
-    if (isReviewEmpty) return;
+    if (isReviewEmpty || !rating) return;
 
     setIsLoading(true);
     try {
@@ -87,7 +87,9 @@ export const GameRatingForm: React.FC<Props> = ({
         </div>
       </section>
 
-      {activeModal === 'authPrompt' && <AuthPromptModal />}
+      {activeModal === 'authPrompt' && (
+        <AuthPromptModal text='Almost done! Just log in so we can save your review.' />
+      )}
       {activeModal === 'login' && (
         <LoginModal
           isOpen={true}
