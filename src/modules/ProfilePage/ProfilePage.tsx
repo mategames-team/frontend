@@ -11,7 +11,7 @@ import type { ProfileTab } from '@/types/profileTabs';
 import type { GameStatus } from '@/types/Game';
 import { getUserData } from '@/api/user-data';
 import { getUserComments } from '@/api/comments';
-import { getRandomAvatar } from '@/utils/avatars';
+import { AVATARS, getDefaultAvatar } from '@/utils/avatars';
 
 const STATUS_MAP: Record<string, string> = {
   backlog: 'BACKLOG',
@@ -23,7 +23,6 @@ const ProfilePage = () => {
   const { userId } = useParams<{ userId: string }>();
   const [seatchParams, setSearchParams] = useSearchParams();
   const [commentsCount, setCommentsCount] = useState(0);
-  const [randomAvatar] = useState(getRandomAvatar);
 
   const {
     data: currentUser,
@@ -44,6 +43,11 @@ const ProfilePage = () => {
   useEffect(() => {
     fetchCount();
   }, [userId]);
+
+  const avatarSrc =
+    currentUser?.avatarUrl && AVATARS[currentUser.avatarUrl]
+      ? AVATARS[currentUser.avatarUrl]
+      : getDefaultAvatar();
 
   const [displayedUser, setDisplayedUser] = useState<UserData | null>(null);
   const [isDataLoading, setIsDataLoading] = useState(false);
@@ -90,7 +94,7 @@ const ProfilePage = () => {
             userData={displayedUser || ({} as UserData)}
             isOwnProfile={!userId}
             commentsCount={commentsCount}
-            randomAvatar={randomAvatar}
+            userAvatar={avatarSrc}
           />
 
           <ProfileTabs
@@ -102,7 +106,7 @@ const ProfilePage = () => {
             status={STATUS_MAP[activeTab] as GameStatus}
             userId={userId}
             onCommentsLoaded={fetchCount}
-            randomAvatar={randomAvatar}
+            randomAvatar={avatarSrc}
           />
         </div>
       </div>

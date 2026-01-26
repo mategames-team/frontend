@@ -16,9 +16,12 @@ export interface UserState {
 }
 
 const token = localStorage.getItem('token');
+const savedAvatar = localStorage.getItem('user_avatar') || 'male-1.png';
 
 export const initialState: UserState = {
-  data: token ? ({ token } as unknown as UserData) : null,
+  data: token
+    ? ({ token, avatarUrl: savedAvatar } as unknown as UserData)
+    : null,
   isAuthenticated: !!token,
   isLoading: false,
   error: null,
@@ -72,6 +75,12 @@ const userSlice = createSlice({
         state.data = { ...state.data, ...action.payload };
       }
     },
+    setLocalAvatar: (state, action: PayloadAction<string>) => {
+      if (state.data) {
+        state.data.avatarUrl = action.payload;
+        localStorage.setItem('user_avatar', action.payload);
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -103,7 +112,12 @@ const userSlice = createSlice({
       .addCase(updateProfile.fulfilled, (state, action) => {
         state.isLoading = false;
         if (state.data) {
-          state.data = { ...state.data, ...action.payload };
+          const currentAvatar = state.data.avatarUrl;
+          state.data = {
+            ...state.data,
+            ...action.payload,
+            avatarUrl: currentAvatar,
+          };
         }
       })
 
@@ -125,6 +139,12 @@ const userSlice = createSlice({
   },
 });
 
-export const { login, logout, updateGame, deleteGame, updateUserInfo } =
-  userSlice.actions;
+export const {
+  login,
+  logout,
+  updateGame,
+  deleteGame,
+  updateUserInfo,
+  setLocalAvatar,
+} = userSlice.actions;
 export default userSlice.reducer;

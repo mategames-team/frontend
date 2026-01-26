@@ -4,8 +4,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '@/store/slices/userSlice';
 import ExitIcon from '@/assets/icons/exit.svg?react';
-import userAvatar from '@/assets/avatars-female/female-2.png';
 import type { UserData } from '@/types/User';
+import { AVATARS, getDefaultAvatar } from '@/utils/avatars';
+import { useAppSelector } from '@/store/hooks';
 
 type Props = {
   userData: UserData | null;
@@ -15,6 +16,7 @@ type Props = {
 export const UserMenuContent: React.FC<Props> = ({ userData, onItemClick }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { data: currentUser } = useAppSelector((state) => state.user);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -22,11 +24,16 @@ export const UserMenuContent: React.FC<Props> = ({ userData, onItemClick }) => {
     navigate('/');
   };
 
+  const avatarSrc =
+    currentUser?.avatarUrl && AVATARS[currentUser.avatarUrl]
+      ? AVATARS[currentUser.avatarUrl]
+      : getDefaultAvatar();
+
   return (
     <div className={styles.userMobileMenu}>
       <div className={styles.userInfo}>
         <div className={styles.userHeader}>
-          <img src={userAvatar} alt='Avatar' className={styles.avatar} />
+          <img src={avatarSrc} alt='Avatar' className={styles.avatar} />
           <h3 className={styles.username}>{userData?.profileName}</h3>
         </div>
 

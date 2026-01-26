@@ -3,6 +3,7 @@ import { Button } from '../common/Button/Button';
 import { useAppSelector } from '@/store/hooks';
 import { UserDropdown } from '../common/UserDropdown/UserDropdown';
 import { useEffect, useRef, useState } from 'react';
+import { AVATARS, getDefaultAvatar } from '@/utils/avatars';
 
 type Props = {
   openRegistrationModal: () => void;
@@ -16,6 +17,11 @@ export const AuthActions: React.FC<Props> = ({
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { data, isAuthenticated } = useAppSelector((state) => state.user);
+
+  const avatarSrc =
+    data?.avatarUrl && AVATARS[data.avatarUrl]
+      ? AVATARS[data.avatarUrl]
+      : getDefaultAvatar();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -34,12 +40,12 @@ export const AuthActions: React.FC<Props> = ({
     <div className={styles.auth} ref={dropdownRef}>
       {isAuthenticated ? (
         <>
-          <span
-            className={styles.auth__username}
+          <img
+            className={styles.auth__avatar}
+            src={avatarSrc}
+            alt='avatar'
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          >
-            {data?.profileName}
-          </span>
+          />
           {isDropdownOpen && (
             <UserDropdown onClose={() => setIsDropdownOpen(false)} />
           )}

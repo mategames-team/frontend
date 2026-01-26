@@ -2,37 +2,15 @@ import styles from './SettingsPage.module.scss';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import userAvatarMale1 from '@/assets/avatars-male/male-1.png';
-import userAvatarMale2 from '@/assets/avatars-male/male-2.png';
-import userAvatarMale3 from '@/assets/avatars-male/male-3.png';
-import userAvatarMale4 from '@/assets/avatars-male/male-4.png';
-import userAvatarMale5 from '@/assets/avatars-male/male-5.png';
-import userAvatarFemale1 from '@/assets/avatars-female/female-1.png';
-import userAvatarFemale2 from '@/assets/avatars-female/female-2.png';
-import userAvatarFemale3 from '@/assets/avatars-female/female-3.png';
-import userAvatarFemale4 from '@/assets/avatars-female/female-4.png';
-import userAvatarFemale5 from '@/assets/avatars-female/female-5.png';
 import ArrowRight from '@/assets/icons/arrow-right.svg?react';
 import ExitIcon from '@/assets/icons/exit.svg?react';
 import { Button } from '@/components/common/Button/Button';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { logout } from '@/store/slices/userSlice';
+import { logout, setLocalAvatar } from '@/store/slices/userSlice';
 import { updateProfile } from '@/store/slices/user.thunks';
 import { ChangePassword } from '@/components/ChangePassword/ChangePassword';
 import { Breadcrumbs } from '@/components/common/Breadcrumps/Breadcrumps';
-
-const AVATARS: Record<string, string> = {
-  'male-1.png': userAvatarMale1,
-  'male-2.png': userAvatarMale2,
-  'male-3.png': userAvatarMale3,
-  'male-4.png': userAvatarMale4,
-  'male-5.png': userAvatarMale5,
-  'female-1.png': userAvatarFemale1,
-  'female-2.png': userAvatarFemale2,
-  'female-3.png': userAvatarFemale3,
-  'female-4.png': userAvatarFemale4,
-  'female-5.png': userAvatarFemale5,
-};
+import { AVATARS } from '@/utils/avatars';
 
 export const SettingsPage = () => {
   const { data, isLoading } = useAppSelector((state) => state.user);
@@ -74,12 +52,12 @@ export const SettingsPage = () => {
     e.preventDefault();
 
     try {
+      dispatch(setLocalAvatar(selectedAvatar));
       await dispatch(
         updateProfile({
           profileName: username,
           about,
           location,
-          avatarUrl: selectedAvatar,
         }),
       ).unwrap();
     } catch (error) {
@@ -91,7 +69,7 @@ export const SettingsPage = () => {
     username !== (data?.profileName || '') ||
     location !== (data?.location || '') ||
     about !== (data?.about || '') ||
-    selectedAvatar !== (data?.avatarUrl || 'male-1.png');
+    selectedAvatar !== (data?.avatarUrl || 'default-avatar.png');
 
   return (
     <section className={styles.settings}>
@@ -104,7 +82,7 @@ export const SettingsPage = () => {
               <h2 className={styles.settings__title}>About me</h2>
 
               <img
-                src={AVATARS[selectedAvatar]}
+                src={AVATARS[selectedAvatar] || AVATARS['default-avatar.png']}
                 alt='User avatar'
                 className={styles.profileForm__avatar}
               />
@@ -120,19 +98,21 @@ export const SettingsPage = () => {
                 </h4>
 
                 <div className={styles.profileForm__avatarsGrid}>
-                  {Object.entries(AVATARS).map(([name, path]) => (
-                    <img
-                      key={name}
-                      src={path}
-                      alt={name}
-                      onClick={() => setSelectedAvatar(name)}
-                      className={clsx(
-                        styles.profileForm__gridAvatar,
-                        selectedAvatar === name &&
-                          styles.profileForm__gridAvatar_active,
-                      )}
-                    />
-                  ))}
+                  {Object.entries(AVATARS)
+                    .slice(1)
+                    .map(([name, path]) => (
+                      <img
+                        key={name}
+                        src={path}
+                        alt={name}
+                        onClick={() => setSelectedAvatar(name)}
+                        className={clsx(
+                          styles.profileForm__gridAvatar,
+                          selectedAvatar === name &&
+                            styles.profileForm__gridAvatar_active,
+                        )}
+                      />
+                    ))}
                 </div>
               </div>
 
