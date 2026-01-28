@@ -106,7 +106,7 @@ const ProfilePage = () => {
             status={STATUS_MAP[activeTab] as GameStatus}
             userId={userId}
             onCommentsLoaded={fetchCount}
-            randomAvatar={avatarSrc}
+            avatarUrl={avatarSrc}
           />
         </div>
       </div>

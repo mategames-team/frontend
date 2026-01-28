@@ -11,6 +11,8 @@ import { updateProfile } from '@/store/slices/user.thunks';
 import { ChangePassword } from '@/components/ChangePassword/ChangePassword';
 import { Breadcrumbs } from '@/components/common/Breadcrumps/Breadcrumps';
 import { AVATARS } from '@/utils/avatars';
+import { setActiveModal } from '@/store/slices/uiSlice';
+import { SuccessModal } from '@/components/SuccessModal/SuccessModal';
 
 export const SettingsPage = () => {
   const { data, isLoading } = useAppSelector((state) => state.user);
@@ -18,13 +20,14 @@ export const SettingsPage = () => {
   const [location, setLocation] = useState<string>(data?.location || '');
   const [about, setAbout] = useState<string>(data?.about || '');
   const [selectedAvatar, setSelectedAvatar] = useState<string>(
-    data?.avatarUrl || 'male-1.png',
+    data?.avatarUrl || 'default-avatar.png',
   );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { activeModal } = useAppSelector((state) => state.ui);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -60,6 +63,8 @@ export const SettingsPage = () => {
           location,
         }),
       ).unwrap();
+
+      dispatch(setActiveModal('success'));
     } catch (error) {
       console.log('updateUserData error:', error);
     }
@@ -287,6 +292,15 @@ export const SettingsPage = () => {
           />
         </div>
       </div>
+
+      {activeModal === 'success' && (
+        <SuccessModal
+          message='Your profile has been successfully updated.'
+          buttonText='OK'
+          onButtonClick={() => dispatch(setActiveModal(null))}
+          onClose={() => dispatch(setActiveModal(null))}
+        />
+      )}
     </section>
   );
 };

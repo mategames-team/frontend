@@ -87,9 +87,7 @@ export const GameRatingForm: React.FC<Props> = ({
         </div>
       </section>
 
-      {activeModal === 'authPrompt' && (
-        <AuthPromptModal text='Almost done! Just log in so we can save your review.' />
-      )}
+      {activeModal === 'authPrompt' && <AuthPromptModal />}
       {activeModal === 'login' && (
         <LoginModal
           isOpen={true}

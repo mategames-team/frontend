@@ -5,7 +5,7 @@ import { getGames } from '@/api/games';
 import type { Game } from '@/types/Game';
 
 export const SearchBar = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const [value, setValue] = useState<string>(searchParams.get('search') || '');
@@ -52,6 +52,16 @@ export const SearchBar = () => {
     }
   };
 
+  const resetSearch = () => {
+    setValue('');
+    setSuggestions([]);
+    setIsDropdownOpen(false);
+    const newParams = new URLSearchParams(searchParams);
+
+    newParams.delete('search');
+    setSearchParams(newParams);
+  };
+
   const handleSelectGame = (gameId: number) => {
     setIsDropdownOpen(false);
     navigate(`/catalogue/${gameId}`);
@@ -83,7 +93,7 @@ export const SearchBar = () => {
         {value && (
           <button
             className={styles.clear}
-            onClick={() => setValue('')}
+            onClick={resetSearch}
             aria-label='Clear search'
           >
             ✕

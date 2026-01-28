@@ -14,7 +14,7 @@ type Props = {
   status: GameStatus;
   userId?: string;
   onCommentsLoaded: () => void;
-  randomAvatar: string;
+  avatarUrl: string;
 };
 
 const VISIBLE_COUNT = 4;
@@ -23,7 +23,7 @@ export const GamesSection: React.FC<Props> = ({
   status,
   userId,
   onCommentsLoaded,
-  randomAvatar,
+  avatarUrl,
 }) => {
   const [games, setGames] = useState<GameDto[]>([]);
   const [reviews, setReviews] = useState<UserComment[]>([]);
@@ -115,7 +115,7 @@ export const GamesSection: React.FC<Props> = ({
                   fetchData();
                   onCommentsLoaded();
                 }}
-                randomAvatar={randomAvatar}
+                avatarUrl={avatarUrl}
               />
             ))
           ) : (
