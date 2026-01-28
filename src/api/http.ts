@@ -21,7 +21,7 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response?.status === 500 || error.response?.status === 401) {
+    if (error.response?.status === 401) {
       const isJwtError =
         error.response?.data?.message?.toLowerCase().includes('jwt') ||
         error.response?.data?.error?.includes('Internal Server Error');

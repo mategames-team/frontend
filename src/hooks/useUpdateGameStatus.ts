@@ -1,25 +1,25 @@
-import { addUserGame } from '@/api/user-games';
+import { addUserGame, deleteUserGame } from '@/api/user-games';
 import type { GameStatus } from '@/types/Game';
 import { useAppDispatch } from '@/store/hooks';
-import { updateGame } from '@/store/slices/userSlice';
+import { deleteGame, updateGame } from '@/store/slices/userSlice';
 
 export const useUpdateGameStatus = (
   gameApiId: number,
-  onStatusChange?: () => void
+  onStatusChange?: () => void,
 ) => {
   const dispatch = useAppDispatch();
 
   const updateStatus = async (newStatus: string, currentStatus?: string) => {
     try {
       if (newStatus === currentStatus) {
-        // await deleteUserGame(gameApiId);
-        // dispatch(deleteGame(gameApiId));
+        await deleteUserGame(gameApiId);
+        dispatch(deleteGame(gameApiId));
 
         return;
       } else {
         await addUserGame(gameApiId, newStatus);
         dispatch(
-          updateGame({ apiId: gameApiId, status: newStatus as GameStatus })
+          updateGame({ apiId: gameApiId, status: newStatus as GameStatus }),
         );
       }
 

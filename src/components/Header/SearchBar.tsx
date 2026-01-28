@@ -3,6 +3,7 @@ import styles from './SearchBar.module.scss';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getGames } from '@/api/games';
 import type { Game } from '@/types/Game';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export const SearchBar = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -91,17 +92,79 @@ export const SearchBar = () => {
         />
 
         {value && (
-          <button
+          <motion.button
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.5 }}
+            whileHover={{ scale: 1.2 }}
+            whileTap={{ scale: 0.9 }}
             className={styles.clear}
             onClick={resetSearch}
             aria-label='Clear search'
           >
             ✕
-          </button>
+          </motion.button>
         )}
       </div>
 
-      {isDropdownOpen && suggestions.length > 0 && (
+      <AnimatePresence>
+        {isDropdownOpen && suggestions.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className={styles.dropdown}
+          >
+            <motion.div
+              className={styles.suggestionsList}
+              initial='hidden'
+              animate='show'
+              variants={{
+                show: { transition: { staggerChildren: 0.05 } },
+              }}
+            >
+              {suggestions.map((game) => (
+                <motion.div
+                  key={game.apiId}
+                  variants={{
+                    hidden: { opacity: 0, x: -10 },
+                    show: { opacity: 1, x: 0 },
+                  }}
+                  whileHover={{
+                    x: 5,
+                    backgroundColor: 'rgba(255,255,255,0.05)',
+                  }}
+                  className={styles.suggestionItem}
+                  onClick={() => handleSelectGame(game.apiId)}
+                >
+                  <img
+                    src={game.backgroundImage}
+                    alt={game.name}
+                    className={styles.gameImg}
+                  />
+                  <div className={styles.gameInfo}>
+                    <h4 className={styles.gameName}>{game.name}</h4>
+                    <p className='text-secondary-semibold'>
+                      {game.year || 'Year'}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className={styles.viewAll}
+              onClick={handleViewAll}
+            >
+              View all results
+            </motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {/* {isDropdownOpen && suggestions.length > 0 && (
         <div className={styles.dropdown}>
           <div className={styles.suggestionsList}>
             {suggestions.map((game) => (
@@ -128,7 +191,7 @@ export const SearchBar = () => {
             View all results
           </button>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
