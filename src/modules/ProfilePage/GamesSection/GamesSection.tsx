@@ -55,12 +55,9 @@ export const GamesSection: React.FC<Props> = ({
 
   const visibleGames = isExpanded ? games : games.slice(0, VISIBLE_COUNT);
 
-  const handleRemoveFromLocalState = (id: number): void => {
-    setGames((prev) => {
-      const newList = prev.filter((g) => g.id !== id);
-      return newList;
-    });
-  };
+  const handleRemove = useCallback((id: number) => {
+    setGames((prev) => prev.filter((g) => g.id !== id));
+  }, []);
 
   if (isLoading) return <PageLoader />;
 
@@ -96,8 +93,8 @@ export const GamesSection: React.FC<Props> = ({
                   key={game.id}
                   game={game.gameDto}
                   size='large'
-                  currentTabStatus={status}
-                  onStatusUpdated={() => handleRemoveFromLocalState(game.id)}
+                  status={status}
+                  onStatusUpdated={() => handleRemove(game.id)}
                 />
               </li>
             ))}

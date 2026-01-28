@@ -9,7 +9,10 @@ export const useUpdateGameStatus = (
 ) => {
   const dispatch = useAppDispatch();
 
-  const updateStatus = async (newStatus: string, currentStatus?: string) => {
+  const updateStatus = async (
+    newStatus: GameStatus,
+    currentStatus?: GameStatus,
+  ) => {
     try {
       if (newStatus === currentStatus) {
         await deleteUserGame(gameApiId);

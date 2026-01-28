@@ -164,34 +164,6 @@ export const SearchBar = () => {
           </motion.div>
         )}
       </AnimatePresence>
-      {/* {isDropdownOpen && suggestions.length > 0 && (
-        <div className={styles.dropdown}>
-          <div className={styles.suggestionsList}>
-            {suggestions.map((game) => (
-              <div
-                key={game.apiId}
-                className={styles.suggestionItem}
-                onClick={() => handleSelectGame(game.apiId)}
-              >
-                <img
-                  src={game.backgroundImage}
-                  alt={game.name}
-                  className={styles.gameImg}
-                />
-                <div className={styles.gameInfo}>
-                  <h4 className={styles.gameName}>{game.name}</h4>
-                  <p className='text-secondary-semibold'>
-                    {game.year || 'Year'}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <button className={styles.viewAll} onClick={handleViewAll}>
-            View all results
-          </button>
-        </div>
-      )} */}
     </div>
   );
 };

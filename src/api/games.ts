@@ -39,7 +39,6 @@ export const getGames = async (params: GetGamesRequest = {}) => {
   const endpoint = queryString
     ? `/games/search?${queryString}`
     : '/games/search';
-
   const response = await axios.get<GetGamesResponse>(`${BASE_URL}${endpoint}`);
 
   return response.data;

@@ -47,6 +47,7 @@ export const StatusButtons: React.FC<Props> = ({
     onAction?.(status as GameStatus);
     setTimeout(() => setClickedStatus(null), 500);
   };
+
   return (
     <div
       className={clsx(styles.status, styles[`status--${variant}`], className)}
