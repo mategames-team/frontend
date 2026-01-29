@@ -13,6 +13,8 @@ import { Breadcrumbs } from '@/components/common/Breadcrumps/Breadcrumps';
 import { AVATARS } from '@/utils/avatars';
 import { setActiveModal } from '@/store/slices/uiSlice';
 import { SuccessModal } from '@/components/SuccessModal/SuccessModal';
+import type { UserData } from '@/types/User';
+import { AnimatePresence, motion } from 'motion/react';
 
 export const SettingsPage = () => {
   const { data, isLoading } = useAppSelector((state) => state.user);
@@ -24,6 +26,7 @@ export const SettingsPage = () => {
   );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -53,20 +56,23 @@ export const SettingsPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+
+    const payload: Partial<UserData> = {};
+    if (username !== data?.profileName) payload.profileName = username;
+    if (location !== data?.location) payload.location = location;
+    if (about !== data?.about) payload.about = about;
 
     try {
       dispatch(setLocalAvatar(selectedAvatar));
-      await dispatch(
-        updateProfile({
-          profileName: username,
-          about,
-          location,
-        }),
-      ).unwrap();
-
+      await dispatch(updateProfile(payload)).unwrap();
       dispatch(setActiveModal('success'));
     } catch (error) {
-      console.log('updateUserData error:', error);
+      if (Array.isArray(error)) {
+        setError(error[0]);
+      } else {
+        setError('Something went wrong. Please try again.');
+      }
     }
   };
 
@@ -150,6 +156,18 @@ export const SettingsPage = () => {
                       'text-secondary',
                     )}
                   />
+                  <AnimatePresence>
+                    {error && (
+                      <motion.span
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className={styles.errorText}
+                      >
+                        {error}
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
                 </div>
 
                 <div className={styles.profileForm__field}>
