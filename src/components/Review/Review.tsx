@@ -8,7 +8,6 @@ import type { UserComment } from '@/types/Comment';
 import { GameRatingForm } from '@/modules/GameDetails/GameRatingForm/GameRatingForm';
 import { deleteComment } from '@/api/comments';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { getRandomAvatar } from '@/utils/avatars';
 import { setActiveModal } from '@/store/slices/uiSlice';
 import { SuccessModal } from '../SuccessModal/SuccessModal';
 import { DeleteConfirmationModal } from '../DeleteConfirmationModal/DeleteConfirmationModal';
@@ -17,19 +16,18 @@ interface Props {
   variant?: 'default' | 'profile';
   review: UserComment;
   onUpdate?: () => void;
-  randomAvatar?: string;
+  avatarUrl?: string;
 }
 
 export const Review: React.FC<Props> = ({
   variant = 'default',
   review,
   onUpdate,
-  randomAvatar,
+  avatarUrl,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const [reviewAvatar] = useState(randomAvatar || getRandomAvatar());
   const { data: currentUser } = useAppSelector((state) => state.user);
   const activeModal = useAppSelector((state) => state.ui.activeModal);
   const dispatch = useAppDispatch();
@@ -60,7 +58,7 @@ export const Review: React.FC<Props> = ({
         )}
       >
         <img
-          src={reviewAvatar}
+          src={avatarUrl}
           alt='User Avatar'
           className={styles.review__avatar}
         />

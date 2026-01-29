@@ -9,14 +9,14 @@ type Props = {
   userData: UserData;
   isOwnProfile: boolean;
   commentsCount: number;
-  randomAvatar: string;
+  userAvatar: string;
 };
 
 export const ProfileHeader: React.FC<Props> = ({
   userData,
   isOwnProfile,
   commentsCount,
-  randomAvatar,
+  userAvatar,
 }) => {
   const gamesStats = useMemo(() => {
     const userGames = userData?.userGames || [];
@@ -37,7 +37,7 @@ export const ProfileHeader: React.FC<Props> = ({
     <section className={styles.header}>
       <div className={styles.header__top}>
         <img
-          src={userData?.avatarUrl || randomAvatar}
+          src={userAvatar}
           alt='Profile Avatar'
           className={styles.header__avatar}
         />

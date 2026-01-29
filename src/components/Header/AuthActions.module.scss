@@ -20,7 +20,16 @@
     color: $light-purple;
     border: 1px solid $light-purple;
   }
+
   &__username {
+    cursor: pointer;
+  }
+
+  &__avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
     cursor: pointer;
   }
 }

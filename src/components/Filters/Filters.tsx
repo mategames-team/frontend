@@ -252,7 +252,7 @@ export const Filters: React.FC<Props> = ({
             variant='secondary'
             fullWidth={true}
             className={styles.filters__applyMobile}
-            onClick={() => handleAction()}
+            onClick={() => handleAction(true)}
           >
             Reset filters
           </Button>

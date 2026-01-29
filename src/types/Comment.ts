@@ -7,4 +7,5 @@ export interface UserComment {
   rating: number;
   text: string;
   userId: number;
+  avatarUrl?: string;
 }

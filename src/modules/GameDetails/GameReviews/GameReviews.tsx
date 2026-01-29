@@ -4,6 +4,8 @@ import { Button } from '@/components/common/Button/Button';
 import { Review } from '@/components/Review/Review';
 import { Pagination } from '@/components/Pagination/Pagination';
 import type { UserComment } from '@/types/Comment';
+import { useAppSelector } from '@/store/hooks';
+import { AVATARS, getAvatarById } from '@/utils/avatars';
 
 type Props = {
   gameApiId?: string;
@@ -22,6 +24,8 @@ export const GameReviews: React.FC<Props> = ({ comments }) => {
   const [activeTab, setActiveTab] = useState<string>('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
+
+  const { data: currentUser } = useAppSelector((state) => state.user);
 
   const processedComments = useMemo(() => {
     let filtered = [...comments];
@@ -78,9 +82,17 @@ export const GameReviews: React.FC<Props> = ({ comments }) => {
         ))}
       </div>
 
-      <div className={styles.reviews__list}>
+      <div id='reviews-list' className={styles.reviews__list}>
         {currentComments.map((comment) => (
-          <Review key={comment.id} review={comment} />
+          <Review
+            key={comment.id}
+            review={comment}
+            avatarUrl={
+              comment.userId === Number(currentUser?.id)
+                ? AVATARS[currentUser?.avatarUrl || 'default-avatar.png']
+                : getAvatarById(comment.userId)
+            }
+          />
         ))}
       </div>
       {totalPages > 1 && (

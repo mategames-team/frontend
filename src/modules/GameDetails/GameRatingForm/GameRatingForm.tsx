@@ -42,7 +42,7 @@ export const GameRatingForm: React.FC<Props> = ({
       return;
     }
 
-    if (isReviewEmpty) return;
+    if (isReviewEmpty || !rating) return;
 
     setIsLoading(true);
     try {
